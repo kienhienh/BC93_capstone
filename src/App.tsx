@@ -1,13 +1,13 @@
-import { Routes, Route } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Jobs from "./pages/Jobs";
 import JobDetail from "./pages/JobDetail";
-import Checkout from "./pages/Checkout";
+import Hire from "./pages/Hire";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Header from "./components/Header";
-import Footer from './components/Footer';
-import Orders from './pages/Orders';
+import Footer from "./components/Footer";
+import HiredServices from "./pages/HiredServices";
 import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
@@ -17,25 +17,29 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/jobs" element={<Jobs />} />
+        <Route path="/services" element={<Jobs />} />
+        <Route path="/services/:id" element={<JobDetail />} />
+        <Route path="/jobs" element={<Navigate to="/services" replace />} />
         <Route path="/jobdetail/:id" element={<JobDetail />} />
 
         <Route
-          path="/checkout/:id"
+          path="/hire/:id"
           element={
             <PrivateRoute>
-              <Checkout />
+              <Hire />
             </PrivateRoute>
           }
         />
         <Route
-          path="/orders"
+          path="/hired-services"
           element={
             <PrivateRoute>
-              <Orders />
+              <HiredServices />
             </PrivateRoute>
           }
         />
+        <Route path="/checkout/:id" element={<Navigate to="/services" replace />} />
+        <Route path="/orders" element={<Navigate to="/hired-services" replace />} />
 
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

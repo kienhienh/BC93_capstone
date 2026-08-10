@@ -19,7 +19,7 @@ const JobDetail: React.FC = () => {
           setJob(jobData);
           setComments(commentsData);
         })
-        .catch(() => alert("Không thể tải chi tiết công việc"))
+        .catch(() => alert("Không thể tải chi tiết Service"))
         .finally(() => setLoading(false));
     }
   }, [id]);
@@ -35,7 +35,7 @@ const JobDetail: React.FC = () => {
   if (!job) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100">
-        <p className="text-danger fs-4">Không tìm thấy công việc</p>
+        <p className="text-danger fs-4">Không tìm thấy Service</p>
       </div>
     );
   }
@@ -53,7 +53,7 @@ const JobDetail: React.FC = () => {
         <div className="col-md-6">
           <h2>{job.title}</h2>
           <p className="text-muted">
-            Loại công việc: {job.category || "Chưa rõ"}
+            Danh mục Service: {job.category || "Chưa rõ"}
           </p>
           <p>{job.description}</p>
           <p className="fw-bold">
@@ -72,7 +72,7 @@ const JobDetail: React.FC = () => {
           )}
           <button
             className="btn btn-primary mt-3"
-            onClick={() => navigate(`/checkout/${id}`)}
+            onClick={() => navigate(`/hire/${id}`)}
           >
             Thuê ngay
           </button>

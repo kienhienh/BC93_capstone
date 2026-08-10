@@ -26,7 +26,7 @@ const FreelancerProfile: React.FC = () => {
   }, [id]);
 
   if (loading) return <p>Đang tải dữ liệu...</p>;
-  if (!user) return <p>Không có thông tin freelancer</p>;
+  if (!user) return <p>Không có thông tin Seller</p>;
 
   return (
     <div className="container mt-4 text-center">
@@ -38,10 +38,10 @@ const FreelancerProfile: React.FC = () => {
         height={120}
       />
       <h2>{user.name}</h2>
-      <p className="text-muted">{user.role || "Freelancer"}</p>
+      <p className="text-muted">{user.role || "Seller"}</p>
       <p>Email: {user.email}</p>
       {user.skill && <p>Kỹ năng: {user.skill}</p>}
-      <button className="btn btn-success mt-3">Thuê freelancer này</button>
+      <button className="btn btn-success mt-3">Xem Service của Seller</button>
     </div>
   );
 };

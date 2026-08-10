@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { getJobs } from "../services/api";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { getJobs, searchJobs } from "../services/api";
 import type { Service } from "../types/service";
 import ServiceCard from "../components/ServiceCard";
 
 const Jobs: React.FC = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const searchTerm = searchParams.get("search")?.trim() ?? "";
   const [jobs, setJobs] = useState<Service[]>([]);
 
   // State cho filter
@@ -14,10 +16,11 @@ const Jobs: React.FC = () => {
   const [rating, setRating] = useState<number>(0);
 
   useEffect(() => {
-    getJobs()
+    const request = searchTerm ? searchJobs(searchTerm) : getJobs();
+    request
       .then(setJobs)
-      .catch(() => alert("Lỗi tải dữ liệu"));
-  }, []);
+      .catch(() => alert("Không thể tải danh sách Service"));
+  }, [searchTerm]);
 
   // Lọc dữ liệu theo filter
   const filteredJobs = jobs.filter((job) => {
@@ -97,11 +100,13 @@ const Jobs: React.FC = () => {
         </div>
 
         <div className="col-md-9">
-          <h2 className="mb-4">Danh sách công việc</h2>
+          <h2 className="mb-4">
+            {searchTerm ? `Kết quả cho "${searchTerm}"` : "Danh sách Service"}
+          </h2>
           <div className="row">
             {filteredJobs.map((job) => (
               <div key={job.id} className="col-md-4">
-                <ServiceCard service={job} onSelect={(id) => navigate(`/JobDetail/${id}`)} />
+                <ServiceCard service={job} onSelect={(id) => navigate(`/services/${id}`)} />
               </div>
             ))}
           </div>

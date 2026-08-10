@@ -14,7 +14,7 @@ const Home: React.FC = () => {
   useEffect(() => {
     getJobs()
       .then((data) => setServices(data))
-      .catch(() => alert("Không thể tải dữ liệu công việc"))
+      .catch(() => alert("Không thể tải dữ liệu Service"))
       .finally(() => setLoading(false));
   }, []);
 
@@ -54,7 +54,7 @@ const Home: React.FC = () => {
               <ServiceCard
                 key={service.id}
                 service={service}
-                onSelect={(id) => navigate(`/JobDetail/${id}`)}
+                onSelect={(id) => navigate(`/services/${id}`)}
               />
             ))}
           </div>

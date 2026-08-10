@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
           <div className="col-md-4 mb-3">
             <h5 className="fw-bold">Fiverr Clone</h5>
             <p className="text-muted">
-              Nền tảng thuê freelancer cho mọi nhu cầu công việc.
+              Nền tảng giúp Client khám phá và thuê Service từ Seller.
             </p>
           </div>
 
@@ -17,7 +17,7 @@ const Footer: React.FC = () => {
             <h6 className="fw-bold">Liên kết nhanh</h6>
             <ul className="list-unstyled">
               <li><Link to="/" className="text-decoration-none text-dark">Home</Link></li>
-              <li><Link to="/jobs" className="text-decoration-none text-dark">Jobs</Link></li>
+              <li><Link to="/services" className="text-decoration-none text-dark">Services</Link></li>
               <li><Link to="/login" className="text-decoration-none text-dark">Login</Link></li>
               <li><Link to="/register" className="text-decoration-none text-dark">Register</Link></li>
             </ul>

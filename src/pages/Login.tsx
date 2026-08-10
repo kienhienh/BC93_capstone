@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { signin } from "../services/api";
+import { saveAuthSession } from "../services/auth";
 import { useNavigate } from "react-router-dom";
 
 const Login: React.FC = () => {
@@ -12,7 +13,14 @@ const Login: React.FC = () => {
     e.preventDefault();
     try {
       const res = await signin(email, password);
-      localStorage.setItem("token", res.data.content.token);
+      const session = res.data.content;
+      const clientId = session.id ?? session.user?.id;
+
+      if (!clientId) {
+        throw new Error("Đăng nhập thành công nhưng API không trả về Client ID.");
+      }
+
+      saveAuthSession(session.token, clientId);
       navigate("/");
     } catch {
       setError("Đăng nhập thất bại. Vui lòng kiểm tra lại email/mật khẩu.");
