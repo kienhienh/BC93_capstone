@@ -41,7 +41,7 @@ function App() {
         <Route path="/register" element={<Register />} />
       </Routes>
 
-      <Footer />seo
+      <Footer />
     </>
   );
 }

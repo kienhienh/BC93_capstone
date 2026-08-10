@@ -4,6 +4,7 @@ export interface Service {
   description: string;
   price: number;
   image: string;
+  rating: number;
   category?: string;
   skills?: string[];
   creator?: {
@@ -14,14 +15,44 @@ export interface Service {
   };
 }
 
-export const mapApiJobToService = (apiJob: any): Service => ({
+export interface ServiceComment {
+  id: number;
+  avatar?: string;
+  tenNguoiBinhLuan: string;
+  noiDung: string;
+  ngayBinhLuan?: string;
+}
+
+interface ApiServiceDetails {
+  id?: number;
+  tenCongViec?: string;
+  moTa?: string;
+  giaTien?: number;
+  hinhAnh?: string;
+  saoCongViec?: number;
+  nguoiTao?: number;
+}
+
+interface ApiServicePayload extends ApiServiceDetails {
+  congViec?: ApiServiceDetails;
+  tenLoaiCongViec?: string;
+  tenNhomChiTietLoai?: string;
+  tenChiTietLoai?: string;
+  tenNguoiTao?: string;
+  avatar?: string;
+}
+
+export const mapApiJobToService = (apiJob: ApiServicePayload): Service => ({
   id: apiJob.congViec?.id?.toString() || apiJob.id?.toString() || "",
   title: apiJob.congViec?.tenCongViec || apiJob.tenCongViec || "",
   description: apiJob.congViec?.moTa || apiJob.moTa || "",
   price: apiJob.congViec?.giaTien || apiJob.giaTien || 0,
   image: apiJob.congViec?.hinhAnh || apiJob.hinhAnh || "",
+  rating: apiJob.congViec?.saoCongViec || apiJob.saoCongViec || 0,
   category: apiJob.tenLoaiCongViec || apiJob.tenNhomChiTietLoai || apiJob.tenChiTietLoai || "",
-  skills: [apiJob.tenChiTietLoai, apiJob.tenNhomChiTietLoai].filter(Boolean),
+  skills: [apiJob.tenChiTietLoai, apiJob.tenNhomChiTietLoai].filter(
+    (skill): skill is string => Boolean(skill),
+  ),
   creator: apiJob.tenNguoiTao
     ? {
         id: apiJob.congViec?.nguoiTao?.toString() || "",

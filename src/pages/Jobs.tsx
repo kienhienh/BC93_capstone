@@ -25,7 +25,7 @@ const Jobs: React.FC = () => {
       ? job.title.toLowerCase().includes(category.toLowerCase())
       : true;
     const matchPrice = job.price >= priceRange[0] && job.price <= priceRange[1];
-    const matchRating = rating ? (job as any).rating >= rating : true; // nếu API có rating
+    const matchRating = rating ? job.rating >= rating : true;
     return matchCategory && matchPrice && matchRating;
   });
 

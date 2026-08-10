@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getJobDetail, getCommentsByJob } from "../services/api";
-import type { Service } from "../types/service";
+import type { Service, ServiceComment } from "../types/service";
 
 const JobDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [job, setJob] = useState<Service | null>(null);
-  const [comments, setComments] = useState<any[]>([]);
+  const [comments, setComments] = useState<ServiceComment[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 

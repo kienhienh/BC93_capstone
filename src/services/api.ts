@@ -1,6 +1,6 @@
 import axios from "axios";
 import { mapApiJobToService } from "../types/service";
-import type { Service } from "../types/service";
+import type { Service, ServiceComment } from "../types/service";
 
 const API = axios.create({
   baseURL: "https://fiverrnew.cybersoft.edu.vn/api",
@@ -31,7 +31,7 @@ export const searchJobs = async (keyword: string): Promise<Service[]> => {
   return res.data.content.map(mapApiJobToService);
 };
 
-export const getCommentsByJob = async (jobId: string) => {
+export const getCommentsByJob = async (jobId: string): Promise<ServiceComment[]> => {
   const res = await API.get(`/binh-luan/lay-binh-luan-theo-cong-viec/${jobId}`);
   return res.data.content;
 };
