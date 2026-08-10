@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const HeroBanner: React.FC = () => {
-  const [keyword, setKeyword] = useState("");
+export default function HeroBanner() {
+  const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (keyword.trim()) {
-      navigate(`/jobs?search=${keyword}`);
+  const handleSearch = () => {
+    if (search.trim()) {
+      // điều hướng sang trang danh sách công việc theo tên
+      navigate(`/jobs?search=${encodeURIComponent(search.trim())}`);
     }
   };
 
@@ -25,19 +25,20 @@ const HeroBanner: React.FC = () => {
           style={{ maxWidth: "600px", margin: "0 auto" }}
         >
           <input
-            type="text"
-            className="form-control me-2"
-            placeholder="Nhập từ khóa dịch vụ..."
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-          />
-          <button type="submit" className="btn btn-primary">
-            Tìm kiếm
-          </button>
+          type="text"
+          placeholder="Nhập tên công việc..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="px-4 py-2 rounded text-black w-64"
+        />
+        <button
+          onClick={handleSearch}
+          className="bg-yellow-400 text-black px-4 py-2 rounded"
+        >
+          Tìm kiếm
+        </button>
         </form>
       </div>
     </section>
   );
-};
-
-export default HeroBanner;
+}
