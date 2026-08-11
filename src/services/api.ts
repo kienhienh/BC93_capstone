@@ -1,16 +1,6 @@
 import axios from "axios";
 import { mapApiJobToService } from "../types/service";
-import { getAccessToken } from "./auth";
-import type {
-  HiredServiceRecord,
-  Service,
-  ServiceComment,
-  SignInContent,
-} from "../types/service";
-
-interface ApiResponse<T> {
-  content: T;
-}
+import type { Service, ServiceComment } from "../types/service";
 
 const API = axios.create({
   baseURL: "https://fiverrnew.cybersoft.edu.vn/api",
@@ -19,17 +9,8 @@ const API = axios.create({
   },
 });
 
-API.interceptors.request.use((config) => {
-  const token = getAccessToken();
-  if (token) {
-    config.headers.set("token", token);
-  }
-
-  return config;
-});
-
 export const signin = (email: string, password: string) =>
-  API.post<ApiResponse<SignInContent>>("/auth/signin", { email, password });
+  API.post("/auth/signin", { email, password });
 
 export const signup = (name: string, email: string, password: string) =>
   API.post("/auth/signup", { name, email, password });
@@ -59,24 +40,3 @@ export const getUserById = async (id: string) => {
   const res = await API.get(`/users/${id}`);
   return res.data.content;
 };
-export const hireService = (serviceId: number, clientId: number) =>
-  API.post("/thue-cong-viec", {
-    id: 0,
-    maCongViec: serviceId,
-    maNguoiThue: clientId,
-    ngayThue: new Date().toISOString(),
-    hoanThanh: false,
-  });
-
-export const getHiredServices = async (): Promise<HiredServiceRecord[]> => {
-  const res = await API.get<ApiResponse<HiredServiceRecord[]>>(
-    "/thue-cong-viec/lay-danh-sach-da-thue",
-  );
-  return res.data.content;
-};
-
-export const completeHiredService = (hiredServiceId: number) =>
-  API.post(`/thue-cong-viec/hoan-thanh-cong-viec/${hiredServiceId}`);
-
-export const cancelHiredService = (hiredServiceId: number) =>
-  API.delete(`/thue-cong-viec/${hiredServiceId}`);

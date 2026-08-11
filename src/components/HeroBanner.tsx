@@ -7,15 +7,15 @@ export default function HeroBanner() {
 
   const handleSearch = () => {
     if (search.trim()) {
-
-      navigate(`/services?search=${encodeURIComponent(search.trim())}`);
+      // điều hướng sang trang danh sách công việc theo tên
+      navigate(`/jobs?search=${encodeURIComponent(search.trim())}`);
     }
   };
 
   return (
     <section className="bg-light py-5 text-center">
       <div className="container">
-        <h1 className="fw-bold mb-3">Khám phá Service phù hợp với mọi nhu cầu</h1>
+        <h1 className="fw-bold mb-3">Thuê freelancer cho mọi nhu cầu</h1>
         <p className="text-muted mb-4">
           Khám phá hàng ngàn dịch vụ từ thiết kế, lập trình, marketing đến viết lách.
         </p>
@@ -26,7 +26,7 @@ export default function HeroBanner() {
         >
           <input
           type="text"
-          placeholder="Nhập tên Service..."
+          placeholder="Nhập tên công việc..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="px-4 py-2 rounded text-black w-64"

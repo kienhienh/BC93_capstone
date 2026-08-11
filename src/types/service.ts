@@ -23,26 +23,6 @@ export interface ServiceComment {
   ngayBinhLuan?: string;
 }
 
-export interface SignInContent {
-  id?: number;
-  token: string;
-  user?: {
-    id: number;
-  };
-}
-
-export interface HiredServiceRecord {
-  id: number;
-  maCongViec: number;
-  maNguoiThue: number;
-  ngayThue: string;
-  hoanThanh: boolean;
-}
-
-export interface HiredService extends HiredServiceRecord {
-  service: Service;
-}
-
 interface ApiServiceDetails {
   id?: number;
   tenCongViec?: string;

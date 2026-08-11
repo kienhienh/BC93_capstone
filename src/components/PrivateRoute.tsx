@@ -1,16 +1,14 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { getAccessToken, getClientId } from "../services/auth";
 
 interface PrivateRouteProps {
   children: React.ReactNode;
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
-  const token = getAccessToken();
-  const clientId = getClientId();
+  const token = localStorage.getItem("token");
 
-  if (!token || clientId === null) {
+  if (!token) {
     return <Navigate to="/login" replace />;
   }
 
