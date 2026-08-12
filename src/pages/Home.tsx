@@ -1,95 +1,102 @@
-import React, { useEffect, useState, useRef } from "react";
-import { getJobs } from "../services/api";
-import type { Service } from "../types/service";
-import ServiceCard from "../components/ServiceCard";
-import HeroBanner from "../components/HeroBanner";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import {
+  useServicePreviewScreenModel,
+  type ServicePreviewScreenItem,
+} from "../features/service-preview/public";
 
-const Home: React.FC = () => {
-  const [services, setServices] = useState<Service[]>([]);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
-  const scrollRef = useRef<HTMLDivElement>(null);
+const previewLimit = 6;
 
-  useEffect(() => {
-    getJobs()
-      .then((data) => setServices(data))
-      .catch(() => alert("Không thể tải dữ liệu công việc"))
-      .finally(() => setLoading(false));
-  }, []);
-
-  const scrollLeft = () => scrollRef.current?.scrollBy({ left: -300, behavior: "smooth" });
-  const scrollRight = () => scrollRef.current?.scrollBy({ left: 300, behavior: "smooth" });
-
+function ServiceCard({ service }: { service: ServicePreviewScreenItem }) {
   return (
-    <div>
-      {/* HeroBanner */}
-      <HeroBanner />
-
-      {/* Popular Professional Services */}
-      <div className="container mt-5 position-relative">
-        <h2 className="fw-bold mb-4">Popular Professional Services</h2>
-
-        {/* Nút trái/phải */}
-        <button
-          onClick={scrollLeft}
-          className="btn btn-light position-absolute top-50 start-0 translate-middle-y shadow"
-          style={{ zIndex: 10 }}
-        >
-          ◀
-        </button>
-        <button
-          onClick={scrollRight}
-          className="btn btn-light position-absolute top-50 end-0 translate-middle-y shadow"
-          style={{ zIndex: 10 }}
-        >
-          ▶
-        </button>
-
-        {loading ? (
-          <p>Đang tải dữ liệu...</p>
-        ) : (
-          <div ref={scrollRef} className="d-flex overflow-auto gap-3">
-            {services.slice(0, 6).map((service) => (
-              <ServiceCard
-                key={service.id}
-                service={service}
-                onSelect={(id) => navigate(`/JobDetail/${id}`)}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* About Fiverr */}
-      <div className="container mt-5 p-5 bg-light rounded">
-        <div className="row align-items-center">
-          <div className="col-md-6">
-            <h3>A whole world of freelance talent at your fingertips</h3>
-            <ul className="mt-3">
-              <li>The best for every budget</li>
-              <li>Quality work done quickly</li>
-              <li>Protected payments, every time</li>
-              <li>24/7 support</li>
-            </ul>
-          </div>
-          <div className="col-md-6">
-            <img src="/images/about.jpg" alt="Freelancers working" className="img-fluid rounded" />
-          </div>
+    <article className="service-preview-card">
+      <Link className="service-preview-link" to={`/services/${service.id}`}>
+        <div className="service-preview-image">
+          {service.imageUrl ? (
+            <img
+              src={service.imageUrl}
+              alt=""
+              width="360"
+              height="240"
+              loading="lazy"
+              decoding="async"
+            />
+          ) : (
+            <span aria-hidden="true">Service</span>
+          )}
         </div>
-      </div>
+        <div className="service-preview-copy">
+          <h3>{service.title}</h3>
+          {service.description ? <p>{service.description}</p> : null}
+          <p className="service-preview-meta">
+            <span>{service.rating === null ? "Not rated" : `${service.rating} out of 5`}</span>
+            <strong>From {service.price}</strong>
+          </p>
+        </div>
+      </Link>
+    </article>
+  );
+}
 
-      {/* Testimonial */}
-      <div className="container mt-5 text-center">
-        <blockquote className="fst-italic">
-          “It’s extremely exciting that Fiverr has freelancers from all over the world — it broadens
-          the talent pool. One of the best things about Fiverr is that while we’re sleeping,
-          someone’s working.”
-        </blockquote>
-        <p className="fw-semibold mt-2">Kay Kim, Co-Founder of Rooted</p>
-      </div>
+function LoadingPreview() {
+  return (
+    <div className="service-preview-grid" aria-busy="true" aria-label="Loading services">
+      {Array.from({ length: previewLimit }, (_, index) => (
+        <div className="service-preview-skeleton" key={index} aria-hidden="true" />
+      ))}
+      <span className="visually-hidden">Loading services...</span>
     </div>
   );
-};
+}
 
-export default Home;
+export default function Home() {
+  const preview = useServicePreviewScreenModel();
+
+  return (
+    <main id="main-content" className="home-page">
+      <header className="home-intro">
+        <p className="home-eyebrow">Fiverr Service Marketplace</p>
+        <h1>Find the right Service for your next project</h1>
+        <p>Browse real Services offered by marketplace Sellers.</p>
+      </header>
+
+      <section className="service-preview" aria-labelledby="service-preview-heading">
+        <div className="service-preview-heading">
+          <div>
+            <p className="home-eyebrow">Marketplace preview</p>
+            <h2 id="service-preview-heading">Explore services</h2>
+          </div>
+          {preview.canRefresh ? (
+            <button type="button" onClick={preview.refresh} disabled={preview.isRefreshing}>
+              {preview.isRefreshing ? "Refreshing..." : "Refresh services"}
+            </button>
+          ) : null}
+        </div>
+
+        {preview.isLoading ? <LoadingPreview /> : null}
+        {preview.errorMessage ? (
+          <div className="service-preview-state" role="alert">
+            <p>{preview.errorMessage}</p>
+            <button type="button" onClick={preview.refresh}>
+              Try again
+            </button>
+          </div>
+        ) : null}
+        {preview.isEmpty ? (
+          <p className="service-preview-state">No Services are available yet.</p>
+        ) : null}
+        {preview.services.length > 0 ? (
+          <div className="service-preview-grid">
+            {preview.services.map((service) => (
+              <ServiceCard key={service.id} service={service} />
+            ))}
+          </div>
+        ) : null}
+        {preview.isRefreshing ? (
+          <p className="service-preview-refreshing" role="status">
+            Refreshing services...
+          </p>
+        ) : null}
+      </section>
+    </main>
+  );
+}
