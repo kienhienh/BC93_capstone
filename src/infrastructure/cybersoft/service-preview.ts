@@ -18,13 +18,17 @@ const serviceCollectionEnvelopeSchema = z.object({
   content: z.array(serviceDtoSchema),
 });
 
+function cancelledFailure() {
+  return new ServicePreviewFailure("cancelled", "The Service request was cancelled.");
+}
+
 function normalizeFailure(error: unknown): ServicePreviewFailure {
   if (error instanceof ServicePreviewFailure) {
     return error;
   }
 
   if (error instanceof DOMException && error.name === "AbortError") {
-    return new ServicePreviewFailure("cancelled", "The Service request was cancelled.");
+    return cancelledFailure();
   }
 
   if (typeof navigator !== "undefined" && !navigator.onLine) {
@@ -91,7 +95,7 @@ export function createCybersoftServicePreviewCapability(config: {
         return result.data.content.map(mapService);
       } catch (error) {
         if (signal.aborted) {
-          throw new ServicePreviewFailure("cancelled", "The Service request was cancelled.");
+          throw cancelledFailure();
         }
         throw normalizeFailure(error);
       }

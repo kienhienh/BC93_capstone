@@ -27,7 +27,7 @@ function ServiceCard({ service }: { service: ServicePreview }) {
           {service.description ? <p>{service.description}</p> : null}
           <p className="service-preview-meta">
             <span>{service.rating === null ? "Not rated" : `${service.rating} out of 5`}</span>
-            <strong>From ${service.price}</strong>
+            <strong>From {service.price}</strong>
           </p>
         </div>
       </Link>
