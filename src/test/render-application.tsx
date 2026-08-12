@@ -7,8 +7,11 @@ const activeCompositions = new Set<ApplicationComposition>();
 
 export function renderTestApplication(path = "/") {
   const composition = composeApplication({
-    mode: "test",
-    environment: {},
+    mode: "production",
+    environment: {
+      VITE_API_BASE_URL: "http://api.example.test/api",
+      VITE_CYBERSOFT_TOKEN: "deterministic-test-token",
+    },
   });
   activeCompositions.add(composition);
 

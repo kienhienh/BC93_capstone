@@ -70,7 +70,15 @@ export function createCybersoftServicePreviewCapability(config: {
           );
         }
 
-        const payload: unknown = await response.json();
+        let payload: unknown;
+        try {
+          payload = await response.json();
+        } catch {
+          throw new ServicePreviewFailure(
+            "malformed",
+            "The Service collection response was not valid JSON.",
+          );
+        }
         const result = serviceCollectionEnvelopeSchema.safeParse(payload);
 
         if (!result.success) {

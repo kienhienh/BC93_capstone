@@ -1,5 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import { createCybersoftServicePreviewCapability } from "../infrastructure/cybersoft/service-preview";
+import { createDeterministicServicePreviewCapability } from "../infrastructure/testing/service-preview";
 import type { ServicePreviewCapability } from "../features/service-preview/wiring";
 import { readRuntimeConfig, type RuntimeConfigResult } from "./runtime-config";
 
@@ -18,16 +19,15 @@ export function composeApplication({
   mode: "production" | "test";
   environment: Record<string, unknown>;
 }): ApplicationComposition {
-  const configResult: RuntimeConfigResult =
-    mode === "test"
-      ? {
-          ok: true,
-          config: {
-            apiBaseUrl: "http://api.example.test/api",
-            cybersoftToken: "deterministic-test-token",
-          },
-        }
-      : readRuntimeConfig(environment);
+  if (mode === "test") {
+    return {
+      ok: true,
+      queryClient: createQueryClient(),
+      servicePreview: createDeterministicServicePreviewCapability(),
+    };
+  }
+
+  const configResult: RuntimeConfigResult = readRuntimeConfig(environment);
 
   if (!configResult.ok) {
     return configResult;
@@ -35,14 +35,18 @@ export function composeApplication({
 
   return {
     ok: true,
-    queryClient: new QueryClient({
-      defaultOptions: {
-        queries: {
-          retry: false,
-          refetchOnWindowFocus: false,
-        },
-      },
-    }),
+    queryClient: createQueryClient(),
     servicePreview: createCybersoftServicePreviewCapability(configResult.config),
   };
+}
+
+function createQueryClient() {
+  return new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        refetchOnWindowFocus: false,
+      },
+    },
+  });
 }

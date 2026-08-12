@@ -26,3 +26,11 @@ Production startup requires `VITE_API_BASE_URL` and `VITE_CYBERSOFT_TOKEN`. Copy
 `.env.example` to a Git-ignored local environment file and replace the placeholder token.
 Vite client configuration is visible to browser users; the Cybersoft project token is not a
 User session credential and no real value is committed.
+
+## Responsive verification
+
+The Home layout uses bounded containers and explicit one-, two-, and three-column grid
+breakpoints for the 375, 768, and 1440 px acceptance widths. Automated browser viewport
+inspection could not be run in the implementation session because no browser backend was
+connected; the pull request records this as a remaining visual verification rather than
+claiming manual evidence.

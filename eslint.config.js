@@ -72,4 +72,20 @@ export default defineConfig([
       ],
     },
   },
+  {
+    files: ['src/pages/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['../features/*/*', '../features/**/*/*'],
+              message: 'Screens outside a feature import only that feature public interface.',
+            },
+          ],
+        },
+      ],
+    },
+  },
 ])

@@ -30,21 +30,11 @@
 body {
   margin: 0;
   min-width: 320px;
-  overflow-x: hidden;
-}
-
-button,
-a {
-  min-height: 44px;
 }
 
 :focus-visible {
   outline: 3px solid #1dbf73;
   outline-offset: 3px;
-}
-
-.home-page {
-  overflow: hidden;
 }
 
 .home-intro,

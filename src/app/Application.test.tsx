@@ -89,6 +89,21 @@ describe("Home Service preview route", () => {
     );
   });
 
+  it("shows the malformed-response state for invalid JSON", async () => {
+    server.use(
+      http.get(
+        servicesUrl,
+        () => new HttpResponse("{not-json", { headers: { "Content-Type": "application/json" } }),
+      ),
+    );
+
+    renderTestApplication();
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "The Services response was not in a safe format.",
+    );
+  });
+
   it("shows an offline recovery message without exposing the transport error", async () => {
     Object.defineProperty(navigator, "onLine", { configurable: true, value: false });
     server.use(http.get(servicesUrl, () => HttpResponse.error()));

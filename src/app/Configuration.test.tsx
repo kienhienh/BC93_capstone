@@ -21,4 +21,15 @@ describe("runtime configuration", () => {
     );
     expect(document.body).not.toHaveTextContent("VITE_CYBERSOFT_TOKEN");
   });
+
+  it("selects a deterministic capability in test mode without runtime configuration", async () => {
+    const composition = composeApplication({ mode: "test", environment: {} });
+
+    expect(composition.ok).toBe(true);
+    if (composition.ok) {
+      await expect(
+        composition.servicePreview.listServices(new AbortController().signal),
+      ).resolves.toEqual([]);
+    }
+  });
 });
