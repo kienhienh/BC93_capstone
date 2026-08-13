@@ -9,11 +9,19 @@ function useViewport(width: number) {
 }
 
 describe("Home responsive taxonomy navigation", () => {
-  it("shows primary navigation and a separate Category row on desktop", async () => {
+  it("reveals desktop Search and Categories only after leaving Home through Search", async () => {
     useViewport(1440);
+    const user = userEvent.setup();
     renderTestApplication("/");
 
     expect(screen.getByRole("navigation", { name: "Primary navigation" })).toBeVisible();
+    expect(screen.queryByRole("searchbox", { name: "Search services" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("navigation", { name: "Service Categories" })).not.toBeInTheDocument();
+
+    await user.type(screen.getByRole("searchbox", { name: "Search services from Home" }), "html");
+    await user.click(screen.getByRole("button", { name: "Search from Home" }));
+
+    expect(await screen.findByRole("searchbox", { name: "Search services" })).toBeVisible();
     const categories = screen.getByRole("navigation", { name: "Service Categories" });
     expect(await within(categories).findByRole("link", { name: "Graphics & Design" })).toHaveAttribute(
       "href",
@@ -25,7 +33,7 @@ describe("Home responsive taxonomy navigation", () => {
   it("uses an accessible Category drawer on tablet", async () => {
     useViewport(768);
     const user = userEvent.setup();
-    renderTestApplication("/");
+    renderTestApplication("/services");
     const opener = screen.getByRole("button", { name: "Browse categories" });
 
     await user.click(opener);
@@ -54,7 +62,7 @@ describe("Home responsive taxonomy navigation", () => {
   it("uses compact Search and menu controls on phone", async () => {
     useViewport(375);
     const user = userEvent.setup();
-    renderTestApplication("/");
+    renderTestApplication("/services");
 
     expect(screen.getByRole("button", { name: "Search services" })).toBeVisible();
     const opener = screen.getByRole("button", { name: "Open menu" });

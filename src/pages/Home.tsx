@@ -7,9 +7,23 @@ import {
 } from "../features/service-preview/public";
 import { taxonomyFailureMessage, useTaxonomy } from "../features/taxonomy/public";
 
-const previewLimit = 6;
+const previewLimit = 5;
 
-function ServiceCard({ service }: { service: ServicePreviewScreenItem }) {
+const popularServiceThemes = [
+  { eyebrow: "Build your brand", title: "Logo Design" },
+  { eyebrow: "Customize your site", title: "WordPress" },
+  { eyebrow: "Share your message", title: "Voice Over" },
+  { eyebrow: "Engage your audience", title: "Video Explainer" },
+  { eyebrow: "Reach more customers", title: "Social Media" },
+] as const;
+
+function ServiceCard({
+  service,
+  theme,
+}: {
+  service: ServicePreviewScreenItem;
+  theme: (typeof popularServiceThemes)[number];
+}) {
   return (
     <article className="service-preview-card">
       <Link className="service-preview-link" to={`/services/${service.id}`}>
@@ -28,7 +42,8 @@ function ServiceCard({ service }: { service: ServicePreviewScreenItem }) {
           )}
         </div>
         <div className="service-preview-copy">
-          <h3>{service.title}</h3>
+          <span className="service-preview-kicker">{theme.eyebrow}</span>
+          <h3>{theme.title}</h3>
           {service.description ? <p>{service.description}</p> : null}
           <p className="service-preview-meta">
             <span>{service.rating === null ? "Not rated" : `${service.rating} out of 5`}</span>
@@ -56,7 +71,13 @@ export default function Home() {
   const taxonomy = useTaxonomy();
   const headingRef = useRef<HTMLHeadingElement>(null);
   const [search, setSearch] = useState("");
+  const [popularStart, setPopularStart] = useState(0);
   const navigate = useNavigate();
+
+  const visiblePopularServices = Array.from(
+    { length: Math.min(preview.services.length, popularServiceThemes.length) },
+    (_, index) => preview.services[(popularStart + index) % preview.services.length],
+  );
 
   useEffect(() => {
     document.title = "Home | Fiverr Marketplace";
@@ -206,10 +227,38 @@ export default function Home() {
           <p className="service-preview-state">No Services are available yet.</p>
         ) : null}
         {preview.services.length > 0 ? (
-          <div className="service-preview-grid">
-            {preview.services.map((service) => (
-              <ServiceCard key={service.id} service={service} />
-            ))}
+          <div className="service-preview-carousel">
+            <button
+              className="service-preview-arrow service-preview-arrow-previous"
+              type="button"
+              aria-label="Previous popular services"
+              onClick={() =>
+                setPopularStart((current) =>
+                  (current - 1 + preview.services.length) % preview.services.length,
+                )
+              }
+            >
+              <span aria-hidden="true">‹</span>
+            </button>
+            <div className="service-preview-grid">
+              {visiblePopularServices.map((service, index) => (
+                <ServiceCard
+                  key={`${service.id}-${popularStart}`}
+                  service={service}
+                  theme={popularServiceThemes[index]}
+                />
+              ))}
+            </div>
+            <button
+              className="service-preview-arrow service-preview-arrow-next"
+              type="button"
+              aria-label="Next popular services"
+              onClick={() =>
+                setPopularStart((current) => (current + 1) % preview.services.length)
+              }
+            >
+              <span aria-hidden="true">›</span>
+            </button>
           </div>
         ) : null}
         {preview.isRefreshing ? (

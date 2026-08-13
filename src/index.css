@@ -784,12 +784,17 @@ body {
 
 .service-preview-grid {
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 1rem;
+  gap: clamp(1rem, 2.4vw, 1.8rem);
+}
+
+.service-preview-carousel {
+  position: relative;
 }
 
 .service-preview-card {
   position: relative;
-  min-height: 23rem;
+  min-height: 0;
+  aspect-ratio: 3 / 4;
   border: 0;
   border-radius: 0.35rem;
   background: #234236;
@@ -820,16 +825,57 @@ body {
 .service-preview-copy {
   position: relative;
   z-index: 1;
-  padding: 1.15rem;
+  padding: 1rem;
   color: #fff;
 }
 
 .service-preview-copy h3 {
-  font-size: 1.35rem;
+  margin-top: 0.15rem;
+  color: #fff;
+  font-size: clamp(1.15rem, 1.8vw, 1.55rem);
+  line-height: 1.1;
+}
+
+.service-preview-link:hover h3 {
+  color: #fff;
+}
+
+.service-preview-kicker {
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 600;
+  line-height: 1.2;
 }
 
 .service-preview-copy > p {
   display: none !important;
+}
+
+.service-preview-arrow {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid #e4e5e7;
+  border-radius: 50%;
+  place-items: center;
+  background: #fff;
+  box-shadow: 0 0.15rem 0.6rem rgb(0 0 0 / 14%);
+  color: #62646a;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.service-preview-arrow-previous {
+  left: -1.35rem;
+}
+
+.service-preview-arrow-next {
+  right: -1.35rem;
 }
 
 .home-benefits {
@@ -1051,10 +1097,6 @@ body {
 .marketplace-header-home .marketplace-brand,
 .marketplace-header-home .account-links a {
   color: #fff;
-}
-
-.marketplace-header-home .header-search {
-  display: none;
 }
 
 .marketplace-header-home .account-links {

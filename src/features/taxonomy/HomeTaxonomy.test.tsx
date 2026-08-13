@@ -64,6 +64,14 @@ describe("Home taxonomy", () => {
     renderTestApplication("/");
 
     expect(screen.getByRole("heading", { name: "Popular professional services" })).toBeVisible();
+    const popularServices = screen.getByRole("region", { name: "Explore services" });
+    const popularCards = await within(popularServices).findAllByRole("article");
+    expect(popularCards).toHaveLength(5);
+    for (const title of ["Logo Design", "WordPress", "Voice Over", "Video Explainer", "Social Media"]) {
+      expect(within(popularServices).getByRole("heading", { name: title })).toBeVisible();
+    }
+    expect(within(popularServices).getByRole("button", { name: "Previous popular services" })).toBeVisible();
+    expect(within(popularServices).getByRole("button", { name: "Next popular services" })).toBeVisible();
     expect(
       screen.getByRole("heading", { name: "A whole world of freelance talent at your fingertips" }),
     ).toBeVisible();
