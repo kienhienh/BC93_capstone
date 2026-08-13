@@ -8,22 +8,21 @@ import { server } from "../test/server";
 const servicesUrl = "http://api.example.test/api/cong-viec";
 
 describe("Home Service preview route", () => {
-  it("renders the first six Services in API order as links", async () => {
+  it("renders the first five Services in API order as themed links", async () => {
     renderTestApplication();
 
     const region = await screen.findByRole("region", { name: "Explore services" });
     const serviceLinks = await within(region).findAllByRole("link");
 
-    expect(serviceLinks).toHaveLength(6);
-    expect(serviceLinks.map((link) => link.textContent)).toEqual([
-      expect.stringContaining("Service 1"),
-      expect.stringContaining("Service 2"),
-      expect.stringContaining("Service 3"),
-      expect.stringContaining("Service 4"),
-      expect.stringContaining("Service 5"),
-      expect.stringContaining("Service 6"),
+    expect(serviceLinks).toHaveLength(5);
+    expect(serviceLinks.map((link) => link.getAttribute("href"))).toEqual([
+      "/services/1",
+      "/services/2",
+      "/services/3",
+      "/services/4",
+      "/services/5",
     ]);
-    expect(screen.queryByText("Service 7")).not.toBeInTheDocument();
+    expect(within(region).queryByRole("link", { name: /Service 6/ })).not.toBeInTheDocument();
   });
 
   it("shows a stable loading state before Services arrive", () => {
@@ -71,11 +70,13 @@ describe("Home Service preview route", () => {
       }),
     );
     renderTestApplication();
-    await screen.findByRole("link", { name: /Service 1/ });
+    const region = await screen.findByRole("region", { name: "Explore services" });
+    const serviceLink = await within(region).findByRole("link", { name: /Logo Design/ });
+    expect(serviceLink).toHaveAttribute("href", "/services/1");
 
     await user.click(screen.getByRole("button", { name: "Refresh services" }));
 
-    expect(screen.getByRole("link", { name: /Service 1/ })).toBeVisible();
+    expect(within(region).getByRole("link", { name: /Logo Design/ })).toBeVisible();
     expect(screen.getByRole("status")).toHaveTextContent("Refreshing services...");
   });
 
