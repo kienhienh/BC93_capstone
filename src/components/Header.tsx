@@ -1,13 +1,14 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useSession } from "../features/authentication/public";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+  const { session, logout } = useSession();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
+    logout();
+    navigate("/");
   };
 
   return (
@@ -31,15 +32,15 @@ const Header: React.FC = () => {
             <li className="nav-item">
               <Link className="nav-link" to="/jobs">Jobs</Link>
             </li>
-            {token && (
-            <li className="nav-item">
-              <Link className="nav-link" to="/orders">Orders</Link>
-            </li>
+            {session && (
+              <li className="nav-item">
+                <Link className="nav-link" to="/orders">Orders</Link>
+              </li>
             )}
           </ul>
 
           <ul className="navbar-nav">
-            {!token ? (
+            {!session ? (
               <>
                 <li className="nav-item">
                   <Link className="nav-link" to="/login">
@@ -64,13 +65,13 @@ const Header: React.FC = () => {
             )}
           </ul>
           <nav className="navbar bg-body-tertiary">
-          <div className="container-fluid">
-            <form className="d-flex" role="search">
-              <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-              <button className="btn btn-outline-success" type="submit">Search</button>
-            </form>
-          </div>
-        </nav>
+            <div className="container-fluid">
+              <form className="d-flex" role="search">
+                <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                <button className="btn btn-outline-success" type="submit">Search</button>
+              </form>
+            </div>
+          </nav>
         </div>
       </div>
     </nav>

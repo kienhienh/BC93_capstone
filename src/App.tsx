@@ -2,13 +2,13 @@ import { useState } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Routes, Route } from "react-router-dom";
 import { ServicePreviewProvider } from "./features/service-preview/wiring";
+import { AuthenticationProvider } from "./features/authentication/wiring";
+import { LoginRoute, RegisterRoute } from "./features/authentication/public";
 import { composeApplication, type ApplicationComposition } from "./app/composition";
 import Home from "./pages/Home";
 import Jobs from "./pages/Jobs";
 import JobDetail from "./pages/JobDetail";
 import Checkout from "./pages/Checkout";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
 import Header from "./components/Header";
 import Footer from './components/Footer';
 import Orders from './pages/Orders';
@@ -40,36 +40,38 @@ function App({ composition: suppliedComposition }: { composition?: ApplicationCo
   return (
     <QueryClientProvider client={composition.queryClient}>
       <ServicePreviewProvider capability={composition.servicePreview}>
-        <Header />
+        <AuthenticationProvider capability={composition.authentication}>
+          <Header />
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/jobs" element={<Jobs />} />
-          <Route path="/jobdetail/:id" element={<JobDetail />} />
-          <Route path="/services/:id" element={<JobDetail />} />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/jobs" element={<Jobs />} />
+            <Route path="/jobdetail/:id" element={<JobDetail />} />
+            <Route path="/services/:id" element={<JobDetail />} />
 
-          <Route
-            path="/checkout/:id"
-            element={
-              <PrivateRoute>
-                <Checkout />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/orders"
-            element={
-              <PrivateRoute>
-                <Orders />
-              </PrivateRoute>
-            }
-          />
+            <Route
+              path="/checkout/:id"
+              element={
+                <PrivateRoute>
+                  <Checkout />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/orders"
+              element={
+                <PrivateRoute>
+                  <Orders />
+                </PrivateRoute>
+              }
+            />
 
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Routes>
+            <Route path="/login" element={<LoginRoute />} />
+            <Route path="/register" element={<RegisterRoute />} />
+          </Routes>
 
-        <Footer />
+          <Footer />
+        </AuthenticationProvider>
       </ServicePreviewProvider>
     </QueryClientProvider>
   );
