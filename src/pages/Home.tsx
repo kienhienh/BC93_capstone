@@ -229,13 +229,15 @@ export default function Home() {
             <li><strong>24/7 support</strong><span>Get help whenever you need it, wherever you are.</span></li>
           </ul>
         </div>
-        <div className="benefits-visual" aria-label="Marketplace introduction video">
-          {preview.services[0]?.imageUrl ? (
-            <img src={preview.services[0].imageUrl} alt="" width="640" height="420" />
-          ) : null}
-          <button type="button" aria-label="Play marketplace introduction">
-            <span aria-hidden="true">▶</span>
-          </button>
+        <div className="benefits-visual">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/bNpx7gpSqbY"
+            title="Marketplace introduction video"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          ></iframe>
         </div>
       </section>
 
