@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useRegistration, useSignIn } from "./controller";
 import { AuthenticationFailure } from "./capability";
@@ -16,6 +16,7 @@ interface LoginLocationState {
 }
 
 export function RegisterRoute() {
+  const heading = useRef<HTMLHeadingElement>(null);
   const navigate = useNavigate();
   const registration = useRegistration();
   const [name, setName] = useState("");
@@ -25,6 +26,11 @@ export function RegisterRoute() {
   const [phone, setPhone] = useState("");
   const [errors, setErrors] = useState<RegistrationErrors>({});
   const [formError, setFormError] = useState<string | null>(null);
+
+  useEffect(() => {
+    document.title = "Register | Fiverr Clone";
+    heading.current?.focus();
+  }, []);
 
   useEffect(() => {
     focusFirstInvalidRegistrationField(errors);
@@ -66,10 +72,10 @@ export function RegisterRoute() {
   }
 
   return (
-    <main className="authentication-page">
+    <main id="main-content" className="authentication-page">
       <section className="authentication-card" aria-labelledby="register-heading">
         <p className="authentication-eyebrow">Join the marketplace</p>
-        <h1 id="register-heading">Create your account</h1>
+        <h1 id="register-heading" ref={heading} tabIndex={-1}>Create your account</h1>
         {formError ? <p role="alert">{formError}</p> : null}
         <form onSubmit={handleSubmit} noValidate>
           <label htmlFor="register-name">Full name</label>
@@ -189,6 +195,7 @@ function toInputId(field: RegistrationField) {
 }
 
 export function LoginRoute() {
+  const heading = useRef<HTMLHeadingElement>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const state = location.state as LoginLocationState | null;
@@ -197,6 +204,11 @@ export function LoginRoute() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<SignInErrors>({});
   const signIn = useSignIn();
+
+  useEffect(() => {
+    document.title = "Login | Fiverr Clone";
+    heading.current?.focus();
+  }, []);
 
   useEffect(() => {
     if (fieldErrors.email) {
@@ -229,10 +241,10 @@ export function LoginRoute() {
   }
 
   return (
-    <main className="authentication-page">
+    <main id="main-content" className="authentication-page">
       <section className="authentication-card" aria-labelledby="login-heading">
         <p className="authentication-eyebrow">Welcome back</p>
-        <h1 id="login-heading">Login</h1>
+        <h1 id="login-heading" ref={heading} tabIndex={-1}>Login</h1>
         {state?.accountCreated ? (
           <p role="status">Your account was created. Sign in to continue.</p>
         ) : null}

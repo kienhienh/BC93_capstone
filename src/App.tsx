@@ -3,7 +3,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Routes, Route } from "react-router-dom";
 import { ServicePreviewProvider } from "./features/service-preview/wiring";
 import { AuthenticationProvider } from "./features/authentication/wiring";
-import { LoginRoute, RegisterRoute } from "./features/authentication/public";
+import { AdminRoute, LoginRoute, RegisterRoute } from "./features/authentication/public";
 import { composeApplication, type ApplicationComposition } from "./app/composition";
 import Home from "./pages/Home";
 import Jobs from "./pages/Jobs";
@@ -13,6 +13,7 @@ import Header from "./components/Header";
 import Footer from './components/Footer';
 import Orders from './pages/Orders';
 import PrivateRoute from "./components/PrivateRoute";
+import Admin from "./pages/Admin";
 
 function ConfigurationError({ message }: { message: string }) {
   return (
@@ -40,7 +41,11 @@ function App({ composition: suppliedComposition }: { composition?: ApplicationCo
   return (
     <QueryClientProvider client={composition.queryClient}>
       <ServicePreviewProvider capability={composition.servicePreview}>
-        <AuthenticationProvider capability={composition.authentication}>
+        <AuthenticationProvider
+          capability={composition.authentication}
+          sessionStore={composition.sessionStore}
+        >
+          <a className="skip-link" href="#main-content">Skip to main content</a>
           <Header />
 
           <Routes>
@@ -68,6 +73,14 @@ function App({ composition: suppliedComposition }: { composition?: ApplicationCo
 
             <Route path="/login" element={<LoginRoute />} />
             <Route path="/register" element={<RegisterRoute />} />
+            <Route
+              path="/admin/*"
+              element={
+                <AdminRoute>
+                  <Admin />
+                </AdminRoute>
+              }
+            />
           </Routes>
 
           <Footer />

@@ -23,6 +23,13 @@ export interface AuthenticatedSession {
   user: SessionIdentity;
 }
 
+export interface SessionStore {
+  read(): unknown | Promise<unknown>;
+  save(session: AuthenticatedSession): void;
+  clear(): void;
+  subscribe(listener: (storedSession: unknown) => void): () => void;
+}
+
 export type AuthenticationFailureKind =
   | "duplicate-email"
   | "invalid-credentials"

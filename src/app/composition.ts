@@ -2,8 +2,9 @@ import { QueryClient } from "@tanstack/react-query";
 import { createCybersoftServicePreviewCapability } from "../infrastructure/cybersoft/service-preview";
 import { createDeterministicServicePreviewCapability } from "../infrastructure/testing/service-preview";
 import type { ServicePreviewCapability } from "../features/service-preview/wiring";
-import type { AuthenticationCapability } from "../features/authentication/wiring";
+import type { AuthenticationCapability, SessionStore } from "../features/authentication/wiring";
 import { createCybersoftAuthenticationCapability } from "../infrastructure/cybersoft/authentication";
+import { createBrowserSessionStore } from "../infrastructure/browser/session-store";
 import { readRuntimeConfig, type RuntimeConfigResult } from "./runtime-config";
 
 export type ApplicationComposition =
@@ -12,6 +13,7 @@ export type ApplicationComposition =
       queryClient: QueryClient;
       servicePreview: ServicePreviewCapability;
       authentication: AuthenticationCapability;
+      sessionStore: SessionStore;
     }
   | { ok: false; message: string };
 
@@ -28,6 +30,7 @@ export function composeApplication({
       queryClient: createQueryClient(),
       servicePreview: createDeterministicServicePreviewCapability(),
       authentication: createUnavailableAuthenticationCapability(),
+      sessionStore: createBrowserSessionStore(),
     };
   }
 
@@ -42,6 +45,7 @@ export function composeApplication({
     queryClient: createQueryClient(),
     servicePreview: createCybersoftServicePreviewCapability(configResult.config),
     authentication: createCybersoftAuthenticationCapability(configResult.config),
+    sessionStore: createBrowserSessionStore(),
   };
 }
 

@@ -13,6 +13,13 @@ const initialServiceDtos = Array.from({ length: 7 }, (_, index) => ({
 
 let serviceDtos = structuredClone(initialServiceDtos);
 
+const encodeTokenPart = (value: object) =>
+  btoa(JSON.stringify(value)).replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
+
+const validUserToken = `${encodeTokenPart({ alg: "none", typ: "JWT" })}.${encodeTokenPart({
+  exp: 4_102_444_800,
+})}.test-signature`;
+
 export function resetTestData() {
   serviceDtos = structuredClone(initialServiceDtos);
 }
@@ -34,7 +41,7 @@ export const handlers = [
           avatar: null,
           role: "USER",
         },
-        token: "header.payload.signature",
+        token: validUserToken,
       },
     }),
   ),

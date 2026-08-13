@@ -13,6 +13,7 @@ afterEach(() => {
   resetTestData();
   localStorage.clear();
   sessionStorage.clear();
+  document.title = "";
   vi.clearAllMocks();
   vi.useRealTimers();
   vi.unstubAllEnvs();
