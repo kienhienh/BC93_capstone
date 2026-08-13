@@ -9,6 +9,25 @@ import { taxonomyFailureMessage, useTaxonomy } from "../features/taxonomy/public
 
 const previewLimit = 5;
 
+const categoryIconRules = [
+  { terms: ["graphics"], icon: "bi-brush" },
+  { terms: ["digital marketing", "design & marketing"], icon: "bi-display" },
+  { terms: ["writing", "content creator"], icon: "bi-file-earmark-text" },
+  { terms: ["video", "animation"], icon: "bi-film" },
+  { terms: ["music", "audio"], icon: "bi-mic" },
+  { terms: ["programming", "tech", "ci/cd", "react", "string"], icon: "bi-code-square" },
+  { terms: ["business"], icon: "bi-briefcase" },
+  { terms: ["lifestyle"], icon: "bi-cup-hot" },
+  { terms: ["data"], icon: "bi-bar-chart" },
+] as const;
+
+function categoryIcon(name: string) {
+  const normalizedName = name.trim().toLocaleLowerCase();
+  return categoryIconRules.find(({ terms }) =>
+    terms.some((term) => normalizedName.includes(term)),
+  )?.icon ?? "bi-grid";
+}
+
 const popularServiceThemes = [
   { eyebrow: "Build your brand", title: "Logo Design" },
   { eyebrow: "Customize your site", title: "WordPress" },
@@ -141,18 +160,7 @@ export default function Home() {
 
       <section className="home-taxonomy" aria-label="Browse service categories">
         <div className="section-heading">
-          <div>
-            <h2 id="taxonomy-heading">Explore the marketplace</h2>
-          </div>
-          {taxonomy.data && taxonomy.data.length > 0 ? (
-            <button
-              type="button"
-              onClick={() => void taxonomy.refetch()}
-              disabled={taxonomy.isFetching}
-            >
-              Refresh categories
-            </button>
-          ) : null}
+          <h2 id="taxonomy-heading">Explore the marketplace</h2>
         </div>
         {taxonomy.isPending ? (
           <p role="status">Loading service categories...</p>
@@ -171,35 +179,20 @@ export default function Home() {
         {taxonomy.isFetching && !taxonomy.isPending ? (
           <p role="status">Refreshing service categories...</p>
         ) : null}
-        {taxonomy.data?.map((category) => (
-          <article className="taxonomy-category" key={category.id}>
-            <h3>
-              <Link to={`/categories/${category.id}`}>{category.name}</Link>
-            </h3>
-            {category.groups.length === 0 ? (
-              <p>No Service Groups are available in {category.name}.</p>
-            ) : null}
-            <div className="taxonomy-groups">
-              {category.groups.map((group) => (
-                <section className="taxonomy-group" key={group.id}>
-                  <h4>{group.name}</h4>
-                  {group.subcategories.length === 0 ? (
-                    <p>No Service Subcategories are available in {group.name}.</p>
-                  ) : null}
-                  <ul>
-                    {group.subcategories.map((subcategory) => (
-                      <li key={subcategory.id}>
-                        <Link to={`/services?subcategory=${subcategory.id}`}>
-                          {subcategory.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </section>
-              ))}
-            </div>
-          </article>
-        ))}
+        {taxonomy.data && taxonomy.data.length > 0 ? (
+          <div className="taxonomy-grid">
+            {taxonomy.data.map((category) => (
+              <article className="taxonomy-category" key={category.id}>
+                <Link className="taxonomy-category-link" to={`/categories/${category.id}`}>
+                  <span className="taxonomy-category-icon" aria-hidden="true">
+                    <i className={`bi ${categoryIcon(category.name)}`} />
+                  </span>
+                  <h3>{category.name}</h3>
+                </Link>
+              </article>
+            ))}
+          </div>
+        ) : null}
       </section>
 
       <section className="service-preview" aria-label="Explore services">

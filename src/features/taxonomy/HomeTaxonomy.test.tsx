@@ -1,6 +1,6 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { delay, http, HttpResponse } from "msw";
+import { http, HttpResponse } from "msw";
 import { describe, expect, it, vi } from "vitest";
 import { renderTestApplication } from "../../test/render-application";
 import { server } from "../../test/server";
@@ -94,26 +94,30 @@ describe("Home taxonomy", () => {
     for (const heading of ["Categories", "About", "Support", "Community", "More From Fiverr"]) {
       expect(within(footer).getByRole("heading", { name: heading })).toBeVisible();
     }
+    for (const link of ["Data", "Sitemap", "Investor Relations", "Fiverr Logo Maker"]) {
+      expect(within(footer).getByRole("link", { name: link })).toBeVisible();
+    }
+    expect(within(footer).getByRole("link", { name: /^Learn/ })).toBeVisible();
+    for (const social of ["Twitter", "Facebook", "LinkedIn", "Pinterest", "Instagram"]) {
+      expect(within(footer).getByRole("link", { name: social })).toBeVisible();
+    }
+    expect(within(footer).getByRole("button", { name: "English" })).toBeVisible();
+    expect(within(footer).getByRole("button", { name: "$USD" })).toBeVisible();
+    expect(within(footer).getByRole("button", { name: "Accessibility options" })).toBeVisible();
   });
 
-  it("renders Category links, Group headings, and selectable Subcategory leaves", async () => {
+  it("renders Category links as compact marketplace icon shortcuts", async () => {
     renderTestApplication("/");
 
     const taxonomy = await screen.findByRole("region", { name: "Browse service categories" });
-    expect(await within(taxonomy).findByRole("link", { name: "Graphics & Design" })).toHaveAttribute(
+    const categoryLink = await within(taxonomy).findByRole("link", { name: "Graphics & Design" });
+    expect(categoryLink).toHaveAttribute(
       "href",
       "/categories/1",
     );
-    expect(
-      within(taxonomy).getByRole("heading", { name: "Logo & Brand Identity" }),
-    ).toBeVisible();
-    expect(
-      within(taxonomy).queryByRole("link", { name: "Logo & Brand Identity" }),
-    ).not.toBeInTheDocument();
-    expect(within(taxonomy).getByRole("link", { name: "Logo Design" })).toHaveAttribute(
-      "href",
-      "/services?subcategory=100",
-    );
+    expect(categoryLink.querySelector(".bi-brush")).toBeInTheDocument();
+    expect(within(taxonomy).queryByText("Logo & Brand Identity")).not.toBeInTheDocument();
+    expect(within(taxonomy).queryByRole("link", { name: "Logo Design" })).not.toBeInTheDocument();
   });
 
   it("opens a canonical Category route without turning its Groups into routes", async () => {
@@ -133,7 +137,8 @@ describe("Home taxonomy", () => {
     renderTestApplication("/");
     const taxonomy = await screen.findByRole("region", { name: "Browse service categories" });
 
-    await user.click(await within(taxonomy).findByRole("link", { name: "Logo Design" }));
+    await user.click(await within(taxonomy).findByRole("link", { name: "Graphics & Design" }));
+    await user.click(await screen.findByRole("link", { name: "Logo Design" }));
 
     expect(
       await screen.findByRole("heading", { level: 1, name: "Services for Logo Design" }),
@@ -183,7 +188,7 @@ describe("Home taxonomy", () => {
     );
   });
 
-  it("does not invent Groups or Subcategories when a hierarchy level is empty", async () => {
+  it("keeps empty hierarchy details out of the compact Home navigation", async () => {
     server.use(
       http.get(taxonomyUrl, () =>
         HttpResponse.json({
@@ -209,40 +214,17 @@ describe("Home taxonomy", () => {
 
     renderTestApplication("/");
 
-    expect(await screen.findByText("No Service Groups are available in Writing.")).toBeVisible();
-    expect(screen.getByText("No Service Subcategories are available in Audio.")).toBeVisible();
+    expect(await screen.findByRole("link", { name: "Writing" })).toBeVisible();
+    expect(screen.getByRole("link", { name: "Music" })).toBeVisible();
+    expect(screen.queryByText("No Service Groups are available in Writing.")).not.toBeInTheDocument();
+    expect(screen.queryByText("No Service Subcategories are available in Audio.")).not.toBeInTheDocument();
     expect(screen.queryByText("Other")).not.toBeInTheDocument();
   });
 
-  it("keeps the current hierarchy visible and announces a refresh", async () => {
-    const user = userEvent.setup();
-    let requestCount = 0;
-    server.use(
-      http.get(taxonomyUrl, async () => {
-        requestCount += 1;
-        if (requestCount > 1) await delay(150);
-        return HttpResponse.json({
-          content: [
-            {
-              id: requestCount,
-              tenLoaiCongViec: requestCount === 1 ? "Graphics & Design" : "Digital Marketing",
-              dsNhomChiTietLoai: [],
-            },
-          ],
-        });
-      }),
-    );
-
+  it("does not show a manual refresh control in the approved marketplace grid", async () => {
     renderTestApplication("/");
     const taxonomy = await screen.findByRole("region", { name: "Browse service categories" });
     expect(await within(taxonomy).findByRole("link", { name: "Graphics & Design" })).toBeVisible();
-
-    await user.click(within(taxonomy).getByRole("button", { name: "Refresh categories" }));
-
-    expect(within(taxonomy).getByRole("link", { name: "Graphics & Design" })).toBeVisible();
-    expect(within(taxonomy).getByRole("status")).toHaveTextContent(
-      "Refreshing service categories...",
-    );
-    expect(await within(taxonomy).findByRole("link", { name: "Digital Marketing" })).toBeVisible();
+    expect(within(taxonomy).queryByRole("button", { name: "Refresh categories" })).not.toBeInTheDocument();
   });
 });
