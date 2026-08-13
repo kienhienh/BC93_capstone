@@ -319,3 +319,14 @@ body {
     height: auto;
   }
 }
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  z-index: 2000;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}

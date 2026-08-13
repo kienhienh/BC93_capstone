@@ -2,10 +2,11 @@ import { render } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import App from "../App";
 import { composeApplication, type ApplicationComposition } from "../app/composition";
+import type { SessionStore } from "../features/authentication/wiring";
 
 const activeCompositions = new Set<ApplicationComposition>();
 
-export function renderTestApplication(path = "/") {
+export function renderTestApplication(path = "/", sessionStore?: SessionStore) {
   const composition = composeApplication({
     mode: "production",
     environment: {
@@ -14,6 +15,15 @@ export function renderTestApplication(path = "/") {
     },
   });
   activeCompositions.add(composition);
+
+  if (composition.ok) {
+    composition.sessionStore = sessionStore ?? {
+      read: () => null,
+      save: () => undefined,
+      clear: () => undefined,
+      subscribe: () => () => undefined,
+    };
+  }
 
   return render(
     <MemoryRouter initialEntries={[path]}>

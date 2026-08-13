@@ -37,6 +37,11 @@ const Header: React.FC = () => {
                 <Link className="nav-link" to="/orders">Orders</Link>
               </li>
             )}
+            {session?.user.role === "ADMIN" && (
+              <li className="nav-item">
+                <Link className="nav-link" to="/admin">Administrator</Link>
+              </li>
+            )}
           </ul>
 
           <ul className="navbar-nav">
