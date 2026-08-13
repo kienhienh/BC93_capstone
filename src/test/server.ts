@@ -25,6 +25,25 @@ export function resetTestData() {
 }
 
 export const handlers = [
+  http.get("http://api.example.test/api/cong-viec/lay-menu-loai-cong-viec", () =>
+    HttpResponse.json({
+      content: [
+        {
+          id: 1,
+          tenLoaiCongViec: "Graphics & Design",
+          dsNhomChiTietLoai: [
+            {
+              id: 10,
+              tenNhom: "Logo & Brand Identity",
+              hinhAnh: "https://images.example.test/logo.jpg",
+              maLoaiCongviec: 1,
+              dsChiTietLoai: [{ id: 100, tenChiTiet: "Logo Design" }],
+            },
+          ],
+        },
+      ],
+    }),
+  ),
   http.get("https://fiverrnew.cybersoft.edu.vn/api/cong-viec", () =>
     HttpResponse.json({ statusCode: 200, content: [] }),
   ),
