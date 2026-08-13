@@ -90,6 +90,14 @@ export const handlers = [
       dateTime: "2026-08-12T00:00:00.000Z",
     });
   }),
+  http.get(
+    "http://api.example.test/api/cong-viec/lay-danh-sach-cong-viec-theo-ten/:search",
+    () => HttpResponse.json({ content: [] }),
+  ),
+  http.get(
+    "http://api.example.test/api/cong-viec/lay-cong-viec-theo-chi-tiet-loai/:subcategoryId",
+    () => HttpResponse.json({ content: [] }),
+  ),
 ];
 
 export const server = setupServer(...handlers);

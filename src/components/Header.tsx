@@ -136,8 +136,8 @@ export default function Header() {
 
   const submitSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const query = new FormData(event.currentTarget).get("query")?.toString().trim();
-    if (query) navigate(`/services?search=${encodeURIComponent(query)}`);
+    const query = new FormData(event.currentTarget).get("query")?.toString().trim().replace(/\s+/g, " ");
+    navigate(query ? `/services?search=${encodeURIComponent(query)}` : "/services");
     setDrawer(null);
   };
 
@@ -156,8 +156,8 @@ export default function Header() {
         {!usesInitialHeader && viewport !== "phone" ? (
           <form className="header-search" role="search" onSubmit={submitSearch}>
             <label className="visually-hidden" htmlFor="header-search">Search services</label>
-            <input id="header-search" name="query" type="search" placeholder="Search services" />
-            <button type="submit">Search</button>
+            <input key={location.search} id="header-search" name="query" type="search" placeholder="What service are you looking for today?" defaultValue={new URLSearchParams(location.search).get("search") ?? ""} />
+            <button type="submit" aria-label="Search"><i className="bi bi-search" aria-hidden="true" /></button>
           </form>
         ) : !usesInitialHeader ? (
           <button ref={searchOpener} type="button" onClick={() => setDrawer("search")}>
@@ -169,6 +169,15 @@ export default function Header() {
           <button ref={categoryOpener} type="button" onClick={() => setDrawer("categories")}>
             Browse categories
           </button>
+        ) : null}
+
+        {!usesInitialHeader && viewport === "desktop" ? (
+          <div className="header-utilities" aria-label="Marketplace utilities">
+            <Link className="business-link" to="/services">Fiverr Business</Link>
+            <Link to="/services">Explore</Link>
+            <button className="header-utility-button" type="button"><i className="bi bi-globe2" aria-hidden="true" /> English</button>
+            <button className="header-utility-button" type="button">US$ USD</button>
+          </div>
         ) : null}
 
         {viewport === "phone" ? (
