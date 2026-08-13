@@ -1091,6 +1091,8 @@ body {
 }
 
 .marketplace-header-home .primary-navigation {
+  width: min(calc(100% - 4rem), 1536px);
+  min-height: 6rem;
   color: #fff;
 }
 
@@ -1101,15 +1103,36 @@ body {
 
 .marketplace-header-home .account-links {
   margin-left: auto;
+  gap: 1.5rem;
+}
+
+.marketplace-header-home .account-links a {
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.marketplace-header-home .account-links a:hover {
+  color: #fff;
+  text-decoration: none;
 }
 
 .join-link {
   border: 1px solid currentColor;
-  border-radius: 0.2rem;
-  padding: 0.35rem 0.75rem;
+  border-radius: 0.25rem;
+  padding: 0.75rem 1rem;
 }
 
 @media (max-width: 1023px) {
+  .marketplace-header-home .primary-navigation {
+    width: min(100% - 2rem, 1200px);
+    min-height: 4.5rem;
+  }
+
+  .marketplace-header-home .account-links {
+    gap: 1rem;
+  }
+
   .home-hero {
     min-height: 27rem;
   }

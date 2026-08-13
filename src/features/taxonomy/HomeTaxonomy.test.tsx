@@ -23,6 +23,10 @@ describe("Home taxonomy", () => {
     expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
     expect(document.title).toBe("Home | Fiverr Marketplace");
     expect(heading).toHaveFocus();
+    expect(screen.getByRole("link", { name: "Login" })).toHaveTextContent("Sign In");
+    expect(screen.getByRole("link", { name: "Login" })).toHaveAttribute("href", "/login");
+    expect(screen.getByRole("link", { name: "Register" })).toHaveTextContent("Join");
+    expect(screen.getByRole("link", { name: "Register" })).toHaveAttribute("href", "/register");
     expect(screen.queryByRole("link", { name: /jobs|orders|checkout|payment/i })).not.toBeInTheDocument();
   });
 
