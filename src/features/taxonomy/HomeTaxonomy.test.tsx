@@ -68,6 +68,10 @@ describe("Home taxonomy", () => {
       screen.getByRole("heading", { name: "A whole world of freelance talent at your fingertips" }),
     ).toBeVisible();
     expect(screen.getByRole("heading", { name: "What clients say" })).toBeVisible();
+    expect(screen.getByTitle("Business leadership video")).toHaveAttribute(
+      "src",
+      "https://www.youtube-nocookie.com/embed/qp0HIF3SfI4",
+    );
     expect(screen.getByRole("heading", { name: "Explore the marketplace" })).toBeVisible();
 
     const footer = screen.getByRole("contentinfo");

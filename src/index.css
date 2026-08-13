@@ -889,8 +889,7 @@ body {
   object-fit: cover;
 }
 
-.benefits-visual button,
-.testimonial-portrait span {
+.benefits-visual button {
   position: relative;
   z-index: 1;
   display: grid;
@@ -925,11 +924,12 @@ body {
   background: #ded0c4;
 }
 
-.testimonial-portrait img {
+.testimonial-portrait iframe {
   position: absolute;
-  bottom: 0;
-  max-width: 90%;
-  height: auto;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 
 .home-testimonial h2 {

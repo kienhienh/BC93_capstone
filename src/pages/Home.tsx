@@ -1,7 +1,6 @@
 import { type FormEvent, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import businessHeroImage from "../assets/1723672163256.jpg";
-import heroImage from "../assets/hero.png";
 import {
   useServicePreviewScreenModel,
   type ServicePreviewScreenItem,
@@ -241,9 +240,15 @@ export default function Home() {
       </section>
 
       <section className="home-testimonial" aria-labelledby="testimonial-heading">
-        <div className="testimonial-portrait" aria-hidden="true">
-          <img src={heroImage} alt="" width="343" height="361" />
-          <span>▶</span>
+        <div className="testimonial-portrait">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/qp0HIF3SfI4"
+            title="Business leadership video"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          ></iframe>
         </div>
         <div>
           <h2 id="testimonial-heading">What clients say</h2>
