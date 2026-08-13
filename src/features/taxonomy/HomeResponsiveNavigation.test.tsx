@@ -9,6 +9,18 @@ function useViewport(width: number) {
 }
 
 describe("Home responsive taxonomy navigation", () => {
+  it.each(["/login", "/register"])(
+    "keeps the initial compact Header on %s",
+    (route) => {
+      useViewport(1440);
+      renderTestApplication(route);
+
+      expect(screen.getByRole("banner")).toHaveClass("marketplace-header-home");
+      expect(screen.queryByRole("searchbox", { name: "Search services" })).not.toBeInTheDocument();
+      expect(screen.queryByRole("navigation", { name: "Service Categories" })).not.toBeInTheDocument();
+    },
+  );
+
   it("reveals desktop Search and Categories only after leaving Home through Search", async () => {
     useViewport(1440);
     const user = userEvent.setup();

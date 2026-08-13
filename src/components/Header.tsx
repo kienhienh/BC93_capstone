@@ -132,7 +132,7 @@ export default function Header() {
   const categoryOpener = useRef<HTMLButtonElement>(null);
   const menuOpener = useRef<HTMLButtonElement>(null);
   const searchOpener = useRef<HTMLButtonElement>(null);
-  const isHome = location.pathname === "/";
+  const usesInitialHeader = ["/", "/login", "/register"].includes(location.pathname);
 
   const submitSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -147,25 +147,25 @@ export default function Header() {
   };
 
   return (
-    <header className={`marketplace-header${isHome ? " marketplace-header-home" : ""}`}>
+    <header className={`marketplace-header${usesInitialHeader ? " marketplace-header-home" : ""}`}>
       <nav className="primary-navigation" aria-label="Primary navigation">
         <Link className="marketplace-brand" to="/" aria-label="Fiverr Marketplace home">
           fiverr
         </Link>
 
-        {!isHome && viewport !== "phone" ? (
+        {!usesInitialHeader && viewport !== "phone" ? (
           <form className="header-search" role="search" onSubmit={submitSearch}>
             <label className="visually-hidden" htmlFor="header-search">Search services</label>
             <input id="header-search" name="query" type="search" placeholder="Search services" />
             <button type="submit">Search</button>
           </form>
-        ) : !isHome ? (
+        ) : !usesInitialHeader ? (
           <button ref={searchOpener} type="button" onClick={() => setDrawer("search")}>
             Search services
           </button>
         ) : null}
 
-        {!isHome && viewport === "tablet" ? (
+        {!usesInitialHeader && viewport === "tablet" ? (
           <button ref={categoryOpener} type="button" onClick={() => setDrawer("categories")}>
             Browse categories
           </button>
@@ -191,7 +191,7 @@ export default function Header() {
         )}
       </nav>
 
-      {!isHome && viewport === "desktop" ? (
+      {!usesInitialHeader && viewport === "desktop" ? (
         <nav className="category-navigation" aria-label="Service Categories">
           <CategoryLinks />
         </nav>
