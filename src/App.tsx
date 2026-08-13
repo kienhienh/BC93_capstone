@@ -14,8 +14,6 @@ import Footer from './components/Footer';
 import Orders from './pages/Orders';
 import PrivateRoute from "./components/PrivateRoute";
 import Admin from "./pages/Admin";
-import { CategoryRoute, ServiceDiscoveryRoute } from "./features/taxonomy/public";
-import { TaxonomyProvider } from "./features/taxonomy/wiring";
 
 function ConfigurationError({ message }: { message: string }) {
   return (
@@ -42,20 +40,16 @@ function App({ composition: suppliedComposition }: { composition?: ApplicationCo
 
   return (
     <QueryClientProvider client={composition.queryClient}>
-      <TaxonomyProvider capability={composition.taxonomy}>
-        <ServicePreviewProvider capability={composition.servicePreview}>
+      <ServicePreviewProvider capability={composition.servicePreview}>
         <AuthenticationProvider
           capability={composition.authentication}
           sessionStore={composition.sessionStore}
         >
           <a className="skip-link" href="#main-content">Skip to main content</a>
-          <div id="application-content">
-            <Header />
+          <Header />
 
-            <Routes>
+          <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/categories/:categoryId" element={<CategoryRoute />} />
-            <Route path="/services" element={<ServiceDiscoveryRoute />} />
             <Route path="/jobs" element={<Jobs />} />
             <Route path="/jobdetail/:id" element={<JobDetail />} />
             <Route path="/services/:id" element={<JobDetail />} />
@@ -87,13 +81,11 @@ function App({ composition: suppliedComposition }: { composition?: ApplicationCo
                 </AdminRoute>
               }
             />
-            </Routes>
+          </Routes>
 
-            <Footer />
-          </div>
+          <Footer />
         </AuthenticationProvider>
-        </ServicePreviewProvider>
-      </TaxonomyProvider>
+      </ServicePreviewProvider>
     </QueryClientProvider>
   );
 }
