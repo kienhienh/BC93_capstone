@@ -18,12 +18,6 @@ function createLegacyApi() {
   });
 }
 
-export const signin = (email: string, password: string) =>
-  createLegacyApi().post("/auth/signin", { email, password });
-
-export const signup = (name: string, email: string, password: string) =>
-  createLegacyApi().post("/auth/signup", { name, email, password });
-
 export async function getJobs(): Promise<Service[]> {
   const response = await createLegacyApi().get("/cong-viec");
   return response.data.content.map(mapApiJobToService);

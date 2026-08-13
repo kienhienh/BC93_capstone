@@ -7,8 +7,6 @@ import {
   getJobs,
   getUserById,
   searchJobs,
-  signin,
-  signup,
 } from "./legacy-api";
 
 const apiBaseUrl = "http://api.example.test/api";
@@ -69,34 +67,5 @@ describe("legacy Cybersoft adapter", () => {
       expect.objectContaining({ id: 9, noiDung: "Good" }),
     ]);
     await expect(getUserById("7")).resolves.toEqual({ id: 7, name: "Seller" });
-  });
-
-  it("sends registration and sign-in through configured authenticated endpoints", async () => {
-    server.use(
-      http.post(`${apiBaseUrl}/auth/signup`, async ({ request }) => {
-        expect(request.headers.get("tokenCybersoft")).toBe("deterministic-test-token");
-        expect(await request.json()).toEqual({
-          name: "Visitor",
-          email: "visitor@example.test",
-          password: "secret",
-        });
-        return HttpResponse.json({ content: { id: 11 } });
-      }),
-      http.post(`${apiBaseUrl}/auth/signin`, async ({ request }) => {
-        expect(request.headers.get("tokenCybersoft")).toBe("deterministic-test-token");
-        expect(await request.json()).toEqual({
-          email: "visitor@example.test",
-          password: "secret",
-        });
-        return HttpResponse.json({ content: { token: "test-user-token" } });
-      }),
-    );
-
-    await expect(
-      signup("Visitor", "visitor@example.test", "secret"),
-    ).resolves.toMatchObject({ status: 200 });
-    await expect(
-      signin("visitor@example.test", "secret"),
-    ).resolves.toMatchObject({ status: 200 });
   });
 });

@@ -18,6 +18,40 @@ export function resetTestData() {
 }
 
 export const handlers = [
+  http.get("https://fiverrnew.cybersoft.edu.vn/api/cong-viec", () =>
+    HttpResponse.json({ statusCode: 200, content: [] }),
+  ),
+  http.post("http://api.example.test/api/auth/signin", () =>
+    HttpResponse.json({
+      statusCode: 200,
+      message: "Success",
+      content: {
+        user: {
+          id: 700,
+          name: "Alex Morgan",
+          email: "alex@example.com",
+          password: "must-not-cross-the-boundary",
+          avatar: null,
+          role: "USER",
+        },
+        token: "header.payload.signature",
+      },
+    }),
+  ),
+  http.post("http://api.example.test/api/auth/signup", () =>
+    HttpResponse.json({
+      statusCode: 200,
+      message: "Success",
+      content: {
+        id: 700,
+        name: "Alex Morgan",
+        email: "alex@example.com",
+        password: "must-not-cross-the-boundary",
+        phone: "+84901234567",
+        role: "USER",
+      },
+    }),
+  ),
   http.get("http://api.example.test/api/cong-viec", ({ request }) => {
     if (request.headers.get("tokenCybersoft") !== "deterministic-test-token") {
       return HttpResponse.json({ message: "Missing test token" }, { status: 401 });
