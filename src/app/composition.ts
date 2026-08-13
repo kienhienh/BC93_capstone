@@ -5,6 +5,8 @@ import type { ServicePreviewCapability } from "../features/service-preview/wirin
 import type { AuthenticationCapability, SessionStore } from "../features/authentication/wiring";
 import { createCybersoftAuthenticationCapability } from "../infrastructure/cybersoft/authentication";
 import { createBrowserSessionStore } from "../infrastructure/browser/session-store";
+import { createCybersoftTaxonomyCapability } from "../infrastructure/cybersoft/taxonomy";
+import type { TaxonomyCapability } from "../features/taxonomy/wiring";
 import { readRuntimeConfig, type RuntimeConfigResult } from "./runtime-config";
 
 export type ApplicationComposition =
@@ -14,6 +16,7 @@ export type ApplicationComposition =
       servicePreview: ServicePreviewCapability;
       authentication: AuthenticationCapability;
       sessionStore: SessionStore;
+      taxonomy: TaxonomyCapability;
     }
   | { ok: false; message: string };
 
@@ -31,6 +34,7 @@ export function composeApplication({
       servicePreview: createDeterministicServicePreviewCapability(),
       authentication: createUnavailableAuthenticationCapability(),
       sessionStore: createBrowserSessionStore(),
+      taxonomy: createUnavailableTaxonomyCapability(),
     };
   }
 
@@ -46,7 +50,12 @@ export function composeApplication({
     servicePreview: createCybersoftServicePreviewCapability(configResult.config),
     authentication: createCybersoftAuthenticationCapability(configResult.config),
     sessionStore: createBrowserSessionStore(),
+    taxonomy: createCybersoftTaxonomyCapability(configResult.config),
   };
+}
+
+function createUnavailableTaxonomyCapability(): TaxonomyCapability {
+  return { listCategories: async () => [] };
 }
 
 function createUnavailableAuthenticationCapability(): AuthenticationCapability {
