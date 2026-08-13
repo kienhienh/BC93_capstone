@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSession } from "../features/authentication/public";
 import { useTaxonomy } from "../features/taxonomy/public";
 
@@ -126,6 +126,7 @@ function CategoryLinks({ onSelect }: { onSelect?: () => void }) {
 export default function Header() {
   const viewport = useViewport();
   const navigate = useNavigate();
+  const location = useLocation();
   const { session, logout } = useSession();
   const [drawer, setDrawer] = useState<"categories" | "menu" | "search" | null>(null);
   const categoryOpener = useRef<HTMLButtonElement>(null);
@@ -145,7 +146,7 @@ export default function Header() {
   };
 
   return (
-    <header className="marketplace-header">
+    <header className={`marketplace-header${location.pathname === "/" ? " marketplace-header-home" : ""}`}>
       <nav className="primary-navigation" aria-label="Primary navigation">
         <Link className="marketplace-brand" to="/" aria-label="Fiverr Marketplace home">
           fiverr
@@ -177,8 +178,9 @@ export default function Header() {
           <div className="account-links">
             {!session ? (
               <>
-                <Link to="/login">Login</Link>
-                <Link to="/register">Register</Link>
+                <Link className="seller-link" to="/register">Become a Seller</Link>
+                <Link aria-label="Login" to="/login">Sign In</Link>
+                <Link className="join-link" aria-label="Register" to="/register">Join</Link>
               </>
             ) : (
               <button type="button" onClick={signOut}>Logout</button>

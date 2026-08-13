@@ -13,7 +13,7 @@ describe("Home taxonomy", () => {
 
     const heading = screen.getByRole("heading", {
       level: 1,
-      name: "Find the right Service for your next project",
+      name: "Find the perfect freelance services for your business",
     });
     expect(screen.getByRole("main")).toHaveAttribute("id", "main-content");
     expect(screen.getByRole("link", { name: "Skip to main content" })).toHaveAttribute(
@@ -24,6 +24,56 @@ describe("Home taxonomy", () => {
     expect(document.title).toBe("Home | Fiverr Marketplace");
     expect(heading).toHaveFocus();
     expect(screen.queryByRole("link", { name: /jobs|orders|checkout|payment/i })).not.toBeInTheDocument();
+  });
+
+  it("matches the approved Home hero with search, popular links, and trusted brands", async () => {
+    const user = userEvent.setup();
+    renderTestApplication("/");
+
+    expect(
+      screen.getByRole("heading", {
+        level: 1,
+        name: "Find the perfect freelance services for your business",
+      }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole("img", { name: "Business growth and professional services" }),
+    ).toBeVisible();
+    expect(
+      within(screen.getByRole("navigation", { name: "Popular searches" })).getByRole("link", {
+        name: "Logo Design",
+      }),
+    ).toHaveAttribute(
+      "href",
+      "/services?search=Logo%20Design",
+    );
+    const trusted = screen.getByRole("region", { name: "Trusted by" });
+    for (const brand of ["Facebook", "Google", "Netflix", "P&G", "PayPal"]) {
+      expect(within(trusted).getByText(brand)).toBeVisible();
+    }
+
+    await user.type(screen.getByRole("searchbox", { name: "Search services from Home" }), "mobile app");
+    await user.click(screen.getByRole("button", { name: "Search from Home" }));
+
+    expect(
+      await screen.findByRole("heading", { level: 1, name: 'Services matching "mobile app"' }),
+    ).toBeVisible();
+  });
+
+  it("renders the approved Home marketing sections and multi-column footer", async () => {
+    renderTestApplication("/");
+
+    expect(screen.getByRole("heading", { name: "Popular professional services" })).toBeVisible();
+    expect(
+      screen.getByRole("heading", { name: "A whole world of freelance talent at your fingertips" }),
+    ).toBeVisible();
+    expect(screen.getByRole("heading", { name: "What clients say" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "Explore the marketplace" })).toBeVisible();
+
+    const footer = screen.getByRole("contentinfo");
+    for (const heading of ["Categories", "About", "Support", "Community", "More From Fiverr"]) {
+      expect(within(footer).getByRole("heading", { name: heading })).toBeVisible();
+    }
   });
 
   it("renders Category links, Group headings, and selectable Subcategory leaves", async () => {

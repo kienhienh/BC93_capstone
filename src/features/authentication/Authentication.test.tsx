@@ -220,7 +220,9 @@ describe("authentication routes", () => {
     await user.click(screen.getByRole("button", { name: "Login" }));
 
     expect(
-      await screen.findByRole("heading", { name: "Find the right Service for your next project" }),
+      await screen.findByRole("heading", {
+        name: "Find the perfect freelance services for your business",
+      }),
     ).toBeVisible();
   });
 });
