@@ -17,6 +17,216 @@
   }
 }
 
+:root {
+  color: #222325;
+  background: #ffffff;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+:focus-visible {
+  outline: 3px solid #1dbf73;
+  outline-offset: 3px;
+}
+
+.home-intro,
+.service-preview {
+  width: min(100% - 2rem, 1200px);
+  margin-inline: auto;
+}
+
+.home-intro {
+  padding-block: clamp(3rem, 9vw, 7rem);
+}
+
+.home-intro h1 {
+  max-width: 760px;
+  margin: 0;
+  font-size: clamp(2.25rem, 6vw, 4.75rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+
+.home-intro > p:last-child {
+  max-width: 600px;
+  margin-top: 1.5rem;
+  color: #62646a;
+  font-size: 1.125rem;
+}
+
+.home-eyebrow {
+  margin: 0 0 0.75rem;
+  color: #067a46;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.service-preview {
+  padding-block: 1rem 5rem;
+}
+
+.service-preview-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.service-preview-heading h2 {
+  margin: 0;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+.service-preview-heading button,
+.service-preview-state button {
+  border: 1px solid #222325;
+  border-radius: 999px;
+  padding: 0.65rem 1rem;
+  background: #ffffff;
+  color: #222325;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.service-preview-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+.service-preview-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #e4e5e7;
+  border-radius: 1rem;
+  background: #ffffff;
+}
+
+.service-preview-link {
+  display: block;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+.service-preview-link:hover h3 {
+  color: #067a46;
+}
+
+.service-preview-image,
+.service-preview-skeleton {
+  aspect-ratio: 3 / 2;
+  background: linear-gradient(135deg, #e9f7f0, #d6e9df);
+}
+
+.service-preview-image {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: #067a46;
+  font-weight: 800;
+}
+
+.service-preview-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.service-preview-copy {
+  padding: 1rem;
+}
+
+.service-preview-copy h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+
+.service-preview-copy > p:not(.service-preview-meta) {
+  display: -webkit-box;
+  min-height: 3rem;
+  margin: 0.75rem 0;
+  overflow: hidden;
+  color: #62646a;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.service-preview-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 1rem 0 0;
+}
+
+.service-preview-state {
+  padding: 2rem;
+  border-radius: 1rem;
+  background: #f5f5f5;
+}
+
+.service-preview-refreshing {
+  margin-top: 1rem;
+  color: #62646a;
+}
+
+.service-preview-skeleton {
+  min-height: 260px;
+}
+
+.configuration-error {
+  width: min(100% - 2rem, 720px);
+  margin: 10vh auto;
+  padding: 2rem;
+  border: 1px solid #e4e5e7;
+  border-radius: 1rem;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (min-width: 640px) {
+  .service-preview-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .service-preview-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 479px) {
+  .service-preview-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
 /* iPad (màn hình trung bình ~768px) */
 @media only screen and (min-width: 481px) and (max-width: 1024px) {
   .service-card {

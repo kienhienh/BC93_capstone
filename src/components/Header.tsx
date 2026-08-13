@@ -1,13 +1,12 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { clearAuthSession, getAccessToken } from "../services/auth";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
-  const token = getAccessToken();
+  const token = localStorage.getItem("token");
 
   const handleLogout = () => {
-    clearAuthSession();
+    localStorage.removeItem("token");
     navigate("/login");
   };
 
@@ -30,11 +29,11 @@ const Header: React.FC = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav me-auto">
             <li className="nav-item">
-              <Link className="nav-link" to="/services">Services</Link>
+              <Link className="nav-link" to="/jobs">Jobs</Link>
             </li>
             {token && (
             <li className="nav-item">
-              <Link className="nav-link" to="/hired-services">Hired Services</Link>
+              <Link className="nav-link" to="/orders">Orders</Link>
             </li>
             )}
           </ul>
