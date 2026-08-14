@@ -14,7 +14,8 @@ import Footer from './components/Footer';
 import Orders from './pages/Orders';
 import PrivateRoute from "./components/PrivateRoute";
 import Admin from "./pages/Admin";
-import { CategoryDiscoveryRoute, ServiceDiscoveryRoute } from "./features/service-discovery/public";
+import { ServiceDiscoveryRoute } from "./features/service-discovery/public";
+import { CategoryLandingRoute } from "./features/taxonomy/public";
 import { TaxonomyProvider } from "./features/taxonomy/wiring";
 import { ServiceDiscoveryProvider } from "./features/service-discovery/wiring";
 
@@ -56,7 +57,7 @@ function App({ composition: suppliedComposition }: { composition?: ApplicationCo
 
             <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/categories/:categoryId" element={<CategoryDiscoveryRoute />} />
+            <Route path="/categories/:categoryId" element={<CategoryLandingRoute />} />
             <Route path="/services" element={<ServiceDiscoveryRoute />} />
             <Route path="/jobs" element={<Jobs />} />
             <Route path="/jobdetail/:id" element={<JobDetail />} />

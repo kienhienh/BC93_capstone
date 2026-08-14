@@ -1,1 +1,1 @@
-export { CategoryDiscoveryRoute, ServiceDiscoveryRoute } from "./routes";
+export { ServiceDiscoveryRoute } from "./routes";

@@ -93,11 +93,7 @@ describe("routed Service discovery", () => {
     expect(await screen.findByRole("heading", { name: "No Services match these filters" })).toBeVisible();
   });
 
-  it("shows unavailable category and subcategory classifications distinctly", async () => {
-    const categoryView = renderTestApplication("/categories/999");
-    expect(await screen.findByRole("heading", { name: "Service Category unavailable" })).toBeVisible();
-    categoryView.unmount();
-
+  it("shows an unavailable subcategory classification distinctly", async () => {
     renderTestApplication("/services?subcategory=999");
     expect(await screen.findByRole("heading", { name: "Service Subcategory unavailable" })).toBeVisible();
   });

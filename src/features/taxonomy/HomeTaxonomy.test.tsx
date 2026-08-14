@@ -138,7 +138,8 @@ describe("Home taxonomy", () => {
     const taxonomy = await screen.findByRole("region", { name: "Browse service categories" });
 
     await user.click(await within(taxonomy).findByRole("link", { name: "Graphics & Design" }));
-    await user.click(await screen.findByRole("link", { name: "Logo Design" }));
+    const explore = await screen.findByRole("region", { name: "Explore Graphics & Design" });
+    await user.click(within(explore).getByRole("link", { name: "Logo Design" }));
 
     expect(
       await screen.findByRole("heading", { level: 1, name: "Services for Logo Design" }),
