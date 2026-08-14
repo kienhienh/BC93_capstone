@@ -193,7 +193,7 @@ export default function Header() {
                 <Link className="join-link" aria-label="Register" to="/register">Join</Link>
               </>
             ) : (
-              <button type="button" onClick={signOut}>Logout</button>
+              <><Link className="profile-link" to="/profile" aria-label="Open your Profile">{session.user.avatar ? <img src={session.user.avatar} alt="" /> : <span aria-hidden="true">{session.user.name.charAt(0).toUpperCase()}</span>}</Link><button type="button" onClick={signOut}>Logout</button></>
             )}
             {session?.user.role === "ADMIN" ? <Link to="/admin">Administrator</Link> : null}
           </div>
@@ -232,7 +232,7 @@ export default function Header() {
                   <Link to="/register" onClick={() => setDrawer(null)}>Register</Link>
                 </>
               ) : (
-                <button type="button" onClick={signOut}>Logout</button>
+                <><Link to="/profile" onClick={() => setDrawer(null)}>Your Profile</Link><button type="button" onClick={signOut}>Logout</button></>
               )}
             </div>
           </nav>

@@ -1,6 +1,6 @@
 import { useAuthenticationContext } from "./context";
 
 export function useSession() {
-  const { session, clearSession } = useAuthenticationContext();
-  return { session, logout: clearSession };
+  const { session, clearSession, acceptSession } = useAuthenticationContext();
+  return { session, logout: clearSession, acceptSession };
 }

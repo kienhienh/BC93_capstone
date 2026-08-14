@@ -113,6 +113,25 @@ body {
   gap: 1rem;
 }
 
+.account-links .profile-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.profile-link img,
+.profile-link > span:first-child {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  object-fit: cover;
+  display: grid;
+  place-items: center;
+  background: #d5f5e7;
+  color: #087a4b;
+  font-weight: 800;
+}
+
 .account-links a,
 .category-links a,
 .drawer-account-links a,
