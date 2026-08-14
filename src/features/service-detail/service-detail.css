@@ -310,6 +310,170 @@
   gap: 1rem;
 }
 
+.service-comment-sign-in,
+.service-comment-form {
+  margin-top: 1.5rem;
+  border: 1px solid #e4e5e7;
+  border-radius: 0.8rem;
+  padding: 1.25rem;
+  background: #fafafa;
+}
+
+.service-comment-sign-in {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.service-comment-sign-in p { margin: 0; color: #62646a; }
+.service-comment-sign-in a,
+.service-comment-form button {
+  display: inline-flex;
+  min-height: 2.75rem;
+  border: 1px solid #067a46;
+  border-radius: 0.4rem;
+  padding: 0.65rem 1rem;
+  align-items: center;
+  justify-content: center;
+  background: #1dbf73;
+  color: #102a1d;
+  font: inherit;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.service-comment-form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.service-comment-form h3 {
+  margin: 0;
+  color: #222325;
+  font-size: 1.15rem;
+}
+
+.service-comment-form fieldset {
+  min-width: 0;
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.service-comment-form legend,
+.service-comment-form > label {
+  margin-bottom: 0.45rem;
+  color: #404145;
+  font-weight: 800;
+}
+
+.service-comment-form [role="radiogroup"] {
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
+  gap: 0.35rem;
+}
+
+.service-comment-form [role="radiogroup"] label {
+  position: relative;
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid #dadbdd;
+  border-radius: 0.45rem;
+  background: #fff;
+  color: #95979d;
+  cursor: pointer;
+  place-items: center;
+}
+
+.service-comment-form [role="radiogroup"] input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.service-comment-form [role="radiogroup"] label.is-filled {
+  border-color: #b7791f;
+  background: #fff8e5;
+  color: #ffb33e;
+}
+
+.service-comment-form .service-rating-selection {
+  margin: 0.45rem 0 0;
+  color: #62646a;
+  font-size: 0.85rem;
+}
+
+.service-comment-form button.service-rating-clear {
+  min-height: auto;
+  border: 0;
+  padding: 0.25rem 0;
+  background: transparent;
+  color: #404145;
+  text-decoration: underline;
+}
+
+.service-comment-form [role="radiogroup"] label:has(input:focus-visible) {
+  outline: 3px solid rgb(68 110 231 / 35%);
+  outline-offset: 2px;
+}
+
+.service-comment-form textarea {
+  display: block;
+  width: 100%;
+  min-height: 8rem;
+  box-sizing: border-box;
+  border: 1px solid #b5b6ba;
+  border-radius: 0.45rem;
+  padding: 0.8rem;
+  background: #fff;
+  color: #222325;
+  font: inherit;
+  line-height: 1.55;
+  resize: vertical;
+}
+
+.service-comment-form textarea:focus-visible {
+  border-color: #446ee7;
+  outline: 3px solid rgb(68 110 231 / 20%);
+}
+
+.service-comment-form [aria-invalid="true"] { border-color: #b42318; }
+.service-comment-form #comment-content-help {
+  margin: -0.35rem 0 0;
+  color: #74767e;
+  font-size: 0.78rem;
+  text-align: right;
+}
+
+.service-comment-form #comment-rating-error,
+.service-comment-form #comment-content-error,
+.service-comment-form [role="alert"] {
+  margin: 0;
+  color: #b42318;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.service-comment-form [role="status"] {
+  margin: 0;
+  color: #067a46;
+  font-weight: 700;
+}
+
+.service-comment-form button { justify-self: start; }
+.service-comment-form button:disabled {
+  border-color: #dadbdd;
+  background: #e4e5e7;
+  color: #74767e;
+  cursor: not-allowed;
+}
+
 .service-comments-list {
   display: grid;
   margin-block: 1.5rem;
@@ -404,6 +568,11 @@
   .service-about dl { grid-template-columns: 1fr; gap: 0.3rem; }
   .service-about dl > div + div { margin-top: 1rem; }
   .service-comments-heading { align-items: flex-start; flex-direction: column; }
+  .service-comment-sign-in { align-items: stretch; flex-direction: column; }
+  .service-comment-sign-in a,
+  .service-comment-form button { width: 100%; }
+  .service-comment-form [role="radiogroup"] { width: 100%; justify-content: space-between; }
+  .service-comment-form [role="radiogroup"] label { width: min(2.75rem, 17vw); }
   .service-review-summary { grid-template-columns: 1fr; gap: 1.5rem; }
   .service-comment { grid-template-columns: 2.5rem minmax(0, 1fr); }
   .service-comment img,

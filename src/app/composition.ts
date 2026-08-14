@@ -12,6 +12,8 @@ import { createCybersoftServiceDiscoveryCapability } from "../infrastructure/cyb
 import type { ServiceDiscoveryCapability } from "../features/service-discovery/wiring";
 import type { ServiceDetailCapability } from "../features/service-detail/wiring";
 import { createCybersoftServiceDetailCapability } from "../infrastructure/cybersoft/service-detail";
+import type { CommentSubmissionCapability } from "../features/comment-submission/wiring";
+import { createCybersoftCommentSubmissionCapability } from "../infrastructure/cybersoft/comment-submission";
 
 export type ApplicationComposition =
   | {
@@ -23,6 +25,7 @@ export type ApplicationComposition =
       taxonomy: TaxonomyCapability;
       serviceDiscovery: ServiceDiscoveryCapability;
       serviceDetail: ServiceDetailCapability;
+      commentSubmission: CommentSubmissionCapability;
     }
   | { ok: false; message: string };
 
@@ -43,6 +46,7 @@ export function composeApplication({
       taxonomy: createUnavailableTaxonomyCapability(),
       serviceDiscovery: createUnavailableServiceDiscoveryCapability(),
       serviceDetail: createUnavailableServiceDetailCapability(),
+      commentSubmission: createUnavailableCommentSubmissionCapability(),
     };
   }
 
@@ -61,6 +65,15 @@ export function composeApplication({
     taxonomy: createCybersoftTaxonomyCapability(configResult.config),
     serviceDiscovery: createCybersoftServiceDiscoveryCapability(configResult.config),
     serviceDetail: createCybersoftServiceDetailCapability(configResult.config),
+    commentSubmission: createCybersoftCommentSubmissionCapability(configResult.config),
+  };
+}
+
+function createUnavailableCommentSubmissionCapability(): CommentSubmissionCapability {
+  return {
+    submitComment: async () => {
+      throw new Error("Comment Submission is unavailable.");
+    },
   };
 }
 
