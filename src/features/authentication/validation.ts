@@ -12,6 +12,11 @@ export type RegistrationErrors = Partial<Record<RegistrationField, string>>;
 
 export type SignInErrors = Partial<Record<"email" | "password", string>>;
 
+export const normalizeName = (value: string) => value.trim();
+export const normalizePhone = (value: string) => value.replace(/[\s()-]/g, "");
+export const validateName = (value: string) => value.length >= 2 && value.length <= 50;
+export const validatePhone = (value: string) => /^\+?\d{9,15}$/.test(value);
+
 export function validateSignIn(values: SignInInput):
   | { ok: true; input: SignInInput }
   | { ok: false; errors: SignInErrors } {
@@ -35,12 +40,12 @@ export function validateRegistration(values: {
   confirmPassword: string;
   phone: string;
 }): { ok: true; input: RegistrationInput } | { ok: false; errors: RegistrationErrors } {
-  const name = values.name.trim();
+  const name = normalizeName(values.name);
   const email = values.email.trim().toLowerCase();
-  const phone = values.phone.replace(/[\s()-]/g, "");
+  const phone = normalizePhone(values.phone);
   const errors: RegistrationErrors = {};
 
-  if (name.length < 2 || name.length > 50) {
+  if (!validateName(name)) {
     errors.name = "Full name must contain 2–50 characters.";
   }
   if (!z.email().safeParse(email).success) {
@@ -52,7 +57,7 @@ export function validateRegistration(values: {
   if (values.confirmPassword !== values.password) {
     errors.confirmPassword = "Passwords must match.";
   }
-  if (!/^\+?\d{9,15}$/.test(phone)) {
+  if (!validatePhone(phone)) {
     errors.phone = "Phone must contain 9–15 digits.";
   }
 

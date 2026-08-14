@@ -16,6 +16,8 @@ import type { CommentSubmissionCapability } from "../features/comment-submission
 import { createCybersoftCommentSubmissionCapability } from "../infrastructure/cybersoft/comment-submission";
 import type { HireConfirmationCapability } from "../features/hire-confirmation/wiring";
 import { createCybersoftHireConfirmationCapability } from "../infrastructure/cybersoft/hire-confirmation";
+import type { ProfileCapability } from "../features/profile/wiring";
+import { createCybersoftProfileCapability } from "../infrastructure/cybersoft/profile";
 
 export type ApplicationComposition =
   | {
@@ -29,6 +31,7 @@ export type ApplicationComposition =
       serviceDetail: ServiceDetailCapability;
       commentSubmission: CommentSubmissionCapability;
       hireConfirmation: HireConfirmationCapability;
+      profile: ProfileCapability;
     }
   | { ok: false; message: string };
 
@@ -51,6 +54,7 @@ export function composeApplication({
       serviceDetail: createUnavailableServiceDetailCapability(),
       commentSubmission: createUnavailableCommentSubmissionCapability(),
       hireConfirmation: createUnavailableHireConfirmationCapability(),
+      profile: createUnavailableProfileCapability(),
     };
   }
 
@@ -71,7 +75,12 @@ export function composeApplication({
     serviceDetail: createCybersoftServiceDetailCapability(configResult.config),
     commentSubmission: createCybersoftCommentSubmissionCapability(configResult.config),
     hireConfirmation: createCybersoftHireConfirmationCapability(configResult.config),
+    profile: createCybersoftProfileCapability(configResult.config),
   };
+}
+
+function createUnavailableProfileCapability(): ProfileCapability {
+  return { getProfile: async () => { throw new Error("Profile is unavailable."); }, updateProfile: async () => { throw new Error("Profile is unavailable."); }, uploadAvatar: async () => { throw new Error("Profile is unavailable."); } };
 }
 
 function createUnavailableHireConfirmationCapability(): HireConfirmationCapability {
