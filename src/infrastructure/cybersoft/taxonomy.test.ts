@@ -4,6 +4,7 @@ import { server } from "../../test/server";
 import { createCybersoftTaxonomyCapability } from "./taxonomy";
 
 const taxonomyUrl = "http://api.example.test/api/cong-viec/lay-menu-loai-cong-viec";
+const categoryDetailUrl = "http://api.example.test/api/cong-viec/lay-chi-tiet-loai-cong-viec/2";
 
 function createCapability() {
   return createCybersoftTaxonomyCapability({
@@ -55,6 +56,27 @@ describe("Cybersoft taxonomy boundary", () => {
         ],
       },
     ]);
+  });
+
+  it("loads one Category from the Category detail endpoint", async () => {
+    server.use(
+      http.get(categoryDetailUrl, ({ request }) => {
+        expect(request.headers.get("tokenCybersoft")).toBe("deterministic-test-token");
+        return HttpResponse.json({
+          content: [{
+            id: 2,
+            tenLoaiCongViec: "Digital Marketing",
+            dsNhomChiTietLoai: [],
+          }],
+        });
+      }),
+    );
+
+    await expect(createCapability().getCategory("2", new AbortController().signal)).resolves.toEqual({
+      id: "2",
+      name: "Digital Marketing",
+      groups: [],
+    });
   });
 
   it("rejects malformed hierarchy data at the HTTP boundary", async () => {

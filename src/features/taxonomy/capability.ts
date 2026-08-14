@@ -36,4 +36,5 @@ export class TaxonomyFailure extends Error {
 
 export interface TaxonomyCapability {
   listCategories(signal: AbortSignal): Promise<readonly ServiceCategory[]>;
+  getCategory(categoryId: string, signal: AbortSignal): Promise<ServiceCategory | null>;
 }

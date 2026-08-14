@@ -31,32 +31,43 @@ export function createCybersoftTaxonomyCapability(config: {
   apiBaseUrl: string;
   cybersoftToken: string;
 }): TaxonomyCapability {
-  return {
-    async listCategories(signal) {
-      try {
-        const response = await fetch(
-          `${config.apiBaseUrl}/cong-viec/lay-menu-loai-cong-viec`,
-          {
-            signal,
-            headers: { tokenCybersoft: config.cybersoftToken },
-          },
-        );
-        if (!response.ok) {
-          throw new TaxonomyFailure(response.status >= 500 ? "server" : "unknown");
-        }
-        const parsed = envelopeSchema.safeParse(await response.json());
-        if (!parsed.success) throw new TaxonomyFailure("malformed");
-        return parsed.data.content.map(mapCategory);
-      } catch (error) {
-        if (signal.aborted) throw new TaxonomyFailure("cancelled");
-        if (error instanceof TaxonomyFailure) throw error;
-        if (typeof navigator !== "undefined" && !navigator.onLine) {
-          throw new TaxonomyFailure("offline");
-        }
-        if (error instanceof TypeError) throw new TaxonomyFailure("network");
-        if (error instanceof SyntaxError) throw new TaxonomyFailure("malformed");
-        throw new TaxonomyFailure("unknown");
+  async function requestCategories(path: string, signal: AbortSignal) {
+    try {
+      const response = await fetch(
+        `${config.apiBaseUrl}${path}`,
+        {
+          signal,
+          headers: { tokenCybersoft: config.cybersoftToken },
+        },
+      );
+      if (!response.ok) {
+        throw new TaxonomyFailure(response.status >= 500 ? "server" : "unknown");
       }
+      const parsed = envelopeSchema.safeParse(await response.json());
+      if (!parsed.success) throw new TaxonomyFailure("malformed");
+      return parsed.data.content.map(mapCategory);
+    } catch (error) {
+      if (signal.aborted) throw new TaxonomyFailure("cancelled");
+      if (error instanceof TaxonomyFailure) throw error;
+      if (typeof navigator !== "undefined" && !navigator.onLine) {
+        throw new TaxonomyFailure("offline");
+      }
+      if (error instanceof TypeError) throw new TaxonomyFailure("network");
+      if (error instanceof SyntaxError) throw new TaxonomyFailure("malformed");
+      throw new TaxonomyFailure("unknown");
+    }
+  }
+
+  return {
+    listCategories(signal) {
+      return requestCategories("/cong-viec/lay-menu-loai-cong-viec", signal);
+    },
+    async getCategory(categoryId, signal) {
+      const categories = await requestCategories(
+        `/cong-viec/lay-chi-tiet-loai-cong-viec/${encodeURIComponent(categoryId)}`,
+        signal,
+      );
+      return categories.find((category) => category.id === categoryId) ?? null;
     },
   };
 }
