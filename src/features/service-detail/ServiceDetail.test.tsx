@@ -54,6 +54,9 @@ describe("routed Service Detail", () => {
     expect(screen.getByText("A complete accessible marketplace experience.")).toBeVisible();
     expect(screen.getByText("$220")).toBeVisible();
     expect(screen.getByRole("img", { name: "Accessible marketplace design" })).toBeVisible();
+    expect(screen.getByRole("heading", { level: 2, name: "About this Service" })).toBeVisible();
+    expect(screen.getByRole("region", { name: "Common Service questions" })).toBeVisible();
+    expect(screen.getByText("What should I review before hiring?")).toBeVisible();
 
     const breadcrumb = screen.getByRole("navigation", { name: "Service breadcrumb" });
     expect(within(breadcrumb).getByText("Graphics & Design")).toBeVisible();
@@ -66,7 +69,9 @@ describe("routed Service Detail", () => {
     expect(screen.queryByText("private@example.test")).not.toBeInTheDocument();
     expect(screen.queryByText("+84900000000")).not.toBeInTheDocument();
 
-    expect(screen.getByRole("link", { name: "Continue to Hire for $220" })).toHaveAttribute(
+    const hire = screen.getByRole("complementary", { name: "Hire this Service" });
+    expect(within(hire).getByText("Responsive design package")).toBeVisible();
+    expect(within(hire).getByRole("link", { name: "Continue to Hire for $220" })).toHaveAttribute(
       "href",
       "/checkout/42",
     );
@@ -120,6 +125,8 @@ describe("routed Service Detail", () => {
     await user.click(within(comments).getByRole("button", { name: "Show 2 more Comments" }));
 
     expect(within(comments).getAllByRole("article")).toHaveLength(12);
+    expect(within(comments).getByText("12 Comments")).toBeVisible();
+    expect(within(comments).getByText("5.0 average rating")).toBeVisible();
     expect(within(comments).getByText("Comment 1")).toBeVisible();
     expect(within(comments).getByText("Anonymous commenter")).toBeVisible();
     expect(within(comments).getByRole("img", { name: "Anonymous commenter" })).toBeVisible();
