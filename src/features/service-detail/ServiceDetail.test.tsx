@@ -466,7 +466,7 @@ describe("routed Service Detail", () => {
     expect(within(hire).getByText("Responsive design package")).toBeVisible();
     expect(within(hire).getByRole("link", { name: "Continue to Hire for $220" })).toHaveAttribute(
       "href",
-      "/checkout/42",
+      "/services/42/hire",
     );
     expect(screen.getByRole("status", { name: "Loading Comments" })).toBeVisible();
   });

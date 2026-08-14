@@ -1,0 +1,77 @@
+.hire-confirmation-page,
+.hired-services-page {
+  width: min(100% - 2rem, 75rem);
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 4.5rem) 0 5rem;
+}
+.hire-confirmation-intro { max-width: 46rem; margin-bottom: 2rem; }
+.hire-confirmation-intro h1 { margin: 0.25rem 0 0.75rem; font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.05; }
+.hire-confirmation-intro > p:last-child,
+.hire-action-card__note,
+.hire-review-note p { color: #62646a; }
+.hire-confirmation-eyebrow,
+.hire-review-card__label,
+.hire-action-card__eyebrow {
+  margin: 0;
+  color: #087f5b;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.hire-confirmation-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 22rem);
+  gap: clamp(1.25rem, 4vw, 3rem);
+  align-items: start;
+}
+.hire-review-card,
+.hire-action-card {
+  border: 1px solid #dadbdd;
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0 0.75rem 2rem rgb(0 0 0 / 6%);
+}
+.hire-review-card { padding: clamp(1.5rem, 4vw, 2.5rem); }
+.hire-review-card h2 { max-width: 38rem; margin: 0.5rem 0 2rem; font-size: clamp(1.5rem, 3vw, 2.2rem); }
+.hire-review-list { margin: 0; }
+.hire-review-list > p {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0;
+  padding: 1rem 0;
+  border-top: 1px solid #e4e5e7;
+  font-weight: 700;
+}
+.hire-review-note { margin-top: 1.25rem; padding: 1.25rem; border-radius: 0.75rem; background: #f0faf6; }
+.hire-review-note p { margin: 0.35rem 0 0; }
+.hire-action-card { position: sticky; top: 1.5rem; padding: 1.5rem; }
+.hire-action-card__price { margin: 0.25rem 0; font-size: 2.25rem; font-weight: 700; }
+.hire-action-card__note { margin: 0 0 1.25rem; }
+.hire-primary-button,
+.hire-secondary-button {
+  width: 100%;
+  min-height: 3rem;
+  margin-top: 0.75rem;
+  border-radius: 0.5rem;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.hire-primary-button { border: 1px solid #1dbf73; background: #1dbf73; color: #062e20; }
+.hire-secondary-button { border: 1px solid #222325; background: #fff; color: #222325; }
+.hire-primary-button:disabled,
+.hire-secondary-button:disabled { cursor: not-allowed; opacity: 0.58; }
+.hire-primary-button:focus-visible,
+.hire-secondary-button:focus-visible,
+.hire-back-link:focus-visible { outline: 3px solid #1dbf73; outline-offset: 3px; }
+.hire-back-link { display: block; margin-top: 1rem; color: #404145; text-align: center; }
+.hire-message { margin: 1rem 0 0; padding: 0.875rem; border-radius: 0.5rem; background: #f1fdf7; }
+.hire-message--error { background: #fff3f2; color: #9b1c1c; }
+@media (max-width: 760px) {
+  .hire-confirmation-page,
+  .hired-services-page { width: min(100% - 1.5rem, 44rem); padding-top: 2rem; }
+  .hire-confirmation-layout { grid-template-columns: minmax(0, 1fr); }
+  .hire-action-card { position: static; }
+}
