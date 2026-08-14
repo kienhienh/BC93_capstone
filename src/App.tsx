@@ -19,6 +19,7 @@ import { TaxonomyProvider } from "./features/taxonomy/wiring";
 import { ServiceDiscoveryProvider } from "./features/service-discovery/wiring";
 import { ServiceDetailProvider } from "./features/service-detail/wiring";
 import { ServiceDetailRoute } from "./features/service-detail/public";
+import { CommentSubmissionProvider } from "./features/comment-submission/wiring";
 
 function ConfigurationError({ message }: { message: string }) {
   return (
@@ -48,6 +49,7 @@ function App({ composition: suppliedComposition }: { composition?: ApplicationCo
       <TaxonomyProvider capability={composition.taxonomy}>
         <ServiceDiscoveryProvider capability={composition.serviceDiscovery}>
         <ServiceDetailProvider capability={composition.serviceDetail}>
+        <CommentSubmissionProvider capability={composition.commentSubmission}>
         <ServicePreviewProvider capability={composition.servicePreview}>
         <AuthenticationProvider
           capability={composition.authentication}
@@ -97,6 +99,7 @@ function App({ composition: suppliedComposition }: { composition?: ApplicationCo
           </div>
         </AuthenticationProvider>
         </ServicePreviewProvider>
+        </CommentSubmissionProvider>
         </ServiceDetailProvider>
         </ServiceDiscoveryProvider>
       </TaxonomyProvider>
