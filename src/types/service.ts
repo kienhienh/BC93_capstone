@@ -15,14 +15,6 @@ export interface Service {
   };
 }
 
-export interface ServiceComment {
-  id: number;
-  avatar?: string;
-  tenNguoiBinhLuan: string;
-  noiDung: string;
-  ngayBinhLuan?: string;
-}
-
 interface ApiServiceDetails {
   id?: number;
   tenCongViec?: string;

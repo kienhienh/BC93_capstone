@@ -7,7 +7,6 @@ import { AdminRoute, LoginRoute, RegisterRoute } from "./features/authentication
 import { composeApplication, type ApplicationComposition } from "./app/composition";
 import Home from "./pages/Home";
 import Jobs from "./pages/Jobs";
-import JobDetail from "./pages/JobDetail";
 import Checkout from "./pages/Checkout";
 import Header from "./components/Header";
 import Footer from './components/Footer';
@@ -18,6 +17,8 @@ import { ServiceDiscoveryRoute } from "./features/service-discovery/public";
 import { CategoryLandingRoute } from "./features/taxonomy/public";
 import { TaxonomyProvider } from "./features/taxonomy/wiring";
 import { ServiceDiscoveryProvider } from "./features/service-discovery/wiring";
+import { ServiceDetailProvider } from "./features/service-detail/wiring";
+import { ServiceDetailRoute } from "./features/service-detail/public";
 
 function ConfigurationError({ message }: { message: string }) {
   return (
@@ -46,6 +47,7 @@ function App({ composition: suppliedComposition }: { composition?: ApplicationCo
     <QueryClientProvider client={composition.queryClient}>
       <TaxonomyProvider capability={composition.taxonomy}>
         <ServiceDiscoveryProvider capability={composition.serviceDiscovery}>
+        <ServiceDetailProvider capability={composition.serviceDetail}>
         <ServicePreviewProvider capability={composition.servicePreview}>
         <AuthenticationProvider
           capability={composition.authentication}
@@ -60,8 +62,7 @@ function App({ composition: suppliedComposition }: { composition?: ApplicationCo
             <Route path="/categories/:categoryId" element={<CategoryLandingRoute />} />
             <Route path="/services" element={<ServiceDiscoveryRoute />} />
             <Route path="/jobs" element={<Jobs />} />
-            <Route path="/jobdetail/:id" element={<JobDetail />} />
-            <Route path="/services/:id" element={<JobDetail />} />
+            <Route path="/services/:serviceId" element={<ServiceDetailRoute />} />
 
             <Route
               path="/checkout/:id"
@@ -96,6 +97,7 @@ function App({ composition: suppliedComposition }: { composition?: ApplicationCo
           </div>
         </AuthenticationProvider>
         </ServicePreviewProvider>
+        </ServiceDetailProvider>
         </ServiceDiscoveryProvider>
       </TaxonomyProvider>
     </QueryClientProvider>

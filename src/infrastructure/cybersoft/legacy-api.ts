@@ -1,7 +1,7 @@
 import axios from "axios";
 import { readRuntimeConfig } from "../../app/runtime-config";
 import { mapApiJobToService } from "../../types/service";
-import type { Service, ServiceComment } from "../../types/service";
+import type { Service } from "../../types/service";
 
 function createLegacyApi() {
   const result = readRuntimeConfig(import.meta.env);
@@ -35,13 +35,6 @@ export async function searchJobs(keyword: string): Promise<Service[]> {
     `/cong-viec/lay-danh-sach-cong-viec-theo-ten/${keyword}`,
   );
   return response.data.content.map(mapApiJobToService);
-}
-
-export async function getCommentsByJob(jobId: string): Promise<ServiceComment[]> {
-  const response = await createLegacyApi().get(
-    `/binh-luan/lay-binh-luan-theo-cong-viec/${jobId}`,
-  );
-  return response.data.content;
 }
 
 export async function getUserById(id: string) {
