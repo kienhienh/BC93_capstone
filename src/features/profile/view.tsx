@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent, type RefObject } from "react";
+import { Link } from "react-router-dom";
 import { reportAuthorizationFailure, useSession } from "../authentication/public";
 import { useHiredServices } from "../hire-confirmation/public";
 import { ProfileFailure, type EditableProfile, type Profile } from "./capability";
@@ -98,7 +99,27 @@ function ProfileIdentity({ profile }: { profile: Profile }) {
 }
 
 function HiredServicesPanel({ query }: { query: HiredServicesQuery }) {
-  return <section className="hired-profile-card" aria-label="Hired Services"><div className="section-heading"><div><p className="eyebrow">Your activity</p><h2>Hired Services</h2></div><button type="button" onClick={() => void query.refetch()} disabled={query.isFetching}>Refresh</button></div>
-    {query.isPending && <p role="status">Loading Hired Services...</p>}{query.isError && <p role="alert">Hired Services are temporarily unavailable.</p>}{query.data?.length === 0 && <p className="empty-state">You have not hired any Services yet.</p>}{query.data?.map((item) => <article key={item.id} aria-label={item.service?.title ?? `Service #${item.serviceId}`}><div><h3>{item.service?.title ?? `Service #${item.serviceId}`}</h3><p>{item.service ? `$${item.service.price}` : "Service details unavailable"}</p></div><span className={item.completed ? "complete" : "progress"}>{item.completed ? "Completed" : "In progress"}</span></article>)}
+  const total = query.data?.length ?? 0;
+  const completed = query.data?.filter((item) => item.completed).length ?? 0;
+  const inProgress = total - completed;
+  return <section className="hired-profile-card" aria-label="Hired Services">
+    <div className="hired-dashboard-banner"><div><p className="eyebrow">Your marketplace workspace</p><h2>Hired Services</h2><p>Keep track of every Service you have hired in one place.</p></div><button type="button" onClick={() => void query.refetch()} disabled={query.isFetching}>{query.isFetching ? "Refreshing..." : "Refresh"}</button></div>
+    <div className="hired-stats" aria-label="Hired Service summary"><p><strong>{total}</strong><span>{total === 1 ? "total" : "total"}</span></p><p><strong>{inProgress}</strong><span>in progress</span></p><p><strong>{completed}</strong><span>completed</span></p></div>
+    {query.isPending && <p role="status">Loading Hired Services...</p>}
+    {query.isError && <p role="alert">Hired Services are temporarily unavailable.</p>}
+    {query.data?.length === 0 && <div className="empty-state"><span aria-hidden="true"><i className="bi bi-briefcase" /></span><h3>No Hired Services yet</h3><p>Explore the marketplace and your next Service will appear here.</p><Link to="/services">Explore Services</Link></div>}
+    <div className="hired-services-grid">{query.data?.map((item) => {
+      const title = item.service?.title ?? `Service #${item.serviceId}`;
+      return <article key={item.id} aria-label={title}>
+        <div className="service-thumbnail" aria-hidden="true"><i className="bi bi-briefcase-fill" /></div>
+        <div className="hired-service-copy"><p className="service-kicker">Service #{item.serviceId}</p><h3>{title}</h3><p className="service-meta"><span>{item.service ? `$${item.service.price}` : "Price unavailable"}</span><span>Hired <time dateTime={item.hiredAt}>{formatHiredDate(item.hiredAt)}</time></span></p></div>
+        <div className="hired-service-actions"><span className={item.completed ? "complete" : "progress"}>{item.completed ? "Completed" : "In progress"}</span><Link to={`/services/${item.serviceId}`} aria-label={`View ${title}`}>View details <span aria-hidden="true">→</span></Link></div>
+      </article>;
+    })}</div>
   </section>;
+}
+
+function formatHiredDate(value: string) {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "date unavailable" : new Intl.DateTimeFormat("en", { day: "numeric", month: "short", year: "numeric" }).format(date);
 }

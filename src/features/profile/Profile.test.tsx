@@ -40,6 +40,10 @@ describe("Current Profile", () => {
     expect(screen.getByRole("link", { name: "Open your Profile" })).toHaveAttribute("href", "/profile");
     expect(screen.queryByText("Profile", { selector: ".profile-link span" })).not.toBeInTheDocument();
     expect(await screen.findByRole("article", { name: "Accessible logo" })).toBeVisible();
+    expect(screen.getByText("total").previousElementSibling).toHaveTextContent("1");
+    expect(screen.getByText("in progress").previousElementSibling).toHaveTextContent("1");
+    expect(screen.getByText("completed").previousElementSibling).toHaveTextContent("0");
+    expect(screen.getByRole("link", { name: "View Accessible logo" })).toHaveAttribute("href", "/services/42");
     expect(requested).toEqual([userUrl]);
   });
 
