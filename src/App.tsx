@@ -20,6 +20,8 @@ import { ServiceDiscoveryProvider } from "./features/service-discovery/wiring";
 import { ServiceDetailProvider } from "./features/service-detail/wiring";
 import { ServiceDetailRoute } from "./features/service-detail/public";
 import { CommentSubmissionProvider } from "./features/comment-submission/wiring";
+import { HireConfirmationProvider } from "./features/hire-confirmation/wiring";
+import { HiredServicesRoute, HireConfirmationRoute } from "./features/hire-confirmation/public";
 
 function ConfigurationError({ message }: { message: string }) {
   return (
@@ -50,6 +52,7 @@ function App({ composition: suppliedComposition }: { composition?: ApplicationCo
         <ServiceDiscoveryProvider capability={composition.serviceDiscovery}>
         <ServiceDetailProvider capability={composition.serviceDetail}>
         <CommentSubmissionProvider capability={composition.commentSubmission}>
+        <HireConfirmationProvider capability={composition.hireConfirmation}>
         <ServicePreviewProvider capability={composition.servicePreview}>
         <AuthenticationProvider
           capability={composition.authentication}
@@ -65,6 +68,8 @@ function App({ composition: suppliedComposition }: { composition?: ApplicationCo
             <Route path="/services" element={<ServiceDiscoveryRoute />} />
             <Route path="/jobs" element={<Jobs />} />
             <Route path="/services/:serviceId" element={<ServiceDetailRoute />} />
+            <Route path="/services/:serviceId/hire" element={<HireConfirmationRoute />} />
+            <Route path="/hired-services" element={<HiredServicesRoute />} />
 
             <Route
               path="/checkout/:id"
@@ -99,6 +104,7 @@ function App({ composition: suppliedComposition }: { composition?: ApplicationCo
           </div>
         </AuthenticationProvider>
         </ServicePreviewProvider>
+        </HireConfirmationProvider>
         </CommentSubmissionProvider>
         </ServiceDetailProvider>
         </ServiceDiscoveryProvider>

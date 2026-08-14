@@ -261,7 +261,7 @@ export function ServiceDetailRoute() {
           <p className="service-hire-description">
             {detail.shortDescription ?? "Package details unavailable."}
           </p>
-          <Link to={`/checkout/${encodeURIComponent(detail.id)}`}>
+          <Link to={`/services/${encodeURIComponent(detail.id)}/hire`}>
             Continue to Hire for ${detail.price}
           </Link>
           <p className="service-hire-note">

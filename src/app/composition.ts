@@ -14,6 +14,8 @@ import type { ServiceDetailCapability } from "../features/service-detail/wiring"
 import { createCybersoftServiceDetailCapability } from "../infrastructure/cybersoft/service-detail";
 import type { CommentSubmissionCapability } from "../features/comment-submission/wiring";
 import { createCybersoftCommentSubmissionCapability } from "../infrastructure/cybersoft/comment-submission";
+import type { HireConfirmationCapability } from "../features/hire-confirmation/wiring";
+import { createCybersoftHireConfirmationCapability } from "../infrastructure/cybersoft/hire-confirmation";
 
 export type ApplicationComposition =
   | {
@@ -26,6 +28,7 @@ export type ApplicationComposition =
       serviceDiscovery: ServiceDiscoveryCapability;
       serviceDetail: ServiceDetailCapability;
       commentSubmission: CommentSubmissionCapability;
+      hireConfirmation: HireConfirmationCapability;
     }
   | { ok: false; message: string };
 
@@ -47,6 +50,7 @@ export function composeApplication({
       serviceDiscovery: createUnavailableServiceDiscoveryCapability(),
       serviceDetail: createUnavailableServiceDetailCapability(),
       commentSubmission: createUnavailableCommentSubmissionCapability(),
+      hireConfirmation: createUnavailableHireConfirmationCapability(),
     };
   }
 
@@ -66,6 +70,15 @@ export function composeApplication({
     serviceDiscovery: createCybersoftServiceDiscoveryCapability(configResult.config),
     serviceDetail: createCybersoftServiceDetailCapability(configResult.config),
     commentSubmission: createCybersoftCommentSubmissionCapability(configResult.config),
+    hireConfirmation: createCybersoftHireConfirmationCapability(configResult.config),
+  };
+}
+
+function createUnavailableHireConfirmationCapability(): HireConfirmationCapability {
+  return {
+    getService: async () => { throw new Error("Hire Confirmation is unavailable."); },
+    createHire: async () => { throw new Error("Hire Confirmation is unavailable."); },
+    listHiredServices: async () => [],
   };
 }
 
