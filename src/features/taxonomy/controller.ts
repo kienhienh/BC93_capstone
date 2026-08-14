@@ -12,11 +12,11 @@ export function useTaxonomy() {
   });
 }
 
-export function useCategoryTaxonomy() {
+export function useCategoryTaxonomy(categoryId: string) {
   const capability = useTaxonomyCapability();
   return useQuery({
-    queryKey: taxonomyQueryKey,
-    queryFn: ({ signal }) => capability.listCategories(signal),
+    queryKey: ["service-category", categoryId],
+    queryFn: ({ signal }) => capability.getCategory(categoryId, signal),
     staleTime: 60_000,
     refetchOnMount: "always",
   });

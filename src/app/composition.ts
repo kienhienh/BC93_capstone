@@ -76,7 +76,7 @@ function createUnavailableServiceDiscoveryCapability(): ServiceDiscoveryCapabili
 }
 
 function createUnavailableTaxonomyCapability(): TaxonomyCapability {
-  return { listCategories: async () => [] };
+  return { listCategories: async () => [], getCategory: async () => null };
 }
 
 function createUnavailableAuthenticationCapability(): AuthenticationCapability {

@@ -6,6 +6,7 @@ import { renderTestApplication } from "../../test/render-application";
 import { server } from "../../test/server";
 
 const taxonomyUrl = "http://api.example.test/api/cong-viec/lay-menu-loai-cong-viec";
+const categoryDetailUrl = "http://api.example.test/api/cong-viec/lay-chi-tiet-loai-cong-viec/:categoryId";
 
 function useViewport(width: number) {
   Object.defineProperty(window, "innerWidth", { configurable: true, value: width });
@@ -14,6 +15,7 @@ function useViewport(width: number) {
 
 describe("routed Service Category landing page", () => {
   it("opens a complete landing composition for every desktop Category navigation item", async () => {
+    const detailRequests: string[] = [];
     const categoryNames = [
       "Graphics & Design",
       "Digital Marketing",
@@ -41,6 +43,24 @@ describe("routed Service Category landing page", () => {
           }],
         })),
       })),
+      http.get(categoryDetailUrl, ({ params }) => {
+        const categoryIndex = Number(params.categoryId) - 1;
+        detailRequests.push(String(params.categoryId));
+        const name = categoryNames[categoryIndex];
+        return HttpResponse.json({
+          content: [{
+            id: categoryIndex + 1,
+            tenLoaiCongViec: name,
+            dsNhomChiTietLoai: [{
+              id: 100 + categoryIndex,
+              tenNhom: `${name} Group`,
+              hinhAnh: null,
+              maLoaiCongviec: categoryIndex + 1,
+              dsChiTietLoai: [{ id: 200 + categoryIndex, tenChiTiet: `${name} Service` }],
+            }],
+          }],
+        });
+      }),
     );
     useViewport(1440);
     const user = userEvent.setup();
@@ -56,12 +76,13 @@ describe("routed Service Category landing page", () => {
       })).toBeVisible();
       expect(screen.getByRole("region", { name: `Explore ${name}` })).toBeVisible();
       expect(screen.getByRole("region", { name: `Services related to ${name}` })).toBeVisible();
+      expect(detailRequests).toContain(String(categoryNames.indexOf(name) + 1));
     }
   });
 
   it("keeps a stable Category-shaped loading region until taxonomy arrives", async () => {
     server.use(
-      http.get(taxonomyUrl, async () => {
+      http.get(categoryDetailUrl, async () => {
         await delay(100);
         return HttpResponse.json({
           content: [
@@ -83,25 +104,25 @@ describe("routed Service Category landing page", () => {
     expect(await screen.findByRole("heading", { level: 1, name: "Graphics & Design" })).toBeVisible();
   });
 
-  it("distinguishes a genuinely empty taxonomy from a missing Category", async () => {
+  it("treats an empty Category detail response as a missing Category", async () => {
     server.use(
-      http.get(taxonomyUrl, () => HttpResponse.json({ content: [] })),
+      http.get(categoryDetailUrl, () => HttpResponse.json({ content: [] })),
     );
 
     renderTestApplication("/categories/1");
 
     const heading = await screen.findByRole("heading", {
       level: 1,
-      name: "No Service Categories are available",
+      name: "Service Category not found",
     });
     expect(heading).toHaveFocus();
-    expect(screen.queryByText("The requested Service Category does not exist.")).not.toBeInTheDocument();
+    expect(screen.getByText("The requested Service Category does not exist.")).toBeVisible();
   });
 
   it("preserves cached Category content while refreshing taxonomy in the background", async () => {
     let requestCount = 0;
     server.use(
-      http.get(taxonomyUrl, async () => {
+      http.get(categoryDetailUrl, async () => {
         requestCount += 1;
         if (requestCount > 1) await delay(100);
         return HttpResponse.json({
@@ -125,7 +146,10 @@ describe("routed Service Category landing page", () => {
     );
     const user = userEvent.setup();
 
-    renderTestApplication("/");
+    renderTestApplication("/categories/1");
+    expect(await screen.findByRole("heading", { level: 1, name: "Graphics & Design" })).toBeVisible();
+    await user.click(within(screen.getByRole("navigation", { name: "Primary navigation" }))
+      .getByRole("link", { name: "Fiverr Marketplace home" }));
     const taxonomy = await screen.findByRole("region", { name: "Browse service categories" });
     await user.click(await within(taxonomy).findByRole("link", { name: "Graphics & Design" }));
 
@@ -189,7 +213,7 @@ describe("routed Service Category landing page", () => {
 
   it("builds a complete fallback presentation while omitting only empty Groups", async () => {
     server.use(
-      http.get(taxonomyUrl, () =>
+      http.get(categoryDetailUrl, () =>
         HttpResponse.json({
           content: [
             {
@@ -244,7 +268,7 @@ describe("routed Service Category landing page", () => {
     expect(notFound).toHaveFocus();
     missing.unmount();
 
-    server.use(http.get(taxonomyUrl, () => new HttpResponse(null, { status: 503 })));
+    server.use(http.get(categoryDetailUrl, () => new HttpResponse(null, { status: 503 })));
     renderTestApplication("/categories/1");
 
     const alert = await screen.findByRole("alert");
@@ -254,7 +278,7 @@ describe("routed Service Category landing page", () => {
 
   it("reports malformed and offline failures safely on the Category route", async () => {
     server.use(
-      http.get(taxonomyUrl, () => HttpResponse.json({ content: [{ id: 1, unexpected: true }] })),
+      http.get(categoryDetailUrl, () => HttpResponse.json({ content: [{ id: 1, unexpected: true }] })),
     );
     const malformed = renderTestApplication("/categories/1");
     expect(await screen.findByRole("alert")).toHaveTextContent(
@@ -263,7 +287,7 @@ describe("routed Service Category landing page", () => {
     malformed.unmount();
 
     vi.spyOn(window.navigator, "onLine", "get").mockReturnValue(false);
-    server.use(http.get(taxonomyUrl, () => HttpResponse.error()));
+    server.use(http.get(categoryDetailUrl, () => HttpResponse.error()));
     renderTestApplication("/categories/1");
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "You are offline. Reconnect to load Service Categories.",

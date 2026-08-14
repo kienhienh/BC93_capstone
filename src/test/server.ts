@@ -44,6 +44,25 @@ export const handlers = [
       ],
     }),
   ),
+  http.get("http://api.example.test/api/cong-viec/lay-chi-tiet-loai-cong-viec/:categoryId", ({ params }) =>
+    HttpResponse.json({
+      content: String(params.categoryId) === "1" ? [
+        {
+          id: 1,
+          tenLoaiCongViec: "Graphics & Design",
+          dsNhomChiTietLoai: [
+            {
+              id: 10,
+              tenNhom: "Logo & Brand Identity",
+              hinhAnh: "https://images.example.test/logo.jpg",
+              maLoaiCongviec: 1,
+              dsChiTietLoai: [{ id: 100, tenChiTiet: "Logo Design" }],
+            },
+          ],
+        },
+      ] : [],
+    }),
+  ),
   http.get("https://fiverrnew.cybersoft.edu.vn/api/cong-viec", () =>
     HttpResponse.json({ statusCode: 200, content: [] }),
   ),

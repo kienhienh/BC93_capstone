@@ -31,9 +31,9 @@ function CategoryPageState({
 
 export function CategoryLandingRoute() {
   const { categoryId = "" } = useParams<{ categoryId: string }>();
-  const taxonomy = useCategoryTaxonomy();
+  const taxonomy = useCategoryTaxonomy(categoryId);
   const headingRef = useRef<HTMLHeadingElement>(null);
-  const category = taxonomy.data?.find((item) => item.id === categoryId);
+  const category = taxonomy.data;
   const presentation = category ? categoryPresentation(category.name) : null;
   const groups = useMemo(
     () => category?.groups.filter((group) => group.subcategories.length > 0) ?? [],
@@ -108,15 +108,6 @@ export function CategoryLandingRoute() {
           <p>{taxonomyFailureMessage(taxonomy.error)}</p>
           <button type="button" onClick={() => void taxonomy.refetch()}>Try again</button>
         </div>
-      </CategoryPageState>
-    );
-  }
-
-  if (taxonomy.data.length === 0) {
-    return (
-      <CategoryPageState title="No Service Categories are available">
-        <p>There are no Service Categories to explore right now.</p>
-        <Link to="/services">Browse all Services</Link>
       </CategoryPageState>
     );
   }
