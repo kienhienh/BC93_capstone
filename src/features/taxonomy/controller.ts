@@ -11,3 +11,13 @@ export function useTaxonomy() {
     staleTime: 60_000,
   });
 }
+
+export function useCategoryTaxonomy() {
+  const capability = useTaxonomyCapability();
+  return useQuery({
+    queryKey: taxonomyQueryKey,
+    queryFn: ({ signal }) => capability.listCategories(signal),
+    staleTime: 60_000,
+    refetchOnMount: "always",
+  });
+}

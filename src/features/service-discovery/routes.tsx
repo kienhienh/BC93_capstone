@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from "react";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useTaxonomy } from "../taxonomy/public";
 import { useServiceDiscovery } from "./controller";
 import {
@@ -20,7 +20,7 @@ import {
 import { useCompactPagination } from "./responsive";
 import "./service-discovery.css";
 
-function DiscoveryContent({ categoryId }: { categoryId?: string }) {
+function DiscoveryContent() {
   const [params, setParams] = useSearchParams();
   const headingRef = useRef<HTMLHeadingElement>(null);
   const taxonomy = useTaxonomy();
@@ -28,16 +28,14 @@ function DiscoveryContent({ categoryId }: { categoryId?: string }) {
   const query = useServiceDiscovery(state.search, state.subcategoryId);
   const compactPagination = useCompactPagination();
 
-  const category = taxonomy.data?.find((item) => item.id === categoryId);
   const subcategory = taxonomy.data
     ?.flatMap((item) => item.groups)
     .flatMap((group) => group.subcategories)
     .find((item) => item.id === state.subcategoryId);
-  const unavailableCategory = Boolean(categoryId && taxonomy.isSuccess && !category);
   const unavailableSubcategory = Boolean(
     state.subcategoryId && taxonomy.isSuccess && !subcategory,
   );
-  const heading = discoveryHeading(state.search, subcategory?.name, category?.name);
+  const heading = discoveryHeading(state.search, subcategory?.name);
 
   useEffect(() => {
     const canonical = canonicalDiscoveryParams(state);
@@ -66,20 +64,10 @@ function DiscoveryContent({ categoryId }: { categoryId?: string }) {
   const update = (name: string, value: string) => {
     setParams(updateDiscoveryParams(params, name, value));
   };
-  const unavailable = unavailableCategory || unavailableSubcategory;
+  const unavailable = unavailableSubcategory;
 
   return (
     <main id="main-content" className="discovery-page">
-      {category ? (
-        <nav className="discovery-subcategories" aria-label={category.name + " subcategories"}>
-          {category.groups.flatMap((group) => group.subcategories).map((item) => (
-            <Link key={item.id} to={"/categories/" + category.id + "?subcategory=" + item.id}>
-              {item.name}
-            </Link>
-          ))}
-        </nav>
-      ) : null}
-
       <h1 ref={headingRef} tabIndex={-1}>{heading}</h1>
       <ServiceFilters state={state} onChange={update} />
 
@@ -90,7 +78,7 @@ function DiscoveryContent({ categoryId }: { categoryId?: string }) {
       ) : null}
       {unavailable ? (
         <div className="discovery-state" role="alert">
-          <h2>{unavailableCategory ? "Service Category unavailable" : "Service Subcategory unavailable"}</h2>
+          <h2>Service Subcategory unavailable</h2>
           <p>The requested marketplace classification does not exist.</p>
         </div>
       ) : null}
@@ -141,9 +129,4 @@ function DiscoveryContent({ categoryId }: { categoryId?: string }) {
 
 export function ServiceDiscoveryRoute() {
   return <DiscoveryContent />;
-}
-
-export function CategoryDiscoveryRoute() {
-  const { categoryId } = useParams<{ categoryId: string }>();
-  return <DiscoveryContent categoryId={categoryId} />;
 }
