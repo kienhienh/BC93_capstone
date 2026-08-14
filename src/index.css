@@ -6,15 +6,6 @@
     font-size: 14px;
   }
 
-  .job-detail {
-    flex-direction: column;
-    padding: 12px;
-  }
-
-  .job-detail img {
-    width: 100%;
-    height: auto;
-  }
 }
 
 :root {
@@ -690,15 +681,6 @@ body {
     margin: 8px 1%;
   }
 
-  .job-detail {
-    flex-direction: row;
-    padding: 16px;
-  }
-
-  .job-detail img {
-    width: 50%;
-    height: auto;
-  }
 }
 .skip-link {
   position: fixed;

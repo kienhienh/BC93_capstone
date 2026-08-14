@@ -10,6 +10,8 @@ import type { TaxonomyCapability } from "../features/taxonomy/wiring";
 import { readRuntimeConfig, type RuntimeConfigResult } from "./runtime-config";
 import { createCybersoftServiceDiscoveryCapability } from "../infrastructure/cybersoft/service-discovery";
 import type { ServiceDiscoveryCapability } from "../features/service-discovery/wiring";
+import type { ServiceDetailCapability } from "../features/service-detail/wiring";
+import { createCybersoftServiceDetailCapability } from "../infrastructure/cybersoft/service-detail";
 
 export type ApplicationComposition =
   | {
@@ -20,6 +22,7 @@ export type ApplicationComposition =
       sessionStore: SessionStore;
       taxonomy: TaxonomyCapability;
       serviceDiscovery: ServiceDiscoveryCapability;
+      serviceDetail: ServiceDetailCapability;
     }
   | { ok: false; message: string };
 
@@ -39,6 +42,7 @@ export function composeApplication({
       sessionStore: createBrowserSessionStore(),
       taxonomy: createUnavailableTaxonomyCapability(),
       serviceDiscovery: createUnavailableServiceDiscoveryCapability(),
+      serviceDetail: createUnavailableServiceDetailCapability(),
     };
   }
 
@@ -56,6 +60,14 @@ export function composeApplication({
     sessionStore: createBrowserSessionStore(),
     taxonomy: createCybersoftTaxonomyCapability(configResult.config),
     serviceDiscovery: createCybersoftServiceDiscoveryCapability(configResult.config),
+    serviceDetail: createCybersoftServiceDetailCapability(configResult.config),
+  };
+}
+
+function createUnavailableServiceDetailCapability(): ServiceDetailCapability {
+  return {
+    getService: async () => { throw new Error("Service Detail is unavailable."); },
+    listComments: async () => [],
   };
 }
 

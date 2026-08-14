@@ -1,0 +1,1 @@
+export { ServiceDetailRoute } from "./routes";

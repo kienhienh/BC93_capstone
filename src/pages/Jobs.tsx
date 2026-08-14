@@ -101,7 +101,7 @@ const Jobs: React.FC = () => {
           <div className="row">
             {filteredJobs.map((job) => (
               <div key={job.id} className="col-md-4">
-                <ServiceCard service={job} onSelect={(id) => navigate(`/JobDetail/${id}`)} />
+                <ServiceCard service={job} onSelect={(id) => navigate(`/services/${id}`)} />
               </div>
             ))}
           </div>

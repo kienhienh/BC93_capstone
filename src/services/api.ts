@@ -1,5 +1,4 @@
 export {
-  getCommentsByJob,
   getJobDetail,
   getJobs,
   getUserById,

@@ -2,7 +2,6 @@ import { http, HttpResponse } from "msw";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { server } from "../../test/server";
 import {
-  getCommentsByJob,
   getJobDetail,
   getJobs,
   getUserById,
@@ -53,19 +52,13 @@ describe("legacy Cybersoft adapter", () => {
     ]);
   });
 
-  it("returns comment and User content through the compatibility facade", async () => {
+  it("returns User content through the compatibility facade", async () => {
     server.use(
-      http.get(`${apiBaseUrl}/binh-luan/lay-binh-luan-theo-cong-viec/42`, () =>
-        HttpResponse.json({ content: [{ id: 9, tenNguoiBinhLuan: "A", noiDung: "Good" }] }),
-      ),
       http.get(`${apiBaseUrl}/users/7`, () =>
         HttpResponse.json({ content: { id: 7, name: "Seller" } }),
       ),
     );
 
-    await expect(getCommentsByJob("42")).resolves.toEqual([
-      expect.objectContaining({ id: 9, noiDung: "Good" }),
-    ]);
     await expect(getUserById("7")).resolves.toEqual({ id: 7, name: "Seller" });
   });
 });

@@ -1,0 +1,204 @@
+.service-detail-page,
+.service-detail-state {
+  width: min(100% - 3rem, 1400px);
+  margin-inline: auto;
+  padding-block: clamp(1.5rem, 4vw, 3.5rem) 5rem;
+  color: #404145;
+}
+
+.service-detail-page nav ol {
+  display: flex;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  color: #62646a;
+  list-style: none;
+}
+
+.service-detail-page nav li:not(:last-child)::after {
+  margin-left: 0.5rem;
+  color: #95979d;
+  content: "/";
+}
+
+.service-detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(17rem, 22rem);
+  grid-template-areas:
+    "content hire"
+    "comments hire";
+  align-items: start;
+  gap: 2.5rem clamp(2rem, 5vw, 5rem);
+}
+
+.service-detail-layout > article {
+  min-width: 0;
+  grid-area: content;
+}
+
+.service-detail-layout h1 {
+  margin: 0 0 1rem;
+  color: #222325;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1.1;
+}
+
+.service-detail-layout > article > button,
+.service-comments > button,
+.service-detail-state button,
+.service-detail-state a {
+  min-height: 2.75rem;
+  border: 1px solid #222325;
+  border-radius: 0.35rem;
+  padding: 0.65rem 1rem;
+  background: #fff;
+  color: #222325;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.service-detail-layout > article > img,
+.service-detail-layout > article > [role="img"] {
+  display: grid;
+  width: 100%;
+  max-height: 38rem;
+  margin-top: 1.5rem;
+  border-radius: 0.65rem;
+  place-items: center;
+  background: #f1fdf7;
+  object-fit: cover;
+}
+
+.service-detail-layout > article > [role="img"] {
+  min-height: 22rem;
+  color: #067a46;
+  font-size: 3rem;
+}
+
+.service-detail-layout section[aria-label="About the Seller"] {
+  display: grid;
+  margin-top: 2rem;
+  border-top: 1px solid #e4e5e7;
+  padding-top: 2rem;
+  grid-template-columns: 4rem 1fr;
+  align-items: center;
+  gap: 0.25rem 1rem;
+}
+
+.service-detail-layout section[aria-label="About the Seller"] h2 {
+  margin: 0 0 0.75rem;
+  grid-column: 1 / -1;
+}
+
+.service-detail-layout section[aria-label="About the Seller"] img,
+.service-seller-avatar,
+.service-comment img,
+.service-comment-avatar {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.service-seller-avatar,
+.service-comment-avatar {
+  display: grid;
+  background: #e9f7f0;
+  color: #067a46;
+  font-weight: 800;
+  place-items: center;
+}
+
+.service-seller-avatar { width: 4rem; height: 4rem; }
+
+.service-detail-layout > aside {
+  position: sticky;
+  top: 1.5rem;
+  border: 1px solid #dadbdd;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 8%);
+  grid-area: hire;
+}
+
+.service-detail-layout > aside p {
+  margin: 0 0 1.25rem;
+  color: #222325;
+  font-size: 1.75rem;
+}
+
+.service-detail-layout > aside a {
+  display: block;
+  border-radius: 0.35rem;
+  padding: 0.85rem 1rem;
+  background: #1dbf73;
+  color: #102a1d;
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+}
+
+.service-comments {
+  min-width: 0;
+  border-top: 1px solid #e4e5e7;
+  padding-top: 2rem;
+  grid-area: comments;
+}
+
+.service-comments h2 { margin-top: 0; }
+
+.service-comments-list {
+  display: grid;
+  margin-block: 1.5rem;
+  gap: 1rem;
+}
+
+.service-comment {
+  display: grid;
+  border: 1px solid #e4e5e7;
+  border-radius: 0.65rem;
+  padding: 1rem;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.service-comment-avatar { width: 3rem; height: 3rem; }
+.service-comment h3 { margin: 0; color: #222325; font-size: 1rem; }
+.service-comment p { margin: 0.35rem 0 0; overflow-wrap: anywhere; }
+.service-comment time { color: #62646a; }
+
+.service-detail-state {
+  min-height: 30rem;
+}
+
+.service-detail-state > [role="alert"] {
+  max-width: 42rem;
+  border-radius: 0.65rem;
+  padding: 1.5rem;
+  background: #f5f5f5;
+}
+
+@media (max-width: 1023px) {
+  .service-detail-page,
+  .service-detail-state { width: min(100% - 2rem, 760px); }
+
+  .service-detail-layout {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "content"
+      "hire"
+      "comments";
+    gap: 2rem;
+  }
+
+  .service-detail-layout > aside { position: static; }
+}
+
+@media (max-width: 599px) {
+  .service-detail-page,
+  .service-detail-state { width: min(100% - 1.5rem, 36rem); padding-top: 1rem; }
+  .service-detail-layout > article > [role="img"] { min-height: 14rem; }
+  .service-comment { grid-template-columns: 2.5rem minmax(0, 1fr); }
+  .service-comment-avatar { width: 2.5rem; height: 2.5rem; }
+}
