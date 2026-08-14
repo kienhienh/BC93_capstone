@@ -8,6 +8,8 @@ import { createBrowserSessionStore } from "../infrastructure/browser/session-sto
 import { createCybersoftTaxonomyCapability } from "../infrastructure/cybersoft/taxonomy";
 import type { TaxonomyCapability } from "../features/taxonomy/wiring";
 import { readRuntimeConfig, type RuntimeConfigResult } from "./runtime-config";
+import { createCybersoftServiceDiscoveryCapability } from "../infrastructure/cybersoft/service-discovery";
+import type { ServiceDiscoveryCapability } from "../features/service-discovery/wiring";
 
 export type ApplicationComposition =
   | {
@@ -17,6 +19,7 @@ export type ApplicationComposition =
       authentication: AuthenticationCapability;
       sessionStore: SessionStore;
       taxonomy: TaxonomyCapability;
+      serviceDiscovery: ServiceDiscoveryCapability;
     }
   | { ok: false; message: string };
 
@@ -35,6 +38,7 @@ export function composeApplication({
       authentication: createUnavailableAuthenticationCapability(),
       sessionStore: createBrowserSessionStore(),
       taxonomy: createUnavailableTaxonomyCapability(),
+      serviceDiscovery: createUnavailableServiceDiscoveryCapability(),
     };
   }
 
@@ -51,7 +55,12 @@ export function composeApplication({
     authentication: createCybersoftAuthenticationCapability(configResult.config),
     sessionStore: createBrowserSessionStore(),
     taxonomy: createCybersoftTaxonomyCapability(configResult.config),
+    serviceDiscovery: createCybersoftServiceDiscoveryCapability(configResult.config),
   };
+}
+
+function createUnavailableServiceDiscoveryCapability(): ServiceDiscoveryCapability {
+  return { listServices: async () => [], searchServices: async () => [], listServicesBySubcategory: async () => [] };
 }
 
 function createUnavailableTaxonomyCapability(): TaxonomyCapability {

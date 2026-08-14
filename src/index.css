@@ -158,6 +158,89 @@ body {
   padding-block: 0.8rem;
 }
 
+.marketplace-header:not(.marketplace-header-home) .primary-navigation {
+  width: min(100% - 2rem, 1400px);
+  min-height: 4rem;
+  gap: 0.85rem;
+}
+
+.marketplace-header:not(.marketplace-header-home) .marketplace-brand {
+  font-size: 2rem;
+}
+
+.marketplace-header:not(.marketplace-header-home) .header-search {
+  flex: 0 1 28rem;
+  max-width: 28rem;
+}
+
+.marketplace-header:not(.marketplace-header-home) .header-search input {
+  min-height: 2.5rem;
+  border-color: #c5c6c9;
+  border-radius: 0.2rem 0 0 0.2rem;
+  font-size: 0.9rem;
+}
+
+.marketplace-header:not(.marketplace-header-home) .header-search button {
+  width: 3rem;
+  min-height: 2.5rem;
+  border-radius: 0 0.2rem 0.2rem 0;
+  padding: 0;
+}
+
+.header-utilities {
+  display: flex;
+  margin-left: auto;
+  align-items: center;
+  gap: 1.15rem;
+  white-space: nowrap;
+}
+
+.header-utilities a,
+.marketplace-header:not(.marketplace-header-home) .account-links a {
+  color: #62646a;
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.header-utilities .business-link { color: #40407a; font-weight: 700; }
+
+.primary-navigation .header-utility-button {
+  min-height: auto;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #62646a;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.marketplace-header:not(.marketplace-header-home) .account-links {
+  margin-left: 0;
+  gap: 1.15rem;
+  white-space: nowrap;
+}
+
+.marketplace-header:not(.marketplace-header-home) .join-link {
+  border-color: #1dbf73;
+  color: #1dbf73;
+  padding: 0.5rem 0.85rem;
+}
+
+.marketplace-header:not(.marketplace-header-home) .category-navigation .category-links {
+  width: min(100% - 2rem, 1400px);
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.marketplace-header:not(.marketplace-header-home) .category-navigation a {
+  padding-block: 0.7rem;
+  color: #62646a;
+  font-size: 0.84rem;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
 .drawer-backdrop {
   position: fixed;
   z-index: 1000;

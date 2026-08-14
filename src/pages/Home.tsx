@@ -106,7 +106,7 @@ export default function Home() {
   const submitSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const query = search.trim().replace(/\s+/g, " ");
-    if (query) navigate(`/services?search=${encodeURIComponent(query)}`);
+    navigate(query ? `/services?search=${encodeURIComponent(query)}` : "/services");
   };
 
   return (

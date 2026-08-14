@@ -1,5 +1,5 @@
-import { render } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
+import { act, render } from "@testing-library/react";
+import { MemoryRouter, useLocation, useNavigate, type NavigateFunction } from "react-router-dom";
 import App from "../App";
 import { composeApplication, type ApplicationComposition } from "../app/composition";
 import type { SessionStore } from "../features/authentication/wiring";
@@ -7,6 +7,14 @@ import type { SessionStore } from "../features/authentication/wiring";
 const activeCompositions = new Set<ApplicationComposition>();
 
 export function renderTestApplication(path = "/", sessionStore?: SessionStore) {
+  let navigate: NavigateFunction | undefined;
+  let currentLocation = path;
+  function NavigationObserver() {
+    navigate = useNavigate();
+    const location = useLocation();
+    currentLocation = location.pathname + location.search;
+    return null;
+  }
   const composition = composeApplication({
     mode: "production",
     environment: {
@@ -25,11 +33,20 @@ export function renderTestApplication(path = "/", sessionStore?: SessionStore) {
     };
   }
 
-  return render(
+  const result = render(
     <MemoryRouter initialEntries={[path]}>
       <App composition={composition} />
+      <NavigationObserver />
     </MemoryRouter>,
   );
+  return Object.assign(result, {
+    navigateHistory(delta: number) {
+      act(() => navigate?.(delta));
+    },
+    currentLocation() {
+      return currentLocation;
+    },
+  });
 }
 
 export function resetTestApplications() {

@@ -60,7 +60,7 @@ describe("Home taxonomy", () => {
     await user.click(screen.getByRole("button", { name: "Search from Home" }));
 
     expect(
-      await screen.findByRole("heading", { level: 1, name: 'Services matching "mobile app"' }),
+      await screen.findByRole("heading", { level: 1, name: 'Results for "mobile app"' }),
     ).toBeVisible();
   });
 
