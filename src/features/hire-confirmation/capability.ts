@@ -12,6 +12,7 @@ export interface HiredService {
   hiredAt: string;
   completed: boolean;
   service: { title: string; price: number } | null;
+  seller: { id: string; name: string } | null;
 }
 
 export interface CreateHireInput {
@@ -23,6 +24,14 @@ export interface CreateHireInput {
 
 export type CreateHireResult =
   | { kind: "accepted"; hireId: string }
+  | { kind: "unknown" };
+
+export type CompleteHireResult =
+  | { kind: "accepted" }
+  | { kind: "unknown" };
+
+export type CancelHireResult =
+  | { kind: "accepted" }
   | { kind: "unknown" };
 
 export interface PendingHireEvidence {
@@ -68,4 +77,7 @@ export interface HireConfirmationCapability {
   getService(serviceId: string, signal: AbortSignal): Promise<HireService>;
   createHire(input: CreateHireInput, signal?: AbortSignal): Promise<CreateHireResult>;
   listHiredServices(sessionToken: string, signal?: AbortSignal): Promise<HiredService[]>;
+  getHiredService(hireId: string, sessionToken: string, signal?: AbortSignal): Promise<HiredService>;
+  completeHire(hireId: string, sessionToken: string, signal?: AbortSignal): Promise<CompleteHireResult>;
+  cancelHire(hireId: string, sessionToken: string, signal?: AbortSignal): Promise<CancelHireResult>;
 }

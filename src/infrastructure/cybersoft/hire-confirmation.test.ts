@@ -56,6 +56,7 @@ describe("Cybersoft Hire confirmation capability", () => {
           ngayThue: "2026-08-14T08:15:00.000Z",
           hoanThanh: false,
           congViec: { tenCongViec: "Accessible marketplace design", giaTien: 220 },
+          nguoiBan: { id: 810, name: "Design Master" },
         }],
       });
     }));
@@ -67,6 +68,7 @@ describe("Cybersoft Hire confirmation capability", () => {
       hiredAt: "2026-08-14T08:15:00.000Z",
       completed: false,
       service: { title: "Accessible marketplace design", price: 220 },
+      seller: { id: "810", name: "Design Master" },
     }]);
     expect(headers?.get("token")).toBe("session-token");
     expect(headers?.get("tokenCybersoft")).toBe("private-test-token");

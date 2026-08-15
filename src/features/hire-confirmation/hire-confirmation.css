@@ -50,7 +50,8 @@
 .hire-action-card__price { margin: 0.25rem 0; font-size: 2.25rem; font-weight: 700; }
 .hire-action-card__note { margin: 0 0 1.25rem; }
 .hire-primary-button,
-.hire-secondary-button {
+.hire-secondary-button,
+.hired-services-refresh {
   width: 100%;
   min-height: 3rem;
   margin-top: 0.75rem;
@@ -61,17 +62,223 @@
 }
 .hire-primary-button { border: 1px solid #1dbf73; background: #1dbf73; color: #062e20; }
 .hire-secondary-button { border: 1px solid #222325; background: #fff; color: #222325; }
+.hired-services-refresh {
+  width: auto;
+  min-width: 10rem;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid #d7dadc;
+  background: #f8f9f9;
+  color: #222325;
+}
 .hire-primary-button:disabled,
-.hire-secondary-button:disabled { cursor: not-allowed; opacity: 0.58; }
+.hire-secondary-button:disabled,
+.hired-services-refresh:disabled { cursor: not-allowed; opacity: 0.58; }
 .hire-primary-button:focus-visible,
 .hire-secondary-button:focus-visible,
+.hired-services-refresh:focus-visible,
 .hire-back-link:focus-visible { outline: 3px solid #1dbf73; outline-offset: 3px; }
 .hire-back-link { display: block; margin-top: 1rem; color: #404145; text-align: center; }
 .hire-message { margin: 1rem 0 0; padding: 0.875rem; border-radius: 0.5rem; background: #f1fdf7; }
 .hire-message--error { background: #fff3f2; color: #9b1c1c; }
+
+.hired-services-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.hired-services-header h1 {
+  margin: 0;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.05;
+}
+.hired-services-status,
+.hired-services-error,
+.hired-services-empty {
+  margin: 0 0 1.25rem;
+  font-size: 1.05rem;
+}
+.hired-services-status {
+  color: #0a4d3d;
+}
+.hired-services-error {
+  color: #a5322c;
+}
+.hired-services-list {
+  display: grid;
+  gap: 1rem;
+}
+.hired-service-item {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.5rem 1.25rem;
+  border: 1px solid #e4e5e7;
+  border-radius: 0.9rem;
+  background: #fff;
+  box-shadow: 0 0.75rem 2rem rgb(15 23 42 / 4%);
+}
+.hired-service-item h3 {
+  margin: 0;
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  line-height: 1.3;
+}
+.hired-service-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+.hired-service-seller,
+.hired-service-date {
+  margin: 0;
+  color: #62646a;
+  font-size: 0.95rem;
+}
+.hired-service-price {
+  margin: 0;
+  color: #4b5563;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.hired-service-tag {
+  display: inline-flex;
+  width: fit-content;
+  border-radius: 999px;
+  padding: 0.45rem 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.hired-service-tag--progress {
+  background: #fef3c7;
+  color: #92400e;
+}
+.hired-service-tag--done {
+  background: #dcfce7;
+  color: #166534;
+}
+.hired-service-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.hired-service-btn {
+  flex: 1;
+  min-height: 2.75rem;
+  padding: 0.65rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #222325;
+  background: #fff;
+  color: #222325;
+  font-weight: 700;
+  cursor: pointer;
+}
+.hired-service-btn:focus-visible {
+  outline: 3px solid #1dbf73;
+  outline-offset: 2px;
+}
+.hired-service-btn:disabled {
+  opacity: 0.58;
+  cursor: not-allowed;
+}
+.hired-service-btn--complete {
+  border-color: #1dbf73;
+  color: #1dbf73;
+}
+.hired-service-btn--complete:not(:disabled):hover {
+  background: #f0faf6;
+}
+.hired-service-btn--cancel {
+  border-color: #a5322c;
+  color: #a5322c;
+}
+.hired-service-btn--cancel:not(:disabled):hover {
+  background: #fef3f2;
+}
+.hired-service-btn--secondary {
+  border-color: #d7dadc;
+  background: #f8f9f9;
+  color: #222325;
+}
+.hired-service-btn--secondary:not(:disabled):hover {
+  background: #e8eaed;
+}
+.hired-service-item--completed {
+  opacity: 0.85;
+}
+.hired-service-item--completed .hired-service-actions {
+  display: none;
+}
+.hired-services-group-title {
+  margin: 2rem 0 1rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.hired-services-group-title:first-of-type {
+  margin-top: 0;
+}
+.hired-service-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(0 0 0 / 50%);
+  z-index: 1000;
+}
+.hired-service-dialog {
+  position: relative;
+  width: min(100% - 2rem, 28rem);
+  max-height: 90vh;
+  padding: 2rem;
+  border: none;
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0 1rem 3rem rgb(0 0 0 / 15%);
+}
+.hired-service-dialog::backdrop {
+  display: none;
+}
+.hired-service-dialog h2 {
+  margin: 0 0 1rem;
+  font-size: 1.5rem;
+}
+.hired-service-dialog p {
+  margin: 0.75rem 0;
+  line-height: 1.6;
+}
+.hired-service-dialog-error {
+  margin: 1rem 0 !important;
+  padding: 0.75rem;
+  background: #fff3f2;
+  color: #a5322c;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+}
+.hired-service-dialog-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
 @media (max-width: 760px) {
   .hire-confirmation-page,
   .hired-services-page { width: min(100% - 1.5rem, 44rem); padding-top: 2rem; }
   .hire-confirmation-layout { grid-template-columns: minmax(0, 1fr); }
   .hire-action-card { position: static; }
+  .hired-services-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .hired-services-refresh {
+    width: 100%;
+  }
+  .hired-service-actions {
+    flex-direction: column;
+  }
+  .hired-service-btn {
+    width: 100%;
+  }
 }
+

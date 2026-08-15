@@ -104,7 +104,7 @@ function HiredServicesPanel({ query }: { query: HiredServicesQuery }) {
   const inProgress = total - completed;
   return <section className="hired-profile-card" aria-label="Hired Services">
     <div className="hired-dashboard-banner"><div><p className="eyebrow">Your marketplace workspace</p><h2>Hired Services</h2><p>Keep track of every Service you have hired in one place.</p></div><button type="button" onClick={() => void query.refetch()} disabled={query.isFetching}>{query.isFetching ? "Refreshing..." : "Refresh"}</button></div>
-    <div className="hired-stats" aria-label="Hired Service summary"><p><strong>{total}</strong><span>{total === 1 ? "total" : "total"}</span></p><p><strong>{inProgress}</strong><span>in progress</span></p><p><strong>{completed}</strong><span>completed</span></p></div>
+    <div className="hired-stats" aria-label="Hired Service summary"><p><strong>{total}</strong><span>Total</span></p><p><strong>{inProgress}</strong><span>In progress</span></p><p><strong>{completed}</strong><span>Completed</span></p></div>
     {query.isPending && <p role="status">Loading Hired Services...</p>}
     {query.isError && <p role="alert">Hired Services are temporarily unavailable.</p>}
     {query.data?.length === 0 && <div className="empty-state"><span aria-hidden="true"><i className="bi bi-briefcase" /></span><h3>No Hired Services yet</h3><p>Explore the marketplace and your next Service will appear here.</p><Link to="/services">Explore Services</Link></div>}
