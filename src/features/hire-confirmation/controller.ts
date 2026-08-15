@@ -1,5 +1,5 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { HireFailure, type HireService } from "./capability";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { HireFailure, type HiredService, type HireService } from "./capability";
 import { useHireConfirmationCapability } from "./context";
 
 export function useHireService(serviceId: string, enabled: boolean) {
@@ -21,6 +21,8 @@ function sameReview(reviewed: HireService, latest: HireService) {
 
 export function useConfirmHire() {
   const capability = useHireConfirmationCapability();
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async ({ reviewed, userId, sessionToken, hiredAt }: {
       reviewed: HireService;
@@ -39,32 +41,30 @@ export function useConfirmHire() {
         sessionToken,
         hiredAt,
       });
-      const pending = { serviceId: latest.id, userId, hiredAt };
-      let hiredServices;
-      try {
-        hiredServices = await capability.listHiredServices(sessionToken);
-      } catch {
-        throw new HireFailure(
-          result.kind === "accepted" ? "accepted_pending" : "reconciliation_failed",
-          undefined,
-          result.kind === "accepted" ? result.hireId : undefined,
-          pending,
-        );
+
+      if (result.kind !== "accepted") {
+        throw new HireFailure("unknown");
       }
-      const observed = hiredServices.find((item) =>
-        result.kind === "accepted"
-          ? item.id === result.hireId
-          : item.serviceId === latest.id && item.userId === userId && item.hiredAt === hiredAt,
-      );
-      if (!observed) {
-        throw new HireFailure(
-          result.kind === "accepted" ? "accepted_pending" : "unknown_reconciled",
-          undefined,
-          result.kind === "accepted" ? result.hireId : undefined,
-          pending,
-        );
-      }
-      return { service: latest, hiredService: observed };
+
+      const hiredService: HiredService = {
+        id: result.hireId,
+        serviceId: latest.id,
+        userId,
+        hiredAt,
+        completed: false,
+        service: { title: latest.title, price: latest.price },
+        seller: latest.seller,
+      };
+
+      return { service: latest, hiredService };
+    },
+    onSuccess: async (data, variables) => {
+      await queryClient.invalidateQueries({ queryKey: ["hired-services"] });
+      queryClient.setQueryData<HiredService[]>(["hired-services", variables.sessionToken], (current) => {
+        const next = data.hiredService;
+        if (!current) return [next];
+        return [next, ...current.filter((item) => item.id !== next.id)];
+      });
     },
   });
 }
@@ -93,5 +93,55 @@ export function useHiredServices(sessionToken: string | null) {
     queryKey: ["hired-services", sessionToken],
     enabled: Boolean(sessionToken),
     queryFn: ({ signal }) => capability.listHiredServices(sessionToken ?? "", signal),
+  });
+}
+
+export function useCompleteHire() {
+  const capability = useHireConfirmationCapability();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ hireId, sessionToken, userId }: {
+      hireId: string;
+      sessionToken: string;
+      userId: string;
+    }) => {
+      const current = await capability.getHiredService(hireId, sessionToken);
+      if (current.completed) throw new HireFailure("unknown");
+      if (current.userId !== userId) throw new HireFailure("forbidden");
+
+      const result = await capability.completeHire(hireId, sessionToken);
+      if (result.kind !== "accepted") throw new HireFailure("unknown");
+
+      return { success: true };
+    },
+    onSuccess: async (_, variables) => {
+      await queryClient.invalidateQueries({ queryKey: ["hired-services", variables.sessionToken] });
+    },
+  });
+}
+
+export function useCancelHire() {
+  const capability = useHireConfirmationCapability();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ hireId, sessionToken, userId }: {
+      hireId: string;
+      sessionToken: string;
+      userId: string;
+    }) => {
+      const current = await capability.getHiredService(hireId, sessionToken);
+      if (current.completed) throw new HireFailure("unknown");
+      if (current.userId !== userId) throw new HireFailure("forbidden");
+
+      const result = await capability.cancelHire(hireId, sessionToken);
+      if (result.kind !== "accepted") throw new HireFailure("unknown");
+
+      return { success: true };
+    },
+    onSuccess: async (_, variables) => {
+      await queryClient.invalidateQueries({ queryKey: ["hired-services", variables.sessionToken] });
+    },
   });
 }

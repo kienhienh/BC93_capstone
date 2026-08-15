@@ -20,6 +20,10 @@ const hiredServiceSchema = z.object({
     tenCongViec: z.string().trim().min(1),
     giaTien: z.number().finite().nonnegative(),
   }).optional(),
+  nguoiBan: z.object({
+    id: idSchema,
+    name: z.string().trim().min(1),
+  }).optional(),
 });
 const hiredServicesSchema = z.object({ content: z.array(hiredServiceSchema) });
 
@@ -128,8 +132,75 @@ export function createCybersoftHireConfirmationCapability(config: {
           service: item.congViec
             ? { title: item.congViec.tenCongViec, price: item.congViec.giaTien }
             : null,
+          seller: item.nguoiBan
+            ? { id: String(item.nguoiBan.id), name: item.nguoiBan.name }
+            : null,
         }));
       } catch (error) {
+        throw transportFailure(error, signal);
+      }
+    },
+    async getHiredService(hireId, sessionToken, signal) {
+      try {
+        const response = await fetch(`${config.apiBaseUrl}/thue-cong-viec/lay-danh-sach-da-thue`, {
+          signal,
+          headers: { token: sessionToken, ...cybersoftHeaders },
+        });
+        if (!response.ok) throw responseFailure(response);
+        const parsed = hiredServicesSchema.safeParse(await safeJson(response));
+        if (!parsed.success) throw new HireFailure("malformed");
+        const item = parsed.data.content.find((x) => String(x.id) === hireId);
+        if (!item) throw new HireFailure("not_found");
+        return {
+          id: String(item.id),
+          serviceId: String(item.maCongViec),
+          userId: String(item.maNguoiThue),
+          hiredAt: item.ngayThue,
+          completed: item.hoanThanh,
+          service: item.congViec
+            ? { title: item.congViec.tenCongViec, price: item.congViec.giaTien }
+            : null,
+          seller: item.nguoiBan
+            ? { id: String(item.nguoiBan.id), name: item.nguoiBan.name }
+            : null,
+        };
+      } catch (error) {
+        throw transportFailure(error, signal);
+      }
+    },
+    async completeHire(hireId, sessionToken, signal) {
+      try {
+        const response = await fetch(`${config.apiBaseUrl}/thue-cong-viec/${hireId}`, {
+          method: "PUT",
+          signal,
+          headers: {
+            "Content-Type": "application/json",
+            token: sessionToken,
+            ...cybersoftHeaders,
+          },
+          body: JSON.stringify({ hoanThanh: true }),
+        });
+        if (!response.ok) throw responseFailure(response);
+        return { kind: "accepted" as const };
+      } catch (error) {
+        if (error instanceof HireFailure) throw error;
+        throw transportFailure(error, signal);
+      }
+    },
+    async cancelHire(hireId, sessionToken, signal) {
+      try {
+        const response = await fetch(`${config.apiBaseUrl}/thue-cong-viec/${hireId}`, {
+          method: "DELETE",
+          signal,
+          headers: {
+            token: sessionToken,
+            ...cybersoftHeaders,
+          },
+        });
+        if (!response.ok) throw responseFailure(response);
+        return { kind: "accepted" as const };
+      } catch (error) {
+        if (error instanceof HireFailure) throw error;
         throw transportFailure(error, signal);
       }
     },

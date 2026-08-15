@@ -88,6 +88,9 @@ function createUnavailableHireConfirmationCapability(): HireConfirmationCapabili
     getService: async () => { throw new Error("Hire Confirmation is unavailable."); },
     createHire: async () => { throw new Error("Hire Confirmation is unavailable."); },
     listHiredServices: async () => [],
+    getHiredService: async () => { throw new Error("Hire Confirmation is unavailable."); },
+    completeHire: async () => { throw new Error("Hire Confirmation is unavailable."); },
+    cancelHire: async () => { throw new Error("Hire Confirmation is unavailable."); },
   };
 }
 

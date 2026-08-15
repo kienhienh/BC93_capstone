@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { reportAuthorizationFailure, useSession } from "../authentication/public";
 import { HireFailure } from "./capability";
-import { useCheckHiredService, useConfirmHire, useHireService } from "./controller";
+import { useConfirmHire, useHireService } from "./controller";
 import "./hire-confirmation.css";
 
 export function HireConfirmationRoute() {
@@ -13,17 +13,9 @@ export function HireConfirmationRoute() {
   const heading = useRef<HTMLHeadingElement>(null);
   const service = useHireService(serviceId, Boolean(session));
   const confirmation = useConfirmHire();
-  const hiredServiceCheck = useCheckHiredService();
   const [failure, setFailure] = useState<string | null>(null);
   const [needsReload, setNeedsReload] = useState(false);
   const [canRetry, setCanRetry] = useState(false);
-  const [pendingHireCheck, setPendingHireCheck] = useState<{
-    kind: "accepted" | "unknown";
-    hireId?: string;
-    serviceId: string;
-    userId: string;
-    hiredAt: string;
-  } | null>(null);
 
   useEffect(() => {
     if (!session) navigate(`/login?returnTo=${encodeURIComponent(location.pathname)}`, { replace: true });
@@ -63,7 +55,6 @@ export function HireConfirmationRoute() {
     setFailure(null);
     setNeedsReload(false);
     setCanRetry(false);
-    setPendingHireCheck(null);
     try {
       const confirmed = await confirmation.mutateAsync({
         reviewed: service.data,
@@ -87,15 +78,6 @@ export function HireConfirmationRoute() {
       } else if (error instanceof HireFailure && error.kind === "stale") {
         setNeedsReload(true);
         setFailure("Service details changed. Review the latest information before hiring.");
-      } else if (error instanceof HireFailure && error.kind === "unknown_reconciled") {
-        setCanRetry(true);
-        setFailure("We could not confirm whether the Hire was created. Hired Services were checked before Retry.");
-      } else if (error instanceof HireFailure && error.kind === "accepted_pending" && error.pending) {
-        setPendingHireCheck({ kind: "accepted", hireId: error.hireId, ...error.pending });
-        setFailure("The server accepted this Hire, but it is not visible yet.");
-      } else if (error instanceof HireFailure && error.kind === "reconciliation_failed" && error.pending) {
-        setPendingHireCheck({ kind: "unknown", ...error.pending });
-        setFailure("We could not check Hired Services. Check again before Retry.");
       } else if (error instanceof HireFailure && error.kind === "server") {
         setCanRetry(true);
         setFailure("Hire is temporarily unavailable. No Hire was created.");
@@ -146,38 +128,9 @@ export function HireConfirmationRoute() {
           Reload latest
         </button>
       ) : null}
-      {pendingHireCheck ? (
-        <>
-          <button className="hire-primary-button" type="button" disabled>Hire awaiting confirmation</button>
-          <button className="hire-secondary-button" type="button" disabled={hiredServiceCheck.isPending} onClick={async () => {
-            if (!session) return;
-            const observed = await hiredServiceCheck.mutateAsync({
-              sessionToken: session.token,
-              ...pendingHireCheck,
-            });
-            if (observed) {
-              navigate("/hired-services", {
-                replace: true,
-                state: { message: `${service.data.title} was hired successfully.` },
-              });
-            } else {
-              if (pendingHireCheck.kind === "accepted") {
-                setFailure("The server accepted this Hire, but it is not visible yet.");
-              } else {
-                setPendingHireCheck(null);
-                setCanRetry(true);
-                setFailure("Hired Services were checked. You can Retry this Hire.");
-              }
-            }
-          }}>
-            {hiredServiceCheck.isPending ? "Checking Hired Services..." : "Check Hired Services"}
-          </button>
-        </>
-      ) : (
-        <button className="hire-primary-button" type="button" onClick={confirmHire} disabled={confirmation.isPending || sellerMissing}>
-          {confirmation.isPending ? "Confirming Hire..." : canRetry ? "Retry Hire" : "Confirm Hire"}
-        </button>
-      )}
+      <button className="hire-primary-button" type="button" onClick={confirmHire} disabled={confirmation.isPending || sellerMissing}>
+        {confirmation.isPending ? "Confirming Hire..." : canRetry ? "Retry Hire" : "Confirm Hire"}
+      </button>
       <Link className="hire-back-link" to={`/services/${encodeURIComponent(service.data.id)}`}>Back to Service</Link>
       </aside>
       </div>

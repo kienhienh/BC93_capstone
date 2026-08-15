@@ -68,18 +68,27 @@
 
 .hired-stats p {
   display: grid;
-  gap: 2px;
+  justify-items: center;
+  gap: 6px;
   margin: 0;
   border: 1px solid #e4e5e7;
   border-radius: 10px;
   padding: 16px 18px;
   background: #fff;
   color: #62646a;
+  text-align: center;
 }
 
 .hired-stats strong {
   color: #222325;
   font-size: 1.65rem;
+  line-height: 1;
+}
+
+.hired-stats span {
+  display: block;
+  line-height: 1.3;
+  white-space: normal;
 }
 
 .hired-services-grid {
