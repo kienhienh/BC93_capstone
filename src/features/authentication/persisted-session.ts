@@ -18,7 +18,18 @@ export function restoreSession(value: unknown, now = Date.now()): AuthenticatedS
   const parsed = persistedSessionSchema.safeParse(value);
   if (!parsed.success) return null;
   const expiresAt = readTokenExpiration(parsed.data.token);
-  return expiresAt !== null && expiresAt > now ? parsed.data : null;
+  return expiresAt !== null && expiresAt > now
+    ? {
+        token: parsed.data.token,
+        user: {
+          id: parsed.data.user.id,
+          name: parsed.data.user.name,
+          email: parsed.data.user.email,
+          role: parsed.data.user.role ?? "USER",
+          avatar: parsed.data.user.avatar ?? null,
+        },
+      }
+    : null;
 }
 
 export function readTokenExpiration(token: string): number | null {

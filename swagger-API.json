@@ -1,0 +1,2951 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "v1",
+    "title": "Fiverr"
+  },
+  "paths": {
+    "/api/auth/signup": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "DangKy",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "model",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ThongTinNguoiDung"
+            }
+          },
+          {
+            "name": "tokenCybersoft",
+            "in": "header",
+            "description": "Nhập token cybersoft",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "statusCode": 200,
+          "content": {
+            "id": 0,
+            "name": "string",
+            "email": "nhoxcui@gmail.com",
+            "password": "string",
+            "phone": "string",
+            "birthday": "string",
+            "avatar": null,
+            "gender": true,
+            "role": "USER",
+            "skill": "[\"string\"]",
+            "certification": "[\"string\"]",
+            "bookingJob": "[]"
+          },
+          "dateTime": "2026-08-11T09:48:19.3824205+07:00"
+        }
+      }
+    },
+    "/api/auth/signin": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "DangNhap",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "model",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/DangNhapView"
+            }
+          },
+          {
+            "name": "tokenCybersoft",
+            "in": "header",
+            "description": "Nhập token cybersoft",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "statusCode": 200,
+          "content": {
+            "user": {
+              "id": 28262,
+              "name": "kienhienh",
+              "email": "kienhienh@gmail.com",
+              "password": "",
+              "phone": "",
+              "birthday": "",
+              "avatar": "",
+              "gender": false,
+              "role": "USER",
+              "skill": [],
+              "certification": [],
+              "bookingJob": []
+            },
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI4MjYyIiwiZW1haWwiOiJraWVuaGllbmhAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJuYmYiOjE3ODY0MTY2MzMsImV4cCI6MTc4NzAyMTQzM30.7EhE7ORkrXT7slHLvJqho0Ij1_HRehBrHUovjlBcAP8"
+          },
+          "dateTime": "2026-08-11T09:50:33.7287019+07:00"
+        }
+      }
+    },
+    "/api/binh-luan": {
+      "get": {
+        "tags": [
+          "BinhLuan"
+        ],
+        "operationId": "Get",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "tokenCybersoft",
+            "in": "header",
+            "description": "Nhập token cybersoft",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "statusCode": 200,
+          "content": [
+            {
+              "id": 4175,
+              "maCongViec": 1,
+              "maNguoiBinhLuan": 1,
+              "ngayBinhLuan": "2024-12-07T16:27:45.381Z",
+              "noiDung": "ádas",
+              "saoBinhLuan": 5
+            }
+          ]
+        }
+      },
+      "post": {
+        "tags": [
+          "BinhLuan"
+        ],
+        "operationId": "Post",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "model",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/BinhLuanViewModel"
+            }
+          },
+          {
+            "name": "tokenCybersoft",
+            "in": "header",
+            "description": "Nhập token cybersoft",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "statusCode": 201,
+          "message": "Thêm mới thành công!",
+          "content": {
+            "id": 21653,
+            "maCongViec": 0,
+            "maNguoiBinhLuan": 0,
+            "ngayBinhLuan": "string",
+            "noiDung": "string",
+            "saoBinhLuan": 0
+          },
+          "dateTime": "2026-08-11T09:53:37.251718+07:00"
+        }
+      }
+    },
+    "/api/binh-luan/{id}": {
+      "put": {
+        "tags": [
+          "BinhLuan"
+        ],
+        "operationId": "Put",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "model",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/BinhLuanViewModel"
+            }
+          },
+          {
+            "name": "tokenCybersoft",
+            "in": "header",
+            "description": "Nhập token cybersoft",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "statusCode": 200,
+          "message": "Cập nhật thành công!",
+          "content": {
+            "id": 1,
+            "maCongViec": 1,
+            "maNguoiBinhLuan": 1,
+            "ngayBinhLuan": "03/02/2002",
+            "noiDung": "dsfdsaf",
+            "saoBinhLuan": 2
+          },
+          "dateTime": "2026-08-11T11:24:16.1100403+07:00"
+        }
+      },
+      "delete": {
+        "tags": [
+          "BinhLuan"
+        ],
+        "operationId": "Delete",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "tokenCybersoft",
+            "in": "header",
+            "description": "Nhập token cybersoft",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "statusCode": 200,
+          "message": "Xóa thành công!",
+          "content": null,
+          "dateTime": "2026-08-11T11:25:30.784989+07:00"
+        }
+      }
+    },
+    "/api/binh-luan/lay-binh-luan-theo-cong-viec/{MaCongViec}": {
+      "get": {
+        "tags": [
+          "BinhLuan"
+        ],
+        "operationId": "GetBinhLuanTheoCongViec",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "MaCongViec",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "tokenCybersoft",
+            "in": "header",
+            "description": "Nhập token cybersoft",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "statusCode": 200,
+          "content": [
+            {
+              "id": 4175,
+              "ngayBinhLuan": "2024-12-07T16:27:45.381Z",
+              "noiDung": "ádas",
+              "saoBinhLuan": 5,
+              "tenNguoiBinhLuan": "string",
+              "avatar": ""
+            }
+          ]
+        }
+      }
+    },
+    "/api/chi-tiet-loai-cong-viec": {
+      "get": {
+        "tags": [
+          "ChiTietLoaiCongViec"
+        ],
+        "operationId": "Get",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "tokenCybersoft",
+            "in": "header",
+            "description": "Nhập token cybersoft",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "statusCode": 200,
+          "content": [
+            {
+              "id": 1,
+              "tenNhom": "Logo & Brand Identity",
+              "hinhAnh": "https://fiverrnew.cybersoft.edu.vn/images/lcv1.jpg",
+              "maLoaiCongviec": 1,
+              "dsChiTietLoai": [
+                {
+                  "id": 2,
+                  "tenChiTiet": "Logo Design"
+                },
+                {
+                  "id": 3,
+                  "tenChiTiet": "Brand Style Guides"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "post": {
+        "tags": [
+          "ChiTietLoaiCongViec"
+        ],
+        "operationId": "Post",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "model",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ChiTietLoaiView"
+            }
+          },
+          {
+            "name": "tokenCybersoft",
+            "in": "header",
+            "description": "Nhập token cybersoft",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "statusCode": 200,
+          "content": {
+            "id": 0,
+            "tenChiTiet": "Logo Design",
+            "maLoaiCongViec": 0,
+            "danhSachChiTiet": "[]",
+            "hinhAnh": ""
+          },
+          "dateTime": "2026-08-11T11:18:32.554728+07:00"
+        }
+      }
+    },
+    "/api/chi-tiet-loai-cong-viec/phan-trang-tim-kiem": {
+      "get": {
+        "tags": [
+          "ChiTietLoaiCongViec"
+        ],
+        "operationId": "GetPaging",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "pageIndex",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "tokenCybersoft",
+            "in": "header",
+            "description": "Nhập token cybersoft",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "statusCode": 200,
+          "content": {
+            "pageIndex": 0,
+            "pageSize": 0,
+            "totalRow": 21,
+            "keywords": "",
+            "data": []
+          },
+          "dateTime": "2026-08-11T09:36:12.1280569+07:00"
+        }
+      }
+    },
+    "/api/chi-tiet-loai-cong-viec/{id}": {
+      "get": {
+        "tags": [
+          "ChiTietLoaiCongViec"
+        ],
+        "operationId": "Get",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "tokenCybersoft",
+            "in": "header",
+            "description": "Nhập token cybersoft",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "statusCode": 200,
+          "content": {
+            "id": 1,
+            "tenNhom": "Logo & Brand Identity",
+            "hinhAnh": "https://fiverrnew.cybersoft.edu.vn/images/lcv1.jpg",
+            "maLoaiCongviec": 1,
+            "dsChiTietLoai": [
+              {
+                "id": 2,
+                "tenChiTiet": "Logo Design"
+              },
+              {
+                "id": 3,
+                "tenChiTiet": "Brand Style Guides"
+              }
+            ]
+          },
+          "dateTime": "2026-08-11T10:27:43.7192434+07:00"
+        }
+      },
+      "put": {
+        "tags": [
+          "ChiTietLoaiCongViec"
+        ],
+        "operationId": "Put",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "model",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ChiTietLoaiView"
+            }
+          },
+          {
+            "name": "tokenCybersoft",
+            "in": "header",
+            "description": "Nhập token cybersoft",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "statusCode": 200,
+          "content": {
+            "id": 2981,
+            "tenChiTiet": "Logo Design",
+            "maLoaiCongViec": 0,
+            "danhSachChiTiet": "[]",
+            "hinhAnh": ""
+          },
+          "dateTime": "2026-08-11T13:58:14.0794318+07:00"
+        }
+      },
+      "delete": {
+        "tags": [
+          "ChiTietLoaiCongViec"
+        ],
+        "operationId": "Delete",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "tokenCybersoft",
+            "in": "header",
+            "description": "Nhập token cybersoft",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "statusCode": 200,
+          "message": "Xóa thành công!",
+          "content": null,
+          "dateTime": "2026-08-11T13:59:44.6273738+07:00"
+        }
+      }
+    },
+    "/api/chi-tiet-loai-cong-viec/them-nhom-chi-tiet-loai": {
+      "post": {
+        "tags": [
+          "ChiTietLoaiCongViec"
+        ],
+        "operationId": "ThemNhomLoaiCongViec",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "model",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ChiTietLoaiCongViecViewModel"
+            }
+          },
+          {
+            "name": "tokenCybersoft",
+            "in": "header",
+            "description": "Nhập token cybersoft",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "statusCode": 201,
+          "message": "Thêm mới thành công!",
+          "content": {
+            "id": 2982,
+            "tenChiTiet": "string",
+            "maLoaiCongViec": 0,
+            "danhSachChiTiet": [
+              0
+            ]
+          },
+          "dateTime": "2026-08-11T11:33:30.8721086+07:00"
+        }
+      }
+    },
+    "/api/chi-tiet-loai-cong-viec/upload-hinh-nhom-loai-cong-viec/{MaNhomLoaiCongViec}": {
+      "post": {
+        "tags": [
+          "ChiTietLoaiCongViec"
+        ],
+        "operationId": "UploadHinhNhomLoai",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "MaNhomLoaiCongViec",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "formFile",
+            "in": "formData",
+            "required": false,
+            "type": "file"
+          },
+          {
+            "name": "tokenCybersoft",
+            "in": "header",
+            "description": "Nhập token cybersoft",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "statusCode": 200,
+          "content": {
+            "id": 2979,
+            "tenChiTiet": "Software Testing",
+            "maLoaiCongViec": 4618,
+            "danhSachChiTiet": "[1,2]",
+            "hinhAnh": "http://fiverrnew.cybersoft.edu.vn/images/11-08-2026-02-11-13-gemini_generated_image_eqaqo7eqaqo7eqaq.png"
+          },
+          "dateTime": "2026-08-11T14:11:13.6465385+07:00"
+        }
+      }
+    },
+    "/api/chi-tiet-loai-cong-viec/sua-nhom-chi-tiet-loai/{id}": {
+      "put": {
+        "tags": [
+          "ChiTietLoaiCongViec"
+        ],
+        "operationId": "SuaNhomLoaiCongViec",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "model",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ChiTietLoaiCongViecViewModel"
+            }
+          },
+          {
+            "name": "tokenCybersoft",
+            "in": "header",
+            "description": "Nhập token cybersoft",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "statusCode": 200,
+          "message": "Cập nhật thành công!",
+          "content": {
+            "id": 2984,
+            "tenChiTiet": null,
+            "maLoaiCongViec": 4621,
+            "danhSachChiTiet": null
+          },
+          "dateTime": "2026-08-11T14:08:18.9278019+07:00"
+        }
+      }
+    },
+    "/api/cong-viec": {
+      "get": {
+        "tags": [
+          "CongViec"
+        ],
+        "operationId": "Get",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "tokenCybersoft",
+            "in": "header",
+            "description": "Nhập token cybersoft",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "statusCode": 200,
+          "content": [
+            {
+              "id": 1,
+              "tenCongViec": "I will design unique minimalist modern and creative logo design",
+              "danhGia": 145,
+              "giaTien": 22,
+              "nguoiTao": 1,
+              "hinhAnh": "https://fiverrnew.cybersoft.edu.vn/images/cv1.jpg",
+              "moTa": "About this gig\r\nWelcome to my custom, modern, creative and unique logo design service.\r\n\r\n\r\n\r\nI do much appreciate for taking your valuable time to monitor my gig. Are you looking for a custom or professional logo for your business to give a new look and want to give boost your brand look so Yes this is the right place.\r\n\r\n\r\n\r\nWhy choose me:\r\n\r\nProfessional, Creative and unique logo design\r\nEye-Catching and Customer Attractive.\r\nHigh Quality & Perfect Design.\r\nClean & Smooth & minimalist Wor",
+              "maChiTietLoaiCongViec": 2,
+              "moTaNgan": "BASIC\r\nUS$10\r\n1 Basic concept +JPEG +PNG+ Unlimited revisions+ Mockup\r\n\r\n1-day delivery\r\nUnlimited Revisions\r\n1 concept included\r\nLogo transparency\r\nVector file\r\nPrintable file\r\nInclude 3D mockup\r\nInclude source file",
+              "saoCongViec": 3
+            }
+          ]
+        }
+      },
+      "post": {
+        "tags": [
+          "CongViec"
+        ],
+        "operationId": "Post",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "model",
+            "in": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/CongViecViewModel"
+            }
+          },
+          {
+            "name": "tokenCybersoft",
+            "in": "header",
+            "description": "Nhập token cybersoft",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "statusCode": 201,
+          "message": "Thêm mới thành công!",
+          "content": {
+            "id": 6209,
+            "tenCongViec": "string",
+            "danhGia": 0,
+            "giaTien": 0,
+            "nguoiTao": 0,
+            "hinhAnh": "string",
+            "moTa": "string",
+            "maChiTietLoaiCongViec": 0,
+            "moTaNgan": "string",
+            "saoCongViec": 0
+          },
+          "dateTime": "2026-08-11T11:36:43.0741985+07:00"
+        }
+      }
+    },
+    "/api/cong-viec/phan-trang-tim-kiem": {
+      "get": {
+        "tags": [
+          "CongViec"
+        ],
+        "operationId": "GetPaging",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "pageIndex",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "tokenCybersoft",
+            "in": "header",
+            "description": "Nhập token cybersoft",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "statusCode": 200,
+          "content": {
+            "pageIndex": 1,
+            "pageSize": 1,
+            "totalRow": 35,
+            "keywords": null,
+            "data": [
+              {
+                "id": 1,
+                "tenCongViec": "I will design unique minimalist modern and creative logo design",
+                "danhGia": 145,
+                "giaTien": 22,
+                "nguoiTao": 1,
+                "hinhAnh": "https://fiverrnew.cybersoft.edu.vn/images/cv1.jpg",
+                "moTa": "About this gig\r\nWelcome to my custom, modern, creative and unique logo design service.\r\n\r\n\r\n\r\nI do much appreciate for taking your valuable time to monitor my gig. Are you looking for a custom or professional logo for your business to give a new look and want to give boost your brand look so Yes this is the right place.\r\n\r\n\r\n\r\nWhy choose me:\r\n\r\nProfessional, Creative and unique logo design\r\nEye-Catching and Customer Attractive.\r\nHigh Quality & Perfect Design.\r\nClean & Smooth & minimalist Wor",
+                "maChiTietLoaiCongViec": 2,
+                "moTaNgan": "BASIC\r\nUS$10\r\n1 Basic concept +JPEG +PNG+ Unlimited revisions+ Mockup\r\n\r\n1-day delivery\r\nUnlimited Revisions\r\n1 concept included\r\nLogo transparency\r\nVector file\r\nPrintable file\r\nInclude 3D mockup\r\nInclude source file",
+                "saoCongViec": 3
+              }
+            ]
+          },
+          "dateTime": "2026-08-11T10:39:32.8674441+07:00"
+        }
+      }
+    },
+    "/api/cong-viec/{id}": {
+      "get": {
+        "tags": [
+          "CongViec"
+        ],
+        "operationId": "Get",
+        "consumes": [],
+        "produces": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "tokenCybersoft",
+            "in": "header",
+            "description": "Nhập token cybersoft",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "statusCode": 200,
+          "content": [
+            {
+              "id": 1,
+              "tenCongViec": "I will design unique minimalist modern and creative logo design",
+              "danhGia": 145,
+              "giaTien": 22,
+              "nguoiTao": 1,
+              "hinhAnh": "https://fiverrnew.cybersoft.edu.vn/images/cv1.jpg",
+              "moTa": "About this gig\r\nWelcome to my custom, modern, creative and unique logo design service.\r\n\r\n\r\n\r\nI do much appreciate for taking your valuable time to monitor my gig. Are you looking for a custom or professional logo for your business to give a new look and want to give boost your brand look so Yes this is the right place.\r\n\r\n\r\n\r\nWhy choose me:\r\n\r\nProfessional, Creative and unique logo design\r\nEye-Catching and Customer Attractive.\r\nHigh Quality & Perfect Design.\r\nClean & Smooth & minimalist Wor",
+              "maChiTietLoaiCongViec": 2,
+              "moTaNgan": "BASIC\r\nUS$10\r\n1 Basic concept +JPEG +PNG+ Unlimited revisions+ Mockup\r\n\r\n1-day delivery\r\nUnlimited Revisions\r\n1 concept included\r\nLogo transparency\r\nVector file\r\nPrintable file\r\nInclude 3D mockup\r\nInclude source file",
+              "saoCongViec": 3
+            }
+          ]
+        },
+        "put": {
+          "tags": [
+            "CongViec"
+          ],
+          "operationId": "Put",
+          "consumes": [
+            "application/json-patch+json",
+            "application/json",
+            "text/json",
+            "application/*+json"
+          ],
+          "produces": [],
+          "parameters": [
+            {
+              "name": "token",
+              "in": "header",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "integer",
+              "format": "int32"
+            },
+            {
+              "name": "model",
+              "in": "body",
+              "required": false,
+              "schema": {
+                "$ref": "#/definitions/CongViecViewModel"
+              }
+            },
+            {
+              "name": "tokenCybersoft",
+              "in": "header",
+              "description": "Nhập token cybersoft",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "statusCode": 200,
+            "message": "Cập nhật thành công!",
+            "content": {
+              "id": 6212,
+              "tenCongViec": "design logo",
+              "danhGia": 274,
+              "giaTien": 6,
+              "nguoiTao": 1,
+              "hinhAnh": "https://fiverrnew.cybersoft.edu.vn/images/cv35.jpg",
+              "moTa": "I will:\r\n\r\n\r\n\r\n\r\n\r\n- Remove background noise\r\n\r\n\r\n\r\n- Remove breaths/clicks/pops\r\n\r\n\r\n\r\n- Enhance the clarity of speech\r\n\r\n\r\n\r\n- Compress the audio to fit within a certain time\r\n\r\n\r\n\r\n- Combine multiple takes/take out bad takes\r\n\r\n\r\n\r\n\r\n\r\nBasic package applies to tracks up to 5 minutes length. For longer tracks check out Standard and Premium packages, add extra minutes through the extras, or contact me to get the price.\r\n\r\n",
+              "maChiTietLoaiCongViec": 31,
+              "moTaNgan": "Silver\r\nUS$5\r\nFull editing of the file up to 5 minutes.\r\n\r\n2 Days Delivery\r\n3 Revisions\r\n1 audio track",
+              "saoCongViec": 3
+            },
+            "dateTime": "2026-08-11T14:19:58.7504412+07:00"
+          }
+        },
+        "delete": {
+          "tags": [
+            "CongViec"
+          ],
+          "operationId": "Delete",
+          "consumes": [],
+          "produces": [],
+          "parameters": [
+            {
+              "name": "token",
+              "in": "header",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "integer",
+              "format": "int32"
+            },
+            {
+              "name": "tokenCybersoft",
+              "in": "header",
+              "description": "Nhập token cybersoft",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "statusCode": 200,
+            "message": "Xóa thành công!",
+            "content": null,
+            "dateTime": "2026-08-11T14:20:44.0098716+07:00"
+          }
+        }
+      },
+      "/api/cong-viec/upload-hinh-cong-viec/{MaCongViec}": {
+        "post": {
+          "tags": [
+            "CongViec"
+          ],
+          "operationId": "UploadHinhNhomLoai",
+          "consumes": [
+            "multipart/form-data"
+          ],
+          "produces": [],
+          "parameters": [
+            {
+              "name": "token",
+              "in": "header",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "MaCongViec",
+              "in": "path",
+              "required": true,
+              "type": "integer",
+              "format": "int32"
+            },
+            {
+              "name": "formFile",
+              "in": "formData",
+              "required": false,
+              "type": "file"
+            },
+            {
+              "name": "tokenCybersoft",
+              "in": "header",
+              "description": "Nhập token cybersoft",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "statusCode": 200,
+            "content": {
+              "id": 6211,
+              "tenCongViec": "design logo",
+              "danhGia": 274,
+              "giaTien": 6,
+              "nguoiTao": 1,
+              "hinhAnh": "http://fiverrnew.cybersoft.edu.vn/images/11-08-2026-02-22-13-gemini_generated_image_eqaqo7eqaqo7eqaq.png",
+              "moTa": "I will:\r\n\r\n\r\n\r\n\r\n\r\n- Remove background noise\r\n\r\n\r\n\r\n- Remove breaths/clicks/pops\r\n\r\n\r\n\r\n- Enhance the clarity of speech\r\n\r\n\r\n\r\n- Compress the audio to fit within a certain time\r\n\r\n\r\n\r\n- Combine multiple takes/take out bad takes\r\n\r\n\r\n\r\n\r\n\r\nBasic package applies to tracks up to 5 minutes length. For longer tracks check out Standard and Premium packages, add extra minutes through the extras, or contact me to get the price.\r\n\r\n",
+              "maChiTietLoaiCongViec": 31,
+              "moTaNgan": "Silver\r\nUS$5\r\nFull editing of the file up to 5 minutes.\r\n\r\n2 Days Delivery\r\n3 Revisions\r\n1 audio track",
+              "saoCongViec": 3
+            },
+            "dateTime": "2026-08-11T14:22:13.388342+07:00"
+          }
+        }
+      },
+      "/api/cong-viec/lay-menu-loai-cong-viec": {
+        "get": {
+          "tags": [
+            "CongViec"
+          ],
+          "operationId": "GetMenuLoaiCongViec",
+          "consumes": [],
+          "produces": [],
+          "parameters": [
+            {
+              "name": "tokenCybersoft",
+              "in": "header",
+              "description": "Nhập token cybersoft",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "statusCode": 200,
+            "content": [
+              {
+                "id": 1,
+                "tenLoaiCongViec": "Graphics & Design",
+                "dsNhomChiTietLoai": [
+                  {
+                    "id": 1,
+                    "tenNhom": "Logo & Brand Identity",
+                    "hinhAnh": "https://fiverrnew.cybersoft.edu.vn/images/lcv1.jpg",
+                    "maLoaiCongviec": 1,
+                    "dsChiTietLoai": [
+                      {
+                        "id": 2,
+                        "tenChiTiet": "Logo Design"
+                      },
+                      {
+                        "id": 3,
+                        "tenChiTiet": "Brand Style Guides"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 4,
+                    "tenNhom": "Web & App Design",
+                    "hinhAnh": "https://fiverrnew.cybersoft.edu.vn/images/lcv2.jpg",
+                    "maLoaiCongviec": 1,
+                    "dsChiTietLoai": [
+                      {
+                        "id": 5,
+                        "tenChiTiet": "Website Design"
+                      },
+                      {
+                        "id": 6,
+                        "tenChiTiet": "App Design"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 1950,
+                    "tenNhom": "LOGO",
+                    "hinhAnh": "http://fiverrnew.cybersoft.edu.vn/images/12-10-2024-10-44-11-pexels-picjumbo-com-55570-196645.jpg",
+                    "maLoaiCongviec": 1,
+                    "dsChiTietLoai": []
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "/api/cong-viec/lay-chi-tiet-loai-cong-viec/{MaLoaiCongViec}": {
+        "get": {
+          "tags": [
+            "CongViec"
+          ],
+          "operationId": "GetChiTietLoaiCongViec",
+          "consumes": [],
+          "produces": [],
+          "parameters": [
+            {
+              "name": "MaLoaiCongViec",
+              "in": "path",
+              "required": true,
+              "type": "integer",
+              "format": "int32"
+            },
+            {
+              "name": "tokenCybersoft",
+              "in": "header",
+              "description": "Nhập token cybersoft",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "statusCode": 200,
+            "content": [
+              {
+                "id": 1,
+                "tenLoaiCongViec": "Graphics & Design",
+                "dsNhomChiTietLoai": [
+                  {
+                    "id": 1,
+                    "tenNhom": "Logo & Brand Identity",
+                    "hinhAnh": "https://fiverrnew.cybersoft.edu.vn/images/lcv1.jpg",
+                    "maLoaiCongviec": 1,
+                    "dsChiTietLoai": [
+                      {
+                        "id": 2,
+                        "tenChiTiet": "Logo Design"
+                      },
+                      {
+                        "id": 3,
+                        "tenChiTiet": "Brand Style Guides"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 4,
+                    "tenNhom": "Web & App Design",
+                    "hinhAnh": "https://fiverrnew.cybersoft.edu.vn/images/lcv2.jpg",
+                    "maLoaiCongviec": 1,
+                    "dsChiTietLoai": [
+                      {
+                        "id": 5,
+                        "tenChiTiet": "Website Design"
+                      },
+                      {
+                        "id": 6,
+                        "tenChiTiet": "App Design"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 1950,
+                    "tenNhom": "LOGO",
+                    "hinhAnh": "http://fiverrnew.cybersoft.edu.vn/images/12-10-2024-10-44-11-pexels-picjumbo-com-55570-196645.jpg",
+                    "maLoaiCongviec": 1,
+                    "dsChiTietLoai": []
+                  }
+                ]
+              }
+            ],
+            "dateTime": "2026-08-11T10:47:58.5657439+07:00"
+          }
+        }
+      },
+      "/api/cong-viec/lay-cong-viec-theo-chi-tiet-loai/{MaChiTietLoai}": {
+        "get": {
+          "tags": [
+            "CongViec"
+          ],
+          "operationId": "GetCongViecTheoChiTietLoai",
+          "consumes": [],
+          "produces": [],
+          "parameters": [
+            {
+              "name": "MaChiTietLoai",
+              "in": "path",
+              "required": true,
+              "type": "integer",
+              "format": "int32"
+            },
+            {
+              "name": "tokenCybersoft",
+              "in": "header",
+              "description": "Nhập token cybersoft",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "statusCode": 200,
+            "content": [],
+            "dateTime": "2026-08-11T10:48:53.114614+07:00"
+          }
+        }
+      },
+      "/api/cong-viec/lay-cong-viec-chi-tiet/{MaCongViec}": {
+        "get": {
+          "tags": [
+            "CongViec"
+          ],
+          "operationId": "GetCongViecChiTiet",
+          "consumes": [],
+          "produces": [],
+          "parameters": [
+            {
+              "name": "MaCongViec",
+              "in": "path",
+              "required": true,
+              "type": "integer",
+              "format": "int32"
+            },
+            {
+              "name": "tokenCybersoft",
+              "in": "header",
+              "description": "Nhập token cybersoft",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "statusCode": 200,
+            "content": [
+              {
+                "id": 1,
+                "congViec": {
+                  "id": 1,
+                  "tenCongViec": "I will design unique minimalist modern and creative logo design",
+                  "danhGia": 145,
+                  "giaTien": 22,
+                  "nguoiTao": 1,
+                  "hinhAnh": "https://fiverrnew.cybersoft.edu.vn/images/cv1.jpg",
+                  "moTa": "About this gig\r\nWelcome to my custom, modern, creative and unique logo design service.\r\n\r\n\r\n\r\nI do much appreciate for taking your valuable time to monitor my gig. Are you looking for a custom or professional logo for your business to give a new look and want to give boost your brand look so Yes this is the right place.\r\n\r\n\r\n\r\nWhy choose me:\r\n\r\nProfessional, Creative and unique logo design\r\nEye-Catching and Customer Attractive.\r\nHigh Quality & Perfect Design.\r\nClean & Smooth & minimalist Wor",
+                  "maChiTietLoaiCongViec": 2,
+                  "moTaNgan": "BASIC\r\nUS$10\r\n1 Basic concept +JPEG +PNG+ Unlimited revisions+ Mockup\r\n\r\n1-day delivery\r\nUnlimited Revisions\r\n1 concept included\r\nLogo transparency\r\nVector file\r\nPrintable file\r\nInclude 3D mockup\r\nInclude source file",
+                  "saoCongViec": 3
+                },
+                "tenLoaiCongViec": "Graphics & Design",
+                "tenNhomChiTietLoai": "Logo & Brand Identity",
+                "tenChiTietLoai": "Logo Design",
+                "tenNguoiTao": "string",
+                "avatar": ""
+              }
+            ],
+            "dateTime": "2026-08-11T10:49:34.8127918+07:00"
+          }
+        }
+      },
+      "/api/cong-viec/lay-danh-sach-cong-viec-theo-ten/{TenCongViec}": {
+        "get": {
+          "tags": [
+            "CongViec"
+          ],
+          "operationId": "GetCongViecTheoTen",
+          "consumes": [],
+          "produces": [],
+          "parameters": [
+            {
+              "name": "TenCongViec",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "tokenCybersoft",
+              "in": "header",
+              "description": "Nhập token cybersoft",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "statusCode": 200,
+            "content": [
+              {
+                "id": 1,
+                "congViec": {
+                  "id": 1,
+                  "tenCongViec": "I will design unique minimalist modern and creative logo design",
+                  "danhGia": 145,
+                  "giaTien": 22,
+                  "nguoiTao": 1,
+                  "hinhAnh": "https://fiverrnew.cybersoft.edu.vn/images/cv1.jpg",
+                  "moTa": "About this gig\r\nWelcome to my custom, modern, creative and unique logo design service.\r\n\r\n\r\n\r\nI do much appreciate for taking your valuable time to monitor my gig. Are you looking for a custom or professional logo for your business to give a new look and want to give boost your brand look so Yes this is the right place.\r\n\r\n\r\n\r\nWhy choose me:\r\n\r\nProfessional, Creative and unique logo design\r\nEye-Catching and Customer Attractive.\r\nHigh Quality & Perfect Design.\r\nClean & Smooth & minimalist Wor",
+                  "maChiTietLoaiCongViec": 2,
+                  "moTaNgan": "BASIC\r\nUS$10\r\n1 Basic concept +JPEG +PNG+ Unlimited revisions+ Mockup\r\n\r\n1-day delivery\r\nUnlimited Revisions\r\n1 concept included\r\nLogo transparency\r\nVector file\r\nPrintable file\r\nInclude 3D mockup\r\nInclude source file",
+                  "saoCongViec": 3
+                },
+                "tenLoaiCongViec": "Graphics & Design",
+                "tenNhomChiTietLoai": "Logo & Brand Identity",
+                "tenChiTietLoai": "Logo Design",
+                "tenNguoiTao": "string",
+                "avatar": ""
+              }
+            ]
+          }
+        }
+      },
+      "/api/loai-cong-viec": {
+        "get": {
+          "tags": [
+            "LoaiCongViec"
+          ],
+          "operationId": "Get",
+          "consumes": [],
+          "produces": [],
+          "parameters": [
+            {
+              "name": "tokenCybersoft",
+              "in": "header",
+              "description": "Nhập token cybersoft",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "statusCode": 200,
+            "content": [
+              {
+                "id": 1,
+                "tenLoaiCongViec": "Graphics & Design"
+              },
+              {
+                "id": 2,
+                "tenLoaiCongViec": "Digital Marketing"
+              },
+              {
+                "id": 3,
+                "tenLoaiCongViec": "Writing & Translation"
+              },
+              {
+                "id": 4,
+                "tenLoaiCongViec": "Video & Animation"
+              },
+              {
+                "id": 5,
+                "tenLoaiCongViec": "Music & Audio"
+              },
+              {
+                "id": 5631,
+                "tenLoaiCongViec": "Content Creator"
+              },
+              {
+                "id": 5633,
+                "tenLoaiCongViec": "CI/CD"
+              },
+              {
+                "id": 6634,
+                "tenLoaiCongViec": "Design & Marketing"
+              },
+              {
+                "id": 6641,
+                "tenLoaiCongViec": "UI UX Design"
+              },
+              {
+                "id": 8637,
+                "tenLoaiCongViec": "react"
+              }
+            ],
+            "dateTime": "2026-08-11T10:52:09.2925817+07:00"
+          }
+        },
+        "post": {
+          "tags": [
+            "LoaiCongViec"
+          ],
+          "operationId": "Post",
+          "consumes": [
+            "application/json-patch+json",
+            "application/json",
+            "text/json",
+            "application/*+json"
+          ],
+          "produces": [],
+          "parameters": [
+            {
+              "name": "token",
+              "in": "header",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "model",
+              "in": "body",
+              "required": false,
+              "schema": {
+                "$ref": "#/definitions/LoaiCongViecViewModel"
+              }
+            },
+            {
+              "name": "tokenCybersoft",
+              "in": "header",
+              "description": "Nhập token cybersoft",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "statusCode": 201,
+            "message": "Thêm mới thành công!",
+            "content": {
+              "id": 8638,
+              "tenLoaiCongViec": "string"
+            },
+            "dateTime": "2026-08-11T11:47:54.4902001+07:00"
+          }
+        }
+      },
+      "/api/loai-cong-viec/phan-trang-tim-kiem": {
+        "get": {
+          "tags": [
+            "LoaiCongViec"
+          ],
+          "operationId": "GetPaging",
+          "consumes": [],
+          "produces": [],
+          "parameters": [
+            {
+              "name": "pageIndex",
+              "in": "query",
+              "required": false,
+              "type": "integer",
+              "format": "int32"
+            },
+            {
+              "name": "pageSize",
+              "in": "query",
+              "required": false,
+              "type": "integer",
+              "format": "int32"
+            },
+            {
+              "name": "keyword",
+              "in": "query",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "tokenCybersoft",
+              "in": "header",
+              "description": "Nhập token cybersoft",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "statusCode": 200,
+            "content": {
+              "pageIndex": 1,
+              "pageSize": 1,
+              "totalRow": 10,
+              "keywords": null,
+              "data": [
+                {
+                  "id": 1,
+                  "tenLoaiCongViec": "Graphics & Design"
+                }
+              ]
+            },
+            "dateTime": "2026-08-11T10:52:53.0204663+07:00"
+          }
+        }
+      },
+      "/api/loai-cong-viec/{id}": {
+        "get": {
+          "tags": [
+            "LoaiCongViec"
+          ],
+          "operationId": "Get",
+          "consumes": [],
+          "produces": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "integer",
+              "format": "int32"
+            },
+            {
+              "name": "tokenCybersoft",
+              "in": "header",
+              "description": "Nhập token cybersoft",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "statusCode": 200,
+            "content": [
+              {
+                "id": 1,
+                "tenLoaiCongViec": "Graphics & Design"
+              },
+              {
+                "id": 2,
+                "tenLoaiCongViec": "Digital Marketing"
+              },
+              {
+                "id": 3,
+                "tenLoaiCongViec": "Writing & Translation"
+              },
+              {
+                "id": 4,
+                "tenLoaiCongViec": "Video & Animation"
+              },
+              {
+                "id": 5,
+                "tenLoaiCongViec": "Music & Audio"
+              },
+              {
+                "id": 5631,
+                "tenLoaiCongViec": "Content Creator"
+              },
+              {
+                "id": 5633,
+                "tenLoaiCongViec": "CI/CD"
+              },
+              {
+                "id": 6634,
+                "tenLoaiCongViec": "Design & Marketing"
+              },
+              {
+                "id": 6641,
+                "tenLoaiCongViec": "UI UX Design"
+              },
+              {
+                "id": 8637,
+                "tenLoaiCongViec": "react"
+              }
+            ],
+            "dateTime": "2026-08-11T10:52:09.2925817+07:00"
+          }
+        },
+        "put": {
+          "tags": [
+            "LoaiCongViec"
+          ],
+          "operationId": "Put",
+          "consumes": [
+            "application/json-patch+json",
+            "application/json",
+            "text/json",
+            "application/*+json"
+          ],
+          "produces": [],
+          "parameters": [
+            {
+              "name": "token",
+              "in": "header",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "integer",
+              "format": "int32"
+            },
+            {
+              "name": "model",
+              "in": "body",
+              "required": false,
+              "schema": {
+                "$ref": "#/definitions/LoaiCongViecViewModel"
+              }
+            },
+            {
+              "name": "tokenCybersoft",
+              "in": "header",
+              "description": "Nhập token cybersoft",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "statusCode": 200,
+            "message": "Cập nhật thành công!",
+            "content": {
+              "id": 8639,
+              "tenLoaiCongViec": "string"
+            },
+            "dateTime": "2026-08-11T13:47:53.3255756+07:00"
+          }
+        },
+        "delete": {
+          "tags": [
+            "LoaiCongViec"
+          ],
+          "operationId": "Delete",
+          "consumes": [],
+          "produces": [],
+          "parameters": [
+            {
+              "name": "token",
+              "in": "header",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "integer",
+              "format": "int32"
+            },
+            {
+              "name": "tokenCybersoft",
+              "in": "header",
+              "description": "Nhập token cybersoft",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "statusCode": 200,
+            "message": "Xóa thành công!",
+            "content": null,
+            "dateTime": "2026-08-11T13:48:58.8263558+07:00"
+          }
+        }
+      },
+      "/api/users": {
+        "get": {
+          "tags": [
+            "NguoiDung"
+          ],
+          "operationId": "Get",
+          "consumes": [],
+          "produces": [],
+          "parameters": [
+            {
+              "name": "tokenCybersoft",
+              "in": "header",
+              "description": "Nhập token cybersoft",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "statusCode": 200,
+            "content": [
+              {
+                "id": 1,
+                "name": "string",
+                "email": "string@gmail.com",
+                "password": "",
+                "phone": "0840000000",
+                "birthday": "2005-02-20",
+                "avatar": "",
+                "gender": false,
+                "role": "USER",
+                "skill": [],
+                "certification": [],
+                "bookingJob": [
+                  "string"
+                ]
+              }
+            ]
+          }
+        },
+        "post": {
+          "tags": [
+            "NguoiDung"
+          ],
+          "operationId": "Post",
+          "consumes": [
+            "application/json-patch+json",
+            "application/json",
+            "text/json",
+            "application/*+json"
+          ],
+          "produces": [],
+          "parameters": [
+            {
+              "name": "model",
+              "in": "body",
+              "required": false,
+              "schema": {
+                "$ref": "#/definitions/ThongTinNguoiDung"
+              }
+            },
+            {
+              "name": "tokenCybersoft",
+              "in": "header",
+              "description": "Nhập token cybersoft",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "statusCode": 200,
+            "content": {
+              "id": 0,
+              "name": "string",
+              "email": "0303211263@caothang.edu.vn",
+              "password": "string",
+              "phone": "string",
+              "birthday": "string",
+              "avatar": null,
+              "gender": true,
+              "role": "admin",
+              "skill": "[\"string\"]",
+              "certification": "[\"string\"]",
+              "bookingJob": "[]"
+            },
+            "dateTime": "2026-08-11T10:02:26.1167394+07:00"
+          }
+        },
+        "delete": {
+          "tags": [
+            "NguoiDung"
+          ],
+          "operationId": "Delete",
+          "consumes": [],
+          "produces": [],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "query",
+              "required": false,
+              "type": "integer",
+              "format": "int32"
+            },
+            {
+              "name": "tokenCybersoft",
+              "in": "header",
+              "description": "Nhập token cybersoft",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "statusCode": 200,
+            "message": "Xóa thành công!",
+            "content": null,
+            "dateTime": "2026-08-11T11:50:43.6595857+07:00"
+          }
+        }
+      },
+      "/api/users/phan-trang-tim-kiem": {
+        "get": {
+          "tags": [
+            "NguoiDung"
+          ],
+          "operationId": "GetPaging",
+          "consumes": [],
+          "produces": [],
+          "parameters": [
+            {
+              "name": "pageIndex",
+              "in": "query",
+              "required": false,
+              "type": "integer",
+              "format": "int32"
+            },
+            {
+              "name": "pageSize",
+              "in": "query",
+              "required": false,
+              "type": "integer",
+              "format": "int32"
+            },
+            {
+              "name": "keyword",
+              "in": "query",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "tokenCybersoft",
+              "in": "header",
+              "description": "Nhập token cybersoft",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "statusCode": 200,
+            "content": {
+              "pageIndex": 1,
+              "pageSize": 1,
+              "totalRow": 682,
+              "keywords": null,
+              "data": [
+                {
+                  "id": 1,
+                  "name": "string",
+                  "email": "string@gmail.com",
+                  "password": "1234",
+                  "phone": "0840000000",
+                  "birthday": "2005-02-20",
+                  "avatar": "",
+                  "gender": false,
+                  "role": "USER",
+                  "skill": [],
+                  "certification": [],
+                  "bookingJob": [
+                    "string"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        "/api/users/{id}": {
+          "get": {
+            "tags": [
+              "NguoiDung"
+            ],
+            "operationId": "Get",
+            "consumes": [],
+            "produces": [],
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "type": "integer",
+                "format": "int32"
+              },
+              {
+                "name": "tokenCybersoft",
+                "in": "header",
+                "description": "Nhập token cybersoft",
+                "required": true,
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "statusCode": 200,
+              "content": [
+                {
+                  "id": 1,
+                  "name": "string",
+                  "email": "string@gmail.com",
+                  "password": "",
+                  "phone": "0840000000",
+                  "birthday": "2005-02-20",
+                  "avatar": "",
+                  "gender": false,
+                  "role": "USER",
+                  "skill": [],
+                  "certification": [],
+                  "bookingJob": [
+                    "string"
+                  ]
+                }
+              ]
+            }
+          },
+          "put": {
+            "tags": [
+              "NguoiDung"
+            ],
+            "operationId": "Put",
+            "consumes": [
+              "application/json-patch+json",
+              "application/json",
+              "text/json",
+              "application/*+json"
+            ],
+            "produces": [],
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "type": "integer",
+                "format": "int32"
+              },
+              {
+                "name": "model",
+                "in": "body",
+                "required": false,
+                "schema": {
+                  "$ref": "#/definitions/CapNhatNguoiDung"
+                }
+              },
+              {
+                "name": "tokenCybersoft",
+                "in": "header",
+                "description": "Nhập token cybersoft",
+                "required": true,
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "statusCode": 200,
+              "content": {
+                "id": 28266,
+                "name": "string",
+                "email": "cu1@gmail.com",
+                "password": "string",
+                "phone": "string",
+                "birthday": "string",
+                "avatar": "",
+                "gender": true,
+                "role": "ADMIN",
+                "skill": "[\"string\"]",
+                "certification": "[\"string\"]",
+                "bookingJob": "[]"
+              },
+              "dateTime": "2026-08-11T11:55:45.0621111+07:00"
+            }
+          }
+        },
+        "/api/users/search/{TenNguoiDung}": {
+          "get": {
+            "tags": [
+              "NguoiDung"
+            ],
+            "operationId": "GetByName",
+            "consumes": [],
+            "produces": [],
+            "parameters": [
+              {
+                "name": "TenNguoiDung",
+                "in": "path",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "name": "tokenCybersoft",
+                "in": "header",
+                "description": "Nhập token cybersoft",
+                "required": true,
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "statusCode": 200,
+              "content": [
+                {
+                  "id": 28262,
+                  "name": "kienhienh",
+                  "email": "kienhienh@gmail.com",
+                  "password": "123456",
+                  "phone": "",
+                  "birthday": "",
+                  "avatar": "",
+                  "gender": false,
+                  "role": "USER",
+                  "skill": "null",
+                  "certification": "null",
+                  "bookingJob": "[]"
+                }
+              ],
+              "dateTime": "2026-08-11T11:01:00.9416949+07:00"
+            }
+          }
+        },
+        "/api/users/upload-avatar": {
+          "post": {
+            "tags": [
+              "NguoiDung"
+            ],
+            "operationId": "UploadAvatar",
+            "consumes": [
+              "multipart/form-data"
+            ],
+            "produces": [],
+            "parameters": [
+              {
+                "name": "token",
+                "in": "header",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "name": "formFile",
+                "in": "formData",
+                "required": false,
+                "type": "file"
+              },
+              {
+                "name": "tokenCybersoft",
+                "in": "header",
+                "description": "Nhập token cybersoft",
+                "required": true,
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "statusCode": 200,
+              "content": {
+                "id": 28266,
+                "name": "string",
+                "email": "cu1@gmail.com",
+                "password": "string",
+                "phone": "string",
+                "birthday": "string",
+                "avatar": "http://fiverrnew.cybersoft.edu.vn/avatar/11-08-2026-01-43-36-gemini_generated_image_eqaqo7eqaqo7eqaq.png",
+                "gender": true,
+                "role": "ADMIN",
+                "skill": "[\"string\"]",
+                "certification": "[\"string\"]",
+                "bookingJob": "[]"
+              },
+              "dateTime": "2026-08-11T13:43:36.3592906+07:00"
+            }
+          }
+        },
+        "/api/skill": {
+          "get": {
+            "tags": [
+              "Skill"
+            ],
+            "operationId": "Get",
+            "consumes": [],
+            "produces": [],
+            "parameters": [
+              {
+                "name": "tokenCybersoft",
+                "in": "header",
+                "description": "Nhập token cybersoft",
+                "required": true,
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "statusCode": 200,
+              "content": [
+                {
+                  "id": 1,
+                  "tenSkill": "JavaScript"
+                },
+                {
+                  "id": 2,
+                  "tenSkill": "Python"
+                },
+                {
+                  "id": 3,
+                  "tenSkill": "Java"
+                },
+                {
+                  "id": 4,
+                  "tenSkill": "C#"
+                },
+                {
+                  "id": 5,
+                  "tenSkill": "C++"
+                },
+                {
+                  "id": 6,
+                  "tenSkill": "SQL"
+                },
+                {
+                  "id": 7,
+                  "tenSkill": "HTML"
+                },
+                {
+                  "id": 8,
+                  "tenSkill": "CSS"
+                },
+                {
+                  "id": 9,
+                  "tenSkill": "Ruby"
+                },
+                {
+                  "id": 10,
+                  "tenSkill": "PHP"
+                },
+                {
+                  "id": 11,
+                  "tenSkill": "Swift"
+                },
+                {
+                  "id": 12,
+                  "tenSkill": "Kotlin"
+                },
+                {
+                  "id": 13,
+                  "tenSkill": "TypeScript"
+                },
+                {
+                  "id": 14,
+                  "tenSkill": "Go"
+                },
+                {
+                  "id": 15,
+                  "tenSkill": "Rust"
+                },
+                {
+                  "id": 16,
+                  "tenSkill": "Dart"
+                },
+                {
+                  "id": 17,
+                  "tenSkill": "Scala"
+                },
+                {
+                  "id": 18,
+                  "tenSkill": "Perl"
+                },
+                {
+                  "id": 19,
+                  "tenSkill": "R"
+                },
+                {
+                  "id": 20,
+                  "tenSkill": "MATLAB"
+                },
+                {
+                  "id": 21,
+                  "tenSkill": "Objective-C"
+                },
+                {
+                  "id": 22,
+                  "tenSkill": "Shell Scripting"
+                },
+                {
+                  "id": 23,
+                  "tenSkill": "PowerShell"
+                },
+                {
+                  "id": 24,
+                  "tenSkill": "Bash"
+                },
+                {
+                  "id": 25,
+                  "tenSkill": "ASP.NET"
+                },
+                {
+                  "id": 26,
+                  "tenSkill": "Node.js"
+                },
+                {
+                  "id": 27,
+                  "tenSkill": "React"
+                },
+                {
+                  "id": 28,
+                  "tenSkill": "Angular"
+                },
+                {
+                  "id": 29,
+                  "tenSkill": "Vue.js"
+                },
+                {
+                  "id": 30,
+                  "tenSkill": "Django"
+                },
+                {
+                  "id": 31,
+                  "tenSkill": "Flask"
+                },
+                {
+                  "id": 32,
+                  "tenSkill": "Spring Boot"
+                },
+                {
+                  "id": 33,
+                  "tenSkill": "Ruby on Rails"
+                },
+                {
+                  "id": 34,
+                  "tenSkill": "Laravel"
+                },
+                {
+                  "id": 35,
+                  "tenSkill": "Symphony"
+                },
+                {
+                  "id": 36,
+                  "tenSkill": "Express.js"
+                },
+                {
+                  "id": 37,
+                  "tenSkill": "TensorFlow"
+                },
+                {
+                  "id": 38,
+                  "tenSkill": "PyTorch"
+                },
+                {
+                  "id": 39,
+                  "tenSkill": "Docker"
+                },
+                {
+                  "id": 40,
+                  "tenSkill": "Kubernetes"
+                },
+                {
+                  "id": 41,
+                  "tenSkill": "Git"
+                },
+                {
+                  "id": 42,
+                  "tenSkill": "Jenkins"
+                },
+                {
+                  "id": 43,
+                  "tenSkill": "CI/CD"
+                },
+                {
+                  "id": 44,
+                  "tenSkill": "Agile"
+                },
+                {
+                  "id": 45,
+                  "tenSkill": "Scrum"
+                },
+                {
+                  "id": 46,
+                  "tenSkill": "TDD"
+                },
+                {
+                  "id": 47,
+                  "tenSkill": "BDD"
+                },
+                {
+                  "id": 48,
+                  "tenSkill": "REST API"
+                },
+                {
+                  "id": 49,
+                  "tenSkill": "GraphQL"
+                },
+                {
+                  "id": 50,
+                  "tenSkill": "Microservices"
+                },
+                {
+                  "id": 51,
+                  "tenSkill": "Machine Learning"
+                },
+                {
+                  "id": 52,
+                  "tenSkill": "Data Science"
+                },
+                {
+                  "id": 53,
+                  "tenSkill": "Artificial Intelligence"
+                },
+                {
+                  "id": 54,
+                  "tenSkill": "DevOps"
+                },
+                {
+                  "id": 55,
+                  "tenSkill": "Cloud Computing"
+                },
+                {
+                  "id": 56,
+                  "tenSkill": "AWS"
+                },
+                {
+                  "id": 57,
+                  "tenSkill": "Azure"
+                },
+                {
+                  "id": 58,
+                  "tenSkill": "Google Cloud Platform"
+                },
+                {
+                  "id": 59,
+                  "tenSkill": "Big Data"
+                },
+                {
+                  "id": 60,
+                  "tenSkill": "Hadoop"
+                },
+                {
+                  "id": 61,
+                  "tenSkill": "Spark"
+                },
+                {
+                  "id": 62,
+                  "tenSkill": "NoSQL"
+                },
+                {
+                  "id": 63,
+                  "tenSkill": "MongoDB"
+                },
+                {
+                  "id": 64,
+                  "tenSkill": "Cassandra"
+                },
+                {
+                  "id": 65,
+                  "tenSkill": "Redis"
+                },
+                {
+                  "id": 66,
+                  "tenSkill": "Elasticsearch"
+                },
+                {
+                  "id": 67,
+                  "tenSkill": "Firebase"
+                }
+              ],
+              "dateTime": "2026-08-11T11:01:57.4723811+07:00"
+            }
+          }
+        },
+        "/api/thue-cong-viec": {
+          "get": {
+            "tags": [
+              "ThueCongViec"
+            ],
+            "operationId": "Get",
+            "consumes": [],
+            "produces": [],
+            "parameters": [
+              {
+                "name": "tokenCybersoft",
+                "in": "header",
+                "description": "Nhập token cybersoft",
+                "required": true,
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "statusCode": 200,
+              "content": [
+                {
+                  "id": 4848,
+                  "maCongViec": 9,
+                  "maNguoiThue": 2661,
+                  "ngayThue": "8/11/2023",
+                  "hoanThanh": true
+                }
+              ]
+            }
+          },
+          "post": {
+            "tags": [
+              "ThueCongViec"
+            ],
+            "operationId": "Post",
+            "consumes": [
+              "application/json-patch+json",
+              "application/json",
+              "text/json",
+              "application/*+json"
+            ],
+            "produces": [],
+            "parameters": [
+              {
+                "name": "token",
+                "in": "header",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "name": "model",
+                "in": "body",
+                "required": false,
+                "schema": {
+                  "$ref": "#/definitions/ThueCongViecViewModel"
+                }
+              },
+              {
+                "name": "tokenCybersoft",
+                "in": "header",
+                "description": "Nhập token cybersoft",
+                "required": true,
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "statusCode": 201,
+              "message": "Thêm mới thành công!",
+              "content": {
+                "id": 28185,
+                "maCongViec": 1,
+                "maNguoiThue": 28262,
+                "ngayThue": "2026-08-11T02:08:54.621Z",
+                "hoanThanh": false
+              },
+              "dateTime": "2026-08-11T11:59:08.2042303+07:00"
+            }
+          }
+        },
+        "/api/thue-cong-viec/phan-trang-tim-kiem": {
+          "get": {
+            "tags": [
+              "ThueCongViec"
+            ],
+            "operationId": "GetPaging",
+            "consumes": [],
+            "produces": [],
+            "parameters": [
+              {
+                "name": "pageIndex",
+                "in": "query",
+                "required": false,
+                "type": "integer",
+                "format": "int32"
+              },
+              {
+                "name": "pageSize",
+                "in": "query",
+                "required": false,
+                "type": "integer",
+                "format": "int32"
+              },
+              {
+                "name": "keyword",
+                "in": "query",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "name": "tokenCybersoft",
+                "in": "header",
+                "description": "Nhập token cybersoft",
+                "required": true,
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "statusCode": 200,
+              "content": {
+                "pageIndex": 1,
+                "pageSize": 1,
+                "totalRow": 1637,
+                "keywords": null,
+                "data": [
+                  {
+                    "id": 4848,
+                    "maCongViec": 9,
+                    "maNguoiThue": 2661,
+                    "ngayThue": "8/11/2023",
+                    "hoanThanh": true
+                  }
+                ]
+              },
+              "dateTime": "2026-08-11T11:04:00.325955+07:00"
+            }
+          }
+        },
+        "/api/thue-cong-viec/{id}": {
+          "get": {
+            "tags": [
+              "ThueCongViec"
+            ],
+            "operationId": "Get",
+            "consumes": [],
+            "produces": [],
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "type": "integer",
+                "format": "int32"
+              },
+              {
+                "name": "tokenCybersoft",
+                "in": "header",
+                "description": "Nhập token cybersoft",
+                "required": true,
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "statusCode": 200,
+              "content": [
+                {
+                  "id": 4848,
+                  "maCongViec": 9,
+                  "maNguoiThue": 2661,
+                  "ngayThue": "8/11/2023",
+                  "hoanThanh": true
+                }
+              ]
+            },
+            "put": {
+              "tags": [
+                "ThueCongViec"
+              ],
+              "operationId": "Put",
+              "consumes": [
+                "application/json-patch+json",
+                "application/json",
+                "text/json",
+                "application/*+json"
+              ],
+              "produces": [],
+              "parameters": [
+                {
+                  "name": "token",
+                  "in": "header",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "id",
+                  "in": "path",
+                  "required": true,
+                  "type": "integer",
+                  "format": "int32"
+                },
+                {
+                  "name": "model",
+                  "in": "body",
+                  "required": false,
+                  "schema": {
+                    "$ref": "#/definitions/ThueCongViecViewModel"
+                  }
+                },
+                {
+                  "name": "tokenCybersoft",
+                  "in": "header",
+                  "description": "Nhập token cybersoft",
+                  "required": true,
+                  "type": "string"
+                }
+              ],
+              "responses": {
+                "statusCode": 200,
+                "message": "Cập nhật thành công!",
+                "content": {
+                  "id": 28185,
+                  "maCongViec": 1,
+                  "maNguoiThue": 28262,
+                  "ngayThue": "2026-08-11T02:08:54.621Z",
+                  "hoanThanh": false
+                },
+                "dateTime": "2026-08-11T13:39:29.263322+07:00"
+              }
+            },
+            "delete": {
+              "tags": [
+                "ThueCongViec"
+              ],
+              "operationId": "Delete",
+              "consumes": [],
+              "produces": [],
+              "parameters": [
+                {
+                  "name": "token",
+                  "in": "header",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "id",
+                  "in": "path",
+                  "required": true,
+                  "type": "integer",
+                  "format": "int32"
+                },
+                {
+                  "name": "tokenCybersoft",
+                  "in": "header",
+                  "description": "Nhập token cybersoft",
+                  "required": true,
+                  "type": "string"
+                }
+              ],
+              "responses": {
+                "statusCode": 200,
+                "message": "Xóa thành công!",
+                "content": null,
+                "dateTime": "2026-08-11T13:40:33.1732472+07:00"
+              }
+            }
+          },
+          "/api/thue-cong-viec/lay-danh-sach-da-thue": {
+            "get": {
+              "tags": [
+                "ThueCongViec"
+              ],
+              "operationId": "GetCongViecDaThue",
+              "consumes": [],
+              "produces": [],
+              "parameters": [
+                {
+                  "name": "token",
+                  "in": "header",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "tokenCybersoft",
+                  "in": "header",
+                  "description": "Nhập token cybersoft",
+                  "required": true,
+                  "type": "string"
+                }
+              ],
+              "responses": {
+                "statusCode": 200,
+                "content": [],
+                "dateTime": "2026-08-11T11:06:22.4772765+07:00"
+              }
+            }
+          },
+          "/api/thue-cong-viec/hoan-thanh-cong-viec/{MaThueCongViec}": {
+            "post": {
+              "tags": [
+                "ThueCongViec"
+              ],
+              "operationId": "HoanThanhCongViec",
+              "consumes": [],
+              "produces": [],
+              "parameters": [
+                {
+                  "name": "MaThueCongViec",
+                  "in": "path",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "name": "tokenCybersoft",
+                  "in": "header",
+                  "description": "Nhập token cybersoft",
+                  "required": true,
+                  "type": "string"
+                }
+              ],
+              "responses": {
+                "statusCode": 200,
+                "content": {
+                  "id": 28184,
+                  "maCongViec": 1,
+                  "maNguoiThue": 28262,
+                  "ngayThue": "2026-08-11T02:08:54.621Z",
+                  "hoanThanh": true
+                },
+                "dateTime": "2026-08-11T11:52:15.8557015+07:00"
+              }
+            }
+          }
+        },
+        "definitions": {
+          "ThongTinNguoiDung": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "format": "int32",
+                "type": "integer"
+              },
+              "name": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              },
+              "phone": {
+                "type": "string"
+              },
+              "birthday": {
+                "type": "string"
+              },
+              "gender": {
+                "type": "boolean"
+              },
+              "role": {
+                "type": "string"
+              },
+              "skill": {
+                "uniqueItems": false,
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "certification": {
+                "uniqueItems": false,
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "DangNhapView": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              }
+            }
+          },
+          "BinhLuanViewModel": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "format": "int32",
+                "type": "integer"
+              },
+              "maCongViec": {
+                "format": "int32",
+                "type": "integer"
+              },
+              "maNguoiBinhLuan": {
+                "format": "int32",
+                "type": "integer"
+              },
+              "ngayBinhLuan": {
+                "type": "string"
+              },
+              "noiDung": {
+                "type": "string"
+              },
+              "saoBinhLuan": {
+                "format": "int32",
+                "type": "integer"
+              }
+            }
+          },
+          "ChiTietLoaiView": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "format": "int32",
+                "type": "integer"
+              },
+              "tenChiTiet": {
+                "type": "string"
+              }
+            }
+          },
+          "ChiTietLoaiCongViecViewModel": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "format": "int32",
+                "type": "integer"
+              },
+              "tenChiTiet": {
+                "type": "string"
+              },
+              "maLoaiCongViec": {
+                "format": "int32",
+                "type": "integer"
+              },
+              "danhSachChiTiet": {
+                "uniqueItems": false,
+                "type": "array",
+                "items": {
+                  "format": "int32",
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "CongViecViewModel": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "format": "int32",
+                "type": "integer"
+              },
+              "tenCongViec": {
+                "type": "string"
+              },
+              "danhGia": {
+                "format": "int32",
+                "type": "integer"
+              },
+              "giaTien": {
+                "format": "int32",
+                "type": "integer"
+              },
+              "nguoiTao": {
+                "format": "int32",
+                "type": "integer"
+              },
+              "hinhAnh": {
+                "type": "string"
+              },
+              "moTa": {
+                "type": "string"
+              },
+              "maChiTietLoaiCongViec": {
+                "format": "int32",
+                "type": "integer"
+              },
+              "moTaNgan": {
+                "type": "string"
+              },
+              "saoCongViec": {
+                "format": "int32",
+                "type": "integer"
+              }
+            }
+          },
+          "LoaiCongViecViewModel": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "format": "int32",
+                "type": "integer"
+              },
+              "tenLoaiCongViec": {
+                "type": "string"
+              }
+            }
+          },
+          "CapNhatNguoiDung": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "format": "int32",
+                "type": "integer"
+              },
+              "name": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "phone": {
+                "type": "string"
+              },
+              "birthday": {
+                "type": "string"
+              },
+              "gender": {
+                "type": "boolean"
+              },
+              "role": {
+                "type": "string"
+              },
+              "skill": {
+                "uniqueItems": false,
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "certification": {
+                "uniqueItems": false,
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "ThueCongViecViewModel": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "format": "int32",
+                "type": "integer"
+              },
+              "maCongViec": {
+                "format": "int32",
+                "type": "integer"
+              },
+              "maNguoiThue": {
+                "format": "int32",
+                "type": "integer"
+              },
+              "ngayThue": {
+                "type": "string"
+              },
+              "hoanThanh": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

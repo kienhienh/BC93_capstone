@@ -45,7 +45,7 @@ export function RegisterRoute() {
       confirmPassword,
       phone,
     });
-    if (!result.ok) {
+    if (result.ok === false) {
       setErrors(result.errors);
       return;
     }
@@ -221,7 +221,7 @@ export function LoginRoute() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const validation = validateSignIn({ email, password });
-    if (!validation.ok) {
+    if (validation.ok === false) {
       setFieldErrors(validation.errors);
       return;
     }

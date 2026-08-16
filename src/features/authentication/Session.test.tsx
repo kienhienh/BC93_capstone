@@ -129,13 +129,13 @@ describe("Session", () => {
     expect(screen.queryByRole("heading", { name: "Login" })).not.toBeInTheDocument();
   });
 
-  it("allows only the exact ADMIN role into admin routes and navigation", () => {
+  it("allows only the exact ADMIN role into admin routes and navigation", async () => {
     const { store } = createSessionStore(createStoredSession("ADMIN"));
     renderTestApplication("/admin/users", store);
 
     expect(screen.getByRole("link", { name: "Administrator" })).toBeVisible();
-    expect(screen.getByRole("heading", { name: "Administrator" })).toBeVisible();
-    expect(document.title).toBe("Administrator | Fiverr Clone");
+    expect(await screen.findByRole("heading", { name: "User Management" })).toBeVisible();
+    expect(document.title).toBe("User Management | Administrator");
   });
 
   it("clears the Session on 401 and keeps a safe return destination", () => {

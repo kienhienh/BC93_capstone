@@ -7,7 +7,7 @@ import { createCybersoftAuthenticationCapability } from "../infrastructure/cyber
 import { createBrowserSessionStore } from "../infrastructure/browser/session-store";
 import { createCybersoftTaxonomyCapability } from "../infrastructure/cybersoft/taxonomy";
 import type { TaxonomyCapability } from "../features/taxonomy/wiring";
-import { readRuntimeConfig, type RuntimeConfigResult } from "./runtime-config";
+import { readRuntimeConfig, type RuntimeConfig } from "./runtime-config";
 import { createCybersoftServiceDiscoveryCapability } from "../infrastructure/cybersoft/service-discovery";
 import type { ServiceDiscoveryCapability } from "../features/service-discovery/wiring";
 import type { ServiceDetailCapability } from "../features/service-detail/wiring";
@@ -32,6 +32,7 @@ export type ApplicationComposition =
       commentSubmission: CommentSubmissionCapability;
       hireConfirmation: HireConfirmationCapability;
       profile: ProfileCapability;
+      runtimeConfig: RuntimeConfig;
     }
   | { ok: false; message: string };
 
@@ -55,13 +56,17 @@ export function composeApplication({
       commentSubmission: createUnavailableCommentSubmissionCapability(),
       hireConfirmation: createUnavailableHireConfirmationCapability(),
       profile: createUnavailableProfileCapability(),
+      runtimeConfig: {
+        apiBaseUrl: "http://api.example.test/api",
+        cybersoftToken: "deterministic-test-token",
+      },
     };
   }
 
-  const configResult: RuntimeConfigResult = readRuntimeConfig(environment);
+  const configResult = readRuntimeConfig(environment);
 
-  if (!configResult.ok) {
-    return configResult;
+  if (configResult.ok === false) {
+    return { ok: false, message: configResult.message };
   }
 
   return {
@@ -76,6 +81,7 @@ export function composeApplication({
     commentSubmission: createCybersoftCommentSubmissionCapability(configResult.config),
     hireConfirmation: createCybersoftHireConfirmationCapability(configResult.config),
     profile: createCybersoftProfileCapability(configResult.config),
+    runtimeConfig: configResult.config,
   };
 }
 
