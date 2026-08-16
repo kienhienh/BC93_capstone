@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Routes, Route } from "react-router-dom";
 import { ServicePreviewProvider } from "./features/service-preview/wiring";
@@ -12,7 +12,6 @@ import Header from "./components/Header";
 import Footer from './components/Footer';
 import Orders from './pages/Orders';
 import PrivateRoute from "./components/PrivateRoute";
-import Admin from "./pages/Admin";
 import { ServiceDiscoveryRoute } from "./features/service-discovery/public";
 import { CategoryLandingRoute } from "./features/taxonomy/public";
 import { TaxonomyProvider } from "./features/taxonomy/wiring";
@@ -24,6 +23,17 @@ import { HireConfirmationProvider } from "./features/hire-confirmation/wiring";
 import { HiredServicesRoute, HireConfirmationRoute } from "./features/hire-confirmation/public";
 import { ProfileProvider } from "./features/profile/wiring";
 import { ProfileRoute } from "./features/profile/public";
+
+const AdminArea = lazy(() => import("./app/admin-area"));
+
+function AdminLoading() {
+  return (
+    <main id="main-content" className="authorization-message" aria-busy="true">
+      <h1 tabIndex={-1}>Loading Administrator</h1>
+      <p role="status">Preparing Administrator workspace...</p>
+    </main>
+  );
+}
 
 function ConfigurationError({ message }: { message: string }) {
   return (
@@ -44,7 +54,7 @@ function App({ composition: suppliedComposition }: { composition?: ApplicationCo
       }),
   );
 
-  if (!composition.ok) {
+  if (composition.ok === false) {
     return <ConfigurationError message={composition.message} />;
   }
 
@@ -98,7 +108,9 @@ function App({ composition: suppliedComposition }: { composition?: ApplicationCo
               path="/admin/*"
               element={
                 <AdminRoute>
-                  <Admin />
+                  <Suspense fallback={<AdminLoading />}>
+                    <AdminArea config={composition.runtimeConfig} />
+                  </Suspense>
                 </AdminRoute>
               }
             />

@@ -1,3 +1,0 @@
-a làm đc trang chủ (thiếu gì thì cập nhật thêm, có header và footer)
-trang đăng kí, đăng nhập (chưa thử tính năng)
-trang chi tiết và trang thanh toán
