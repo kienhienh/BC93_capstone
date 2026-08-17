@@ -1,6 +1,8 @@
 import { useMemo } from "react";
 import { AdminUserManagementProvider } from "../features/admin-user-management/wiring";
 import { createCybersoftAdminUserManagementCapability } from "../infrastructure/cybersoft/admin-user-management";
+import { AdminServiceManagementProvider } from "../features/admin-service-management/wiring";
+import { createCybersoftAdminServiceManagementCapability } from "../infrastructure/cybersoft/admin-service-management";
 import Admin from "../pages/Admin";
 import type { RuntimeConfig } from "./runtime-config";
 
@@ -18,10 +20,16 @@ export default function AdminArea({ config }: { config: RuntimeConfig }) {
     () => createCybersoftAdminUserManagementCapability({ apiBaseUrl, cybersoftToken }),
     [apiBaseUrl, cybersoftToken],
   );
+  const serviceCapability = useMemo(
+    () => createCybersoftAdminServiceManagementCapability({ apiBaseUrl, cybersoftToken }),
+    [apiBaseUrl, cybersoftToken],
+  );
 
   return (
     <AdminUserManagementProvider capability={capability}>
-      <Admin />
+      <AdminServiceManagementProvider capability={serviceCapability}>
+        <Admin />
+      </AdminServiceManagementProvider>
     </AdminUserManagementProvider>
   );
 }

@@ -6,6 +6,12 @@ import {
   AdminUserEditRoute,
   AdminUserListRoute,
 } from "../features/admin-user-management/public";
+import {
+  AdminServiceCreateRoute,
+  AdminServiceDetailRoute,
+  AdminServiceEditRoute,
+  AdminServiceListRoute,
+} from "../features/admin-service-management/public";
 
 type AdminDestination = {
   label: string;
@@ -25,6 +31,7 @@ const destinations: AdminDestination[] = [
     label: "Services",
     shortLabel: "SV",
     description: "Review service metadata, sellers, pricing, and media.",
+    to: "/admin/services",
   },
   {
     label: "Service Categories",
@@ -199,6 +206,10 @@ export default function Admin() {
             <Route path="users/new" element={<AdminUserCreateRoute />} />
             <Route path="users/:userId/edit" element={<AdminUserEditRoute />} />
             <Route path="users/:userId" element={<AdminUserDetailRoute />} />
+            <Route path="services" element={<AdminServiceListRoute />} />
+            <Route path="services/new" element={<AdminServiceCreateRoute />} />
+            <Route path="services/:serviceId/edit" element={<AdminServiceEditRoute />} />
+            <Route path="services/:serviceId" element={<AdminServiceDetailRoute />} />
           </Routes>
         </div>
       </section>

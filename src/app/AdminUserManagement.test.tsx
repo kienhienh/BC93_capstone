@@ -66,7 +66,8 @@ describe("Admin User Management", () => {
 
     const desktopNavigation = screen.getByRole("complementary", { name: "Administrator navigation" });
     expect(within(desktopNavigation).getByRole("link", { name: "Users" })).toHaveAttribute("href", "/admin/users");
-    for (const label of ["Services", "Service Categories", "Service Subcategories", "Comments", "Hired Services"]) {
+    expect(within(desktopNavigation).getByRole("link", { name: "Services" })).toHaveAttribute("href", "/admin/services");
+    for (const label of ["Service Categories", "Service Subcategories", "Comments", "Hired Services"]) {
       expect(within(desktopNavigation).getByText(label)).toBeVisible();
     }
 
