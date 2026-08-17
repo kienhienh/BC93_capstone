@@ -1,7 +1,7 @@
 import type {
   AdminUser,
   CanonicalAdminUserRole,
-  CreateUserInput,
+  CreateAdministratorInput,
   UpdateUserInput,
 } from "./capability";
 
@@ -14,6 +14,7 @@ export type UserFormState = {
   role: CanonicalAdminUserRole | "";
   skills: string;
   certifications: string;
+  password: string;
 };
 
 function tags(value: string) {
@@ -33,14 +34,14 @@ export function isCanonicalRole(role: string): role is CanonicalAdminUserRole {
   return role === "USER" || role === "ADMIN";
 }
 
-export function toCreateInput(form: UserFormState): CreateUserInput {
+export function toCreateAdministratorInput(form: UserFormState): CreateAdministratorInput {
   return {
     name: form.name.trim(),
     email: form.email.trim(),
+    password: form.password,
     phone: form.phone.trim(),
     birthday: form.birthday,
     gender: form.gender,
-    role: form.role === "ADMIN" ? "ADMIN" : "USER",
     skills: tags(form.skills),
     certifications: tags(form.certifications),
   };
@@ -68,9 +69,10 @@ export function emptyForm(): UserFormState {
     phone: "",
     birthday: "",
     gender: true,
-    role: "USER",
+    role: "ADMIN",
     skills: "",
     certifications: "",
+    password: "",
   };
 }
 
@@ -84,5 +86,6 @@ export function formFromUser(user: AdminUser): UserFormState {
     role: isCanonicalRole(user.role) ? user.role : "",
     skills: user.skills.join(", "),
     certifications: user.certifications.join(", "),
+    password: "",
   };
 }

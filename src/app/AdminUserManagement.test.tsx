@@ -244,21 +244,26 @@ describe("Admin User Management", () => {
     expect(await screen.findByRole("grid", { name: "User list" })).toBeVisible();
   });
 
-  it("validates Create locally, focuses the first invalid field, and exposes only USER/ADMIN roles", async () => {
+  it("validates Add Administrator locally, requires a password, and fixes the role to ADMIN", async () => {
     renderTestApplication({ initialPath: "/admin/users/new", isAdmin: true });
     const user = userEvent.setup();
-    const heading = await screen.findByRole("heading", { name: "Create User" });
+    const heading = await screen.findByRole("heading", { name: "Add Administrator" });
     expect(heading).toHaveFocus();
-    expect(document.title).toBe("Create User | Administrator");
+    expect(document.title).toBe("Add Administrator | Administrator");
+    expect(screen.getByRole("status", { name: "Role Administrator" })).toHaveTextContent("Administrator");
+    expect(screen.queryByRole("combobox", { name: /Role/ })).not.toBeInTheDocument();
 
-    const role = screen.getByRole("combobox", { name: /Role/ });
-    expect(within(role).getAllByRole("option").map((option) => option.getAttribute("value"))).toEqual(["USER", "ADMIN"]);
-    await user.click(screen.getByRole("button", { name: "Create User" }));
+    await user.click(screen.getByRole("button", { name: "Add Administrator" }));
     expect(await screen.findByText("Name is required.")).toBeVisible();
     await waitFor(() => expect(screen.getByRole("textbox", { name: /Full Name/ })).toHaveFocus());
+
+    await user.type(screen.getByRole("textbox", { name: /Full Name/ }), "New Admin");
+    await user.type(screen.getByRole("textbox", { name: /Email/ }), "admin@example.com");
+    await user.click(screen.getByRole("button", { name: "Add Administrator" }));
+    expect(await screen.findByText("Password is required.")).toBeVisible();
   });
 
-  it("shows pending then confirmed Create success and never sends a password", async () => {
+  it("shows pending then confirmed Add Administrator success and sends the creation password once", async () => {
     let requestBody: Record<string, unknown> | undefined;
     server.use(http.post(usersUrl, async ({ request }) => {
       requestBody = await request.json() as Record<string, unknown>;
@@ -267,17 +272,16 @@ describe("Admin User Management", () => {
     }));
     const application = renderTestApplication({ initialPath: "/admin/users/new", isAdmin: true });
     const user = userEvent.setup();
-    await user.type(await screen.findByRole("textbox", { name: /Full Name/ }), "New User");
-    await user.type(screen.getByRole("textbox", { name: /Email/ }), "new@example.com");
-    await user.selectOptions(screen.getByRole("combobox", { name: /Role/ }), "ADMIN");
-    await user.click(screen.getByRole("button", { name: "Create User" }));
+    await user.type(await screen.findByRole("textbox", { name: /Full Name/ }), "New Admin");
+    await user.type(screen.getByRole("textbox", { name: /Email/ }), "new-admin@example.com");
+    await user.type(screen.getByLabelText(/Password/), "secret123");
+    await user.click(screen.getByRole("button", { name: "Add Administrator" }));
 
-    expect(await screen.findByText("Creating user...")).toHaveAttribute("data-state", "pending");
+    expect(await screen.findByText("Adding administrator...")).toHaveAttribute("data-state", "pending");
     await waitFor(() => expect(requestBody).toBeDefined());
-    expect(requestBody).toMatchObject({ name: "New User", email: "new@example.com", role: "ADMIN", skill: [], certification: [] });
-    expect(requestBody).not.toHaveProperty("password");
+    expect(requestBody).toMatchObject({ name: "New Admin", email: "new-admin@example.com", password: "secret123", role: "ADMIN", skill: [], certification: [] });
     await waitFor(() => expect(application.currentLocation()).toBe("/admin/users"));
-    expect(screen.getByText("User New User created successfully.")).toHaveAttribute("data-state", "confirmed-success");
+    expect(screen.getByText("Administrator New Admin added successfully.")).toHaveAttribute("data-state", "confirmed-success");
   });
 
   it("keeps Create mutation failures local and preserves non-secret form work", async () => {
@@ -287,15 +291,16 @@ describe("Admin User Management", () => {
 
     const name = await screen.findByRole("textbox", { name: /Full Name/ });
     const email = screen.getByRole("textbox", { name: /Email/ });
-    await user.type(name, "Retry User");
+    await user.type(name, "Retry Admin");
     await user.type(email, "retry@example.com");
-    await user.click(screen.getByRole("button", { name: "Create User" }));
+    await user.type(screen.getByLabelText(/Password/), "secret123");
+    await user.click(screen.getByRole("button", { name: "Add Administrator" }));
 
     const alert = await screen.findByRole("alert");
     expect(alert).toHaveTextContent("Server error");
     expect(alert).toHaveAttribute("data-state", "server");
     expect(application.currentLocation()).toBe("/admin/users/new");
-    expect(name).toHaveValue("Retry User");
+    expect(name).toHaveValue("Retry Admin");
     expect(email).toHaveValue("retry@example.com");
   });
 

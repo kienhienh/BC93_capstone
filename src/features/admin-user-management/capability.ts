@@ -30,18 +30,27 @@ export interface AdminUserListResult {
   data: readonly AdminUser[];
 }
 
-export interface CreateUserInput {
+export interface CreateAdministratorInput {
   name: string;
   email: string;
+  password: string;
   phone: string;
   birthday: string;
   gender: boolean;
-  role: CanonicalAdminUserRole;
   skills: string[];
   certifications: string[];
 }
 
-export type UpdateUserInput = Partial<CreateUserInput>;
+export interface UpdateUserInput {
+  name?: string;
+  email?: string;
+  phone?: string;
+  birthday?: string;
+  gender?: boolean;
+  role?: CanonicalAdminUserRole;
+  skills?: string[];
+  certifications?: string[];
+}
 
 export type AdminUserManagementFailureKind =
   | "cancelled"
@@ -95,9 +104,9 @@ export interface AdminUserManagementCapability {
     sessionToken: string,
     signal?: AbortSignal,
   ): Promise<AdminUser>;
-  /** POST /api/users */
-  createUser(
-    input: CreateUserInput,
+  /** POST /api/users; Administrator-only creation seam. */
+  createAdministrator(
+    input: CreateAdministratorInput,
     sessionToken: string,
     signal?: AbortSignal,
   ): Promise<AdminUser>;

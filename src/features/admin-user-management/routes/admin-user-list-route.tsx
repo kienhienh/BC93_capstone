@@ -54,7 +54,7 @@ export function AdminUserListRoute() {
       <header className="admin-page-heading admin-user-heading-row">
         <div><span className="admin-eyebrow">People & access</span><h1 ref={heading} tabIndex={-1}>User Management</h1>
           <p>Search, review, and manage marketplace user accounts.</p></div>
-        <Link to="/admin/users/new" className="button admin-primary-action"><span aria-hidden="true">+</span> Create User</Link>
+        <Link to="/admin/users/new" className="button admin-primary-action"><span aria-hidden="true">+</span> Add Administrator</Link>
       </header>
       {listQuery.isPending && <div className="state-indicator" data-state="loading" role="status">Loading users...</div>}
       {listQuery.isRefetching && !listQuery.isPending && <div className="state-indicator" data-state="refreshing" role="status">Refreshing users...</div>}
