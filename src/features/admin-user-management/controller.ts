@@ -1,6 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAdminUserManagementCapability } from "./context";
-import type { AdminUserListParams, CreateUserInput } from "./capability";
+import type {
+  AdminUser,
+  AdminUserListParams,
+  CreateUserInput,
+  UpdateUserInput,
+} from "./capability";
 
 export function useAdminUserList(params: AdminUserListParams, sessionToken: string) {
   const capability = useAdminUserManagementCapability();
@@ -32,10 +37,10 @@ export function useUpdateAdminUser(sessionToken: string) {
   const capability = useAdminUserManagementCapability();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, input }: { id: string; input: Partial<CreateUserInput> }) => capability.updateUser(id, input, sessionToken),
+    mutationFn: ({ id, input }: { id: string; input: UpdateUserInput }) => capability.updateUser(id, input, sessionToken),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["admin-users"] });
-      queryClient.invalidateQueries({ queryKey: ["admin-user", data.id] });
+      queryClient.setQueryData(["admin-user", data.id], data);
     },
   });
 }
@@ -50,4 +55,18 @@ export function useDeleteAdminUser(sessionToken: string) {
       queryClient.removeQueries({ queryKey: ["admin-user", variables.id] });
     },
   });
+}
+
+export function useAdminUserSafeguardEvidence(sessionToken: string) {
+  const capability = useAdminUserManagementCapability();
+
+  const refetchTarget = (id: string) => capability.getUserById(id, sessionToken);
+
+  const listAllUsers = (): Promise<readonly AdminUser[]> =>
+    capability.listAllUsers(sessionToken);
+
+  const searchUsersByName = (name: string): Promise<readonly AdminUser[]> =>
+    capability.searchUsersByName(name, sessionToken);
+
+  return { refetchTarget, listAllUsers, searchUsersByName };
 }

@@ -47,6 +47,7 @@ describe("Admin User Management", () => {
     Object.defineProperty(navigator, "onLine", { configurable: true, value: true });
     server.use(
       http.get(usersListUrl, () => HttpResponse.json(listResponse())),
+      http.get(usersUrl, () => HttpResponse.json({ content: users })),
       http.get(userUrl("1"), () => HttpResponse.json({ content: [users[0]] })),
       http.get(userUrl("2"), () => HttpResponse.json({ content: [users[1]] })),
     );
@@ -60,7 +61,7 @@ describe("Admin User Management", () => {
       { name: "Administrator Dashboard" },
       { timeout: 5_000 },
     );
-    expect(heading).toHaveFocus();
+    await waitFor(() => expect(heading).toHaveFocus());
     expect(document.title).toBe("Administrator | Fiverr Clone");
 
     const desktopNavigation = screen.getByRole("complementary", { name: "Administrator navigation" });
@@ -117,7 +118,7 @@ describe("Admin User Management", () => {
     expect(within(rows[1]).getByText("USER")).toBeVisible();
     expect(within(rows[2]).getByText("ADMIN")).toBeVisible();
     expect(within(rows[1]).getByText("john@example.com").closest("td")).toHaveAttribute("data-label", "Email");
-    expect(within(rows[1]).getByRole("link", { name: "View" })).toBeVisible();
+    expect(within(rows[1]).getByRole("link", { name: "View John Doe" })).toBeVisible();
 
     const pageSize = screen.getByRole("combobox", { name: "Page size" });
     expect(within(pageSize).getAllByRole("option").map((option) => option.getAttribute("value"))).toEqual(["10", "25", "50"]);
@@ -170,8 +171,39 @@ describe("Admin User Management", () => {
     empty.unmount();
   });
 
+  it("falls back to the complete User API snapshot when the paging response cannot be parsed", async () => {
+    const dirtyLegacy = {
+      ...users[0],
+      id: 4,
+      name: 12345,
+      email: "not-an-email",
+      phone: null,
+      birthday: null,
+      gender: "false",
+      role: "seller",
+      skill: "null",
+      certification: "[\"Legacy Cert\"]",
+    };
+    server.use(
+      http.get(usersListUrl, () => HttpResponse.json({ content: "bad-shape" })),
+      http.get(usersUrl, () => HttpResponse.json({ content: [dirtyLegacy] })),
+    );
+
+    renderTestApplication({ initialPath: "/admin/users?page=1&pageSize=10", isAdmin: true });
+
+    const table = await screen.findByRole("grid", { name: "User list" });
+    expect(within(table).getByText("12345")).toBeVisible();
+    expect(within(table).getByText("not-an-email")).toBeVisible();
+    expect(within(table).getByText("seller")).toBeVisible();
+    expect(screen.getByText(/client-filtered view of the complete User API snapshot/)).toHaveAttribute("data-scope", "client-fallback");
+    expect(screen.queryByText("The server returned an invalid response.")).not.toBeInTheDocument();
+  });
+
   it("distinguishes malformed, offline, forbidden, not-found, and recoverable server failures", async () => {
-    server.use(http.get(usersListUrl, () => HttpResponse.json({ content: "bad-shape" })));
+    server.use(
+      http.get(usersListUrl, () => HttpResponse.json({ content: "bad-shape" })),
+      http.get(usersUrl, () => HttpResponse.json({ content: "also-bad" })),
+    );
     const malformed = renderTestApplication({ initialPath: "/admin/users", isAdmin: true });
     expect(await screen.findByRole("alert")).toHaveTextContent("invalid response");
     expect(screen.getByRole("alert")).toHaveAttribute("data-state", "malformed");
@@ -194,7 +226,7 @@ describe("Admin User Management", () => {
     server.use(http.get(userUrl("999"), () => HttpResponse.json({ message: "Not found" }, { status: 404 })));
     const missing = renderTestApplication({ initialPath: "/admin/users/999", isAdmin: true });
     expect(await screen.findByRole("alert")).toHaveTextContent("User not found");
-    expect(screen.getByRole("alert")).toHaveAttribute("data-state", "not_found");
+    expect(screen.getByRole("alert")).toHaveAttribute("data-state", "not-found");
     missing.unmount();
 
     let attempts = 0;
@@ -304,9 +336,10 @@ describe("Admin User Management", () => {
     renderTestApplication({ initialPath: "/admin/users", isAdmin: true });
     await screen.findByRole("grid", { name: "User list" });
     await user.click(screen.getByRole("button", { name: "Delete John Doe" }));
-    expect(screen.getByRole("dialog", { name: "Delete user?" })).toBeVisible();
+    expect(screen.getByRole("dialog", { name: "Delete John Doe?" })).toBeVisible();
     expect(deletedId).toBeNull();
-    await user.click(screen.getByRole("button", { name: "Confirm Delete" }));
+    await user.type(screen.getByRole("textbox", { name: "Type john@example.com to confirm" }), "john@example.com");
+    await user.click(screen.getByRole("button", { name: "Confirm Delete for John Doe" }));
     await waitFor(() => expect(deletedId).toBe("1"));
   });
 });

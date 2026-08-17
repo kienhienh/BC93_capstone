@@ -7,6 +7,7 @@ const apiBaseUrl = "http://api.example.test/api";
 const listUrl = `${apiBaseUrl}/users/phan-trang-tim-kiem`;
 const usersUrl = `${apiBaseUrl}/users`;
 const getUserUrl = (id: string) => `${apiBaseUrl}/users/${id}`;
+const searchUserUrl = (name: string) => `${apiBaseUrl}/users/search/${name}`;
 
 const userDto = {
   id: 1,
@@ -29,6 +30,90 @@ const capability = () =>
 
 describe("Cybersoft Admin User Management adapter", () => {
   afterEach(() => vi.unstubAllGlobals());
+
+  it("loads the complete User resource snapshot", async () => {
+    let headers: Headers | undefined;
+    server.use(
+      http.get(usersUrl, ({ request }) => {
+        headers = request.headers;
+        return HttpResponse.json({ content: [userDto, { ...userDto, id: 2, role: "admin" }] });
+      }),
+    );
+
+    const result = await capability().listAllUsers("session-token");
+
+    expect(result).toHaveLength(2);
+    expect(result[1].role).toBe("admin");
+    expect(headers?.get("token")).toBe("session-token");
+    expect(headers?.get("tokenCybersoft")).toBe("cybersoft-token");
+  });
+
+  it("searches the User resource by the API name endpoint", async () => {
+    let requestedUrl = "";
+    server.use(
+      http.get(searchUserUrl("Jane%20Admin"), ({ request }) => {
+        requestedUrl = request.url;
+        return HttpResponse.json({ content: [{ ...userDto, id: 2, name: "Jane Admin" }] });
+      }),
+    );
+
+    const result = await capability().searchUsersByName("Jane Admin", "session-token");
+
+    expect(result).toHaveLength(1);
+    expect(result[0].name).toBe("Jane Admin");
+    expect(decodeURIComponent(requestedUrl)).toContain("/users/search/Jane Admin");
+  });
+
+  it("keeps dirty legacy read data visible instead of failing the whole paginated list", async () => {
+    server.use(
+      http.get(listUrl, () => HttpResponse.json({
+        content: {
+          pageIndex: "1",
+          pageSize: "10",
+          totalRow: "2",
+          data: [
+            userDto,
+            {
+              ...userDto,
+              id: 4,
+              name: 12345,
+              email: "not-an-email",
+              phone: null,
+              birthday: null,
+              avatar: "",
+              gender: "false",
+              role: "seller",
+              skill: "null",
+              certification: "[\"Legacy Cert\"]",
+            },
+          ],
+        },
+      })),
+    );
+
+    const result = await capability().listUsers(
+      { pageIndex: 1, pageSize: 10 },
+      "session-token",
+    );
+
+    expect(result.pageIndex).toBe(1);
+    expect(result.pageSize).toBe(10);
+    expect(result.totalRow).toBe(2);
+    expect(result.keywords).toBeNull();
+    expect(result.scope).toBe("server");
+    expect(result.data[1]).toMatchObject({
+      id: "4",
+      name: "12345",
+      email: "not-an-email",
+      phone: "",
+      birthday: "",
+      avatar: null,
+      gender: false,
+      role: "seller",
+      skills: [],
+      certifications: ["Legacy Cert"],
+    });
+  });
 
   it("lists users with pagination parameters", async () => {
     let url: URL | undefined;
@@ -55,6 +140,7 @@ describe("Cybersoft Admin User Management adapter", () => {
     expect(result.pageIndex).toBe(1);
     expect(result.pageSize).toBe(10);
     expect(result.totalRow).toBe(50);
+    expect(result.scope).toBe("server");
     expect(result.data).toHaveLength(1);
     expect(result.data[0].name).toBe("John Doe");
     expect(url?.searchParams.get("pageIndex")).toBe("1");
@@ -173,6 +259,28 @@ describe("Cybersoft Admin User Management adapter", () => {
     expect(bodyText).toBe("");
   });
 
+  it("falls back truthfully to the complete User API snapshot when pagination shape is unusable", async () => {
+    server.use(
+      http.get(listUrl, () => HttpResponse.json({ content: "bad-paging-shape" })),
+      http.get(usersUrl, () => HttpResponse.json({
+        content: [
+          userDto,
+          { ...userDto, id: 2, name: "Jane Admin", email: "jane@example.com", role: "ADMIN" },
+        ],
+      })),
+    );
+
+    const result = await capability().listUsers(
+      { pageIndex: 1, pageSize: 10, keyword: "jane" },
+      "session-token",
+    );
+
+    expect(result.scope).toBe("client-fallback");
+    expect(result.totalRow).toBe(1);
+    expect(result.keywords).toBe("jane");
+    expect(result.data.map((user) => user.name)).toEqual(["Jane Admin"]);
+  });
+
   it("handles authorization errors correctly", async () => {
     server.use(
       http.get(listUrl, () =>
@@ -197,15 +305,72 @@ describe("Cybersoft Admin User Management adapter", () => {
     ).rejects.toMatchObject({ kind: "not_found" });
   });
 
-  it("handles malformed responses", async () => {
+  it("reports malformed only when both pagination and the full User fallback are unusable", async () => {
     server.use(
-      http.get(listUrl, () =>
-        HttpResponse.json({ invalid: "response" }),
-      ),
+      http.get(listUrl, () => HttpResponse.json({ invalid: "response" })),
+      http.get(usersUrl, () => HttpResponse.json({ invalid: "response" })),
     );
 
     await expect(
       capability().listUsers({ pageIndex: 1, pageSize: 10 }, "session-token"),
     ).rejects.toMatchObject({ kind: "malformed" });
   });
+  it("preserves unknown legacy roles exactly instead of normalizing them", async () => {
+    server.use(
+      http.get(getUserUrl("4"), () =>
+        HttpResponse.json({ content: [{ ...userDto, id: 4, role: "admin" }] }),
+      ),
+    );
+
+    const user = await capability().getUserById("4", "session-token");
+
+    expect(user.role).toBe("admin");
+  });
+
+  it("omits role when an unrelated update leaves a legacy role untouched", async () => {
+    let body: Record<string, unknown> | undefined;
+    server.use(
+      http.put(getUserUrl("4"), async ({ request }) => {
+        body = await request.json() as Record<string, unknown>;
+        return HttpResponse.json({
+          content: { ...userDto, id: 4, name: "Legacy Renamed", role: "admin" },
+        });
+      }),
+    );
+
+    const updated = await capability().updateUser(
+      "4",
+      { name: "Legacy Renamed" },
+      "session-token",
+    );
+
+    expect(updated.role).toBe("admin");
+    expect(body).not.toHaveProperty("role");
+    expect(body).not.toHaveProperty("password");
+  });
+
+  it("classifies online transport failures during update/delete as unknown outcomes", async () => {
+    Object.defineProperty(navigator, "onLine", { configurable: true, value: true });
+    server.use(
+      http.put(getUserUrl("1"), () => HttpResponse.error()),
+      http.delete(usersUrl, () => HttpResponse.error()),
+    );
+
+    await expect(
+      capability().updateUser("1", { name: "Maybe Updated" }, "session-token"),
+    ).rejects.toMatchObject({ kind: "unknown_outcome" });
+    await expect(
+      capability().deleteUser("1", "session-token"),
+    ).rejects.toMatchObject({ kind: "unknown_outcome" });
+  });
+
+  it("keeps an explicitly offline mutation distinct from an unknown outcome", async () => {
+    Object.defineProperty(navigator, "onLine", { configurable: true, value: false });
+    server.use(http.put(getUserUrl("1"), () => HttpResponse.error()));
+
+    await expect(
+      capability().updateUser("1", { name: "Offline" }, "session-token"),
+    ).rejects.toMatchObject({ kind: "offline" });
+  });
+
 });

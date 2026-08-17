@@ -132,6 +132,9 @@ export default function Header() {
   const categoryOpener = useRef<HTMLButtonElement>(null);
   const menuOpener = useRef<HTMLButtonElement>(null);
   const searchOpener = useRef<HTMLButtonElement>(null);
+  const adminAccountRef = useRef<HTMLDivElement>(null);
+  const adminMenuButtonRef = useRef<HTMLButtonElement>(null);
+  const [adminMenuOpen, setAdminMenuOpen] = useState(false);
   const usesInitialHeader = ["/", "/login", "/register"].includes(location.pathname);
 
   const submitSearch = (event: FormEvent<HTMLFormElement>) => {
@@ -142,9 +145,46 @@ export default function Header() {
   };
 
   const signOut = () => {
+    setAdminMenuOpen(false);
     logout();
     navigate("/");
   };
+
+  useEffect(() => {
+    if (!adminMenuOpen) return;
+
+    const closeOnPointerDown = (event: MouseEvent) => {
+      if (!adminAccountRef.current?.contains(event.target as Node)) {
+        setAdminMenuOpen(false);
+      }
+    };
+    const closeOnEscape = (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setAdminMenuOpen(false);
+        adminMenuButtonRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("mousedown", closeOnPointerDown);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("mousedown", closeOnPointerDown);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [adminMenuOpen]);
+
+  useEffect(() => {
+    if (session?.user.role !== "ADMIN") return;
+    const openProfileShortcut = (event: globalThis.KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "o") {
+        event.preventDefault();
+        setAdminMenuOpen(false);
+        navigate("/profile");
+      }
+    };
+    window.addEventListener("keydown", openProfileShortcut);
+    return () => window.removeEventListener("keydown", openProfileShortcut);
+  }, [navigate, session?.user.role]);
 
   return (
     <header className={`marketplace-header${usesInitialHeader ? " marketplace-header-home" : ""}`}>
@@ -192,10 +232,37 @@ export default function Header() {
                 <Link aria-label="Login" to="/login">Sign In</Link>
                 <Link className="join-link" aria-label="Register" to="/register">Join</Link>
               </>
+            ) : session.user.role === "ADMIN" ? (
+              <div ref={adminAccountRef} className="admin-account">
+                <Link className="admin-account-label" to="/admin" aria-label="Administrator">Admin</Link>
+                <button
+                  ref={adminMenuButtonRef}
+                  className="admin-account-trigger"
+                  type="button"
+                  aria-label="Open Admin account menu"
+                  aria-haspopup="menu"
+                  aria-expanded={adminMenuOpen}
+                  onClick={() => setAdminMenuOpen((open) => !open)}
+                >
+                  <span className="admin-account-avatar" aria-hidden="true">
+                    {session.user.avatar ? <img src={session.user.avatar} alt="" /> : session.user.name.charAt(0).toUpperCase()}
+                  </span>
+                  <span className="admin-account-caret" aria-hidden="true" />
+                </button>
+                {adminMenuOpen ? (
+                  <div className="admin-account-menu" role="menu" aria-label="Admin account menu">
+                    <Link role="menuitem" to="/profile" onClick={() => setAdminMenuOpen(false)}>
+                      <span>Cập nhật</span><kbd>CTRL+O</kbd>
+                    </Link>
+                    <button role="menuitem" type="button" onClick={signOut}>
+                      <span>Đăng xuất</span><span aria-hidden="true" className="admin-logout-icon">↩</span>
+                    </button>
+                  </div>
+                ) : null}
+              </div>
             ) : (
               <><Link className="profile-link" to="/profile" aria-label="Open your Profile">{session.user.avatar ? <img src={session.user.avatar} alt="" /> : <span aria-hidden="true">{session.user.name.charAt(0).toUpperCase()}</span>}</Link><button type="button" onClick={signOut}>Logout</button></>
             )}
-            {session?.user.role === "ADMIN" ? <Link to="/admin">Administrator</Link> : null}
           </div>
         )}
       </nav>
