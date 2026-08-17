@@ -10,3 +10,4 @@ export {
   type UpdateUserInput,
 } from "./capability";
 export { AdminUserManagementProvider } from "./provider";
+export { useAdminUserManagementCapability } from "./context";
