@@ -26,6 +26,12 @@ import {
   AdminSubcategoryEditRoute,
   AdminSubcategoryListRoute,
 } from "../features/admin-subcategory-management/public";
+import {
+  AdminCommentCreateRoute,
+  AdminCommentDetailRoute,
+  AdminCommentEditRoute,
+  AdminCommentListRoute,
+} from "../features/admin-comment-management/public";
 
 type AdminDestination = {
   label: string;
@@ -63,6 +69,7 @@ const destinations: AdminDestination[] = [
     label: "Comments",
     shortLabel: "CM",
     description: "Moderate ratings and marketplace comments.",
+    to: "/admin/comments",
   },
   {
     label: "Hired Services",
@@ -236,6 +243,10 @@ export default function Admin() {
             <Route path="subcategories/groups/:categoryId/:groupId/edit" element={<AdminGroupEditRoute />} />
             <Route path="subcategories/:subcategoryId/edit" element={<AdminSubcategoryEditRoute />} />
             <Route path="subcategories/:subcategoryId" element={<AdminSubcategoryDetailRoute />} />
+            <Route path="comments" element={<AdminCommentListRoute />} />
+            <Route path="comments/new" element={<AdminCommentCreateRoute />} />
+            <Route path="comments/:commentId/edit" element={<AdminCommentEditRoute />} />
+            <Route path="comments/:commentId" element={<AdminCommentDetailRoute />} />
           </Routes>
         </div>
       </section>
