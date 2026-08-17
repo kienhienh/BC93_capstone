@@ -41,7 +41,10 @@ export function AdminCategoryDetailRoute() {
 
       <section className="admin-category-hierarchy" aria-labelledby="category-hierarchy-title">
         <div className="admin-category-section-heading"><div><span className="admin-eyebrow">Known relationships</span><h2 id="category-hierarchy-title">Service Groups and Subcategories</h2></div>
-          {relationshipSummary ? <span>{relationshipSummary.groupCount} Groups · {relationshipSummary.subcategoryCount} Subcategories</span> : null}</div>
+          <div className="admin-category-group-actions">
+            {relationshipSummary ? <span>{relationshipSummary.groupCount} Groups · {relationshipSummary.subcategoryCount} Subcategories</span> : null}
+            {!hierarchyQuery.isError ? <Link to={withSearch(`/admin/subcategories/groups/${category.id}/new`, location.search)}>Add Service Group</Link> : null}
+          </div></div>
         {hierarchyQuery.isPending ? <div className="state-indicator" data-state="loading" role="status">Loading Category relationships...</div> : null}
         {hierarchyQuery.isRefetching && !hierarchyQuery.isPending ? <div className="state-indicator" data-state="refreshing" role="status">Refreshing Category relationships...</div> : null}
         {hierarchyQuery.isError ? <div className="state-indicator" data-state="blocked-dependency" role="alert">
@@ -50,7 +53,9 @@ export function AdminCategoryDetailRoute() {
         </div> : null}
         {hierarchyQuery.data && hierarchyQuery.data.groups.length === 0 ? <div className="state-indicator" data-state="empty" role="status">No Service Groups are currently reported for this Category.</div> : null}
         {hierarchyQuery.data?.groups.map((group) => <article key={group.id} className="admin-category-group">
-          <header><div><h3>{group.name}</h3><small>Group ID {group.id}</small></div>{group.imageUrl ? <img src={group.imageUrl} alt="" /> : null}</header>
+          <header><div><h3>{group.name}</h3><small>Group ID {group.id}</small></div>
+            <Link aria-label={`Edit ${group.name}`} to={withSearch(`/admin/subcategories/groups/${category.id}/${group.id}/edit`, location.search)}>Edit Group</Link>
+            {group.imageUrl ? <img src={group.imageUrl} alt="" /> : null}</header>
           {group.subcategories.length ? <ul aria-label={`${group.name} Service Subcategories`}>
             {group.subcategories.map((subcategory) => <li key={subcategory.id}><span>{subcategory.name}</span><small>ID {subcategory.id}</small></li>)}
           </ul> : <p className="admin-category-no-children">No Service Subcategories are currently reported for this Group.</p>}

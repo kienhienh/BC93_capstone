@@ -18,6 +18,14 @@ import {
   AdminCategoryEditRoute,
   AdminCategoryListRoute,
 } from "../features/admin-category-management/public";
+import {
+  AdminGroupCreateRoute,
+  AdminGroupEditRoute,
+  AdminSubcategoryCreateRoute,
+  AdminSubcategoryDetailRoute,
+  AdminSubcategoryEditRoute,
+  AdminSubcategoryListRoute,
+} from "../features/admin-subcategory-management/public";
 
 type AdminDestination = {
   label: string;
@@ -49,6 +57,7 @@ const destinations: AdminDestination[] = [
     label: "Service Subcategories",
     shortLabel: "SC",
     description: "Maintain groups and selectable taxonomy leaves.",
+    to: "/admin/subcategories",
   },
   {
     label: "Comments",
@@ -221,6 +230,12 @@ export default function Admin() {
             <Route path="categories/new" element={<AdminCategoryCreateRoute />} />
             <Route path="categories/:categoryId/edit" element={<AdminCategoryEditRoute />} />
             <Route path="categories/:categoryId" element={<AdminCategoryDetailRoute />} />
+            <Route path="subcategories" element={<AdminSubcategoryListRoute />} />
+            <Route path="subcategories/new" element={<AdminSubcategoryCreateRoute />} />
+            <Route path="subcategories/groups/:categoryId/new" element={<AdminGroupCreateRoute />} />
+            <Route path="subcategories/groups/:categoryId/:groupId/edit" element={<AdminGroupEditRoute />} />
+            <Route path="subcategories/:subcategoryId/edit" element={<AdminSubcategoryEditRoute />} />
+            <Route path="subcategories/:subcategoryId" element={<AdminSubcategoryDetailRoute />} />
           </Routes>
         </div>
       </section>

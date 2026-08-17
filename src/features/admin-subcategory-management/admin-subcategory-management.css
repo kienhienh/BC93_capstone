@@ -1,0 +1,142 @@
+/* Service Subcategory/Group-specific Administrator UI. Shared shell, buttons, form
+ * fields, state indicators, breadcrumbs, dialogs, pagination and row actions come
+ * from admin-user-management.css, which is loaded by the Admin shell. */
+
+.admin-subcategory-list,
+.admin-subcategory-detail,
+.admin-subcategory-create,
+.admin-subcategory-edit,
+.admin-group-create,
+.admin-group-edit { max-width: 980px; }
+
+.admin-subcategory-heading-row { margin-bottom: 20px; }
+
+.admin-subcategory-list-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 170px 170px;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding: 15px;
+  border: 1px solid var(--admin-line);
+  border-radius: 13px;
+  background: #fff;
+  box-shadow: var(--admin-shadow-soft);
+}
+.admin-subcategory-list-controls label,
+.admin-subcategory-refresh .control-label {
+  display: block;
+  margin-bottom: 6px;
+  color: #647169;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+.admin-subcategory-list-controls input,
+.admin-subcategory-list-controls select,
+.admin-subcategory-refresh button {
+  width: 100%;
+  height: 42px;
+  box-sizing: border-box;
+  border: 1px solid #dfe5e1;
+  border-radius: 8px;
+  background: #fff;
+  color: #354139;
+  font: inherit;
+  font-size: 12px;
+}
+.admin-subcategory-list-controls input,
+.admin-subcategory-list-controls select { padding: 0 12px; }
+.admin-subcategory-refresh button { padding: 0 14px; cursor: pointer; font-size: 10px; font-weight: 800; }
+.admin-subcategory-refresh button:disabled { opacity: .55; cursor: not-allowed; }
+.admin-subcategory-list-scope { margin: 0 0 14px; color: #7c8981; font-size: 10px; }
+.admin-subcategory-list-scope[data-scope="client-fallback"] { color: #886419; }
+
+.admin-subcategory-table {
+  overflow: hidden;
+  border: 1px solid var(--admin-line);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: var(--admin-shadow-soft);
+}
+.admin-subcategory-table table { width: 100%; border-collapse: collapse; }
+.admin-subcategory-table th {
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--admin-line);
+  background: #fafbfa;
+  color: #829087;
+  text-align: left;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.admin-subcategory-table td { padding: 13px 15px; border-bottom: 1px solid #edf0ee; color: #455048; font-size: 11px; }
+.admin-subcategory-table tbody tr:last-child td { border-bottom: 0; }
+
+.admin-subcategory-detail-card {
+  margin-bottom: 20px;
+  padding: 20px 24px;
+  border: 1px solid var(--admin-line);
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: var(--admin-shadow-soft);
+}
+.admin-subcategory-detail-card h2 { margin: 3px 0 4px; color: #354139; font-size: 20px; }
+.admin-subcategory-membership-note { margin: 0; color: var(--admin-muted); font-size: 10px; }
+
+.admin-category-group-actions { display: flex; gap: 10px; align-items: center; }
+
+.form-static-label {
+  display: block;
+  margin-bottom: 6px;
+  color: #647169;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.group-membership-picker {
+  margin: 0;
+  padding: 16px;
+  border: 1px solid #e8ece9;
+  border-radius: 12px;
+  background: #fbfcfb;
+}
+.group-membership-picker legend {
+  padding: 0 4px;
+  color: #647169;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+.group-membership-picker ul { display: grid; gap: 8px; margin: 8px 0 0; padding: 0; list-style: none; }
+.group-membership-picker li { padding: 8px 10px; border-radius: 8px; background: #fff; }
+.group-membership-picker label { display: flex; align-items: center; gap: 8px; color: #354139; font-size: 11px; }
+.group-membership-picker small { display: block; margin: 4px 0 0 24px; color: #886419; font-size: 9px; }
+
+.group-review-summary { display: grid; gap: 6px; margin: 0 0 14px; }
+.group-review-summary div { display: flex; gap: 8px; }
+.group-review-summary dt { margin: 0; color: #7c8981; font-size: 9px; font-weight: 900; text-transform: uppercase; }
+.group-review-summary dd { margin: 0; color: #354139; font-size: 12px; }
+
+@media (max-width: 768px) {
+  .admin-subcategory-list-controls { grid-template-columns: 1fr; }
+  .admin-subcategory-table { overflow: visible; border: 0; background: transparent; box-shadow: none; }
+  .admin-subcategory-table table,
+  .admin-subcategory-table tbody,
+  .admin-subcategory-table tr,
+  .admin-subcategory-table td { display: block; width: 100%; box-sizing: border-box; }
+  .admin-subcategory-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+  .admin-subcategory-table tbody { display: grid; gap: 10px; }
+  .admin-subcategory-table tr { padding: 15px; border: 1px solid var(--admin-line); border-radius: 13px; background: #fff; box-shadow: var(--admin-shadow-soft); }
+  .admin-subcategory-table td { display: grid; grid-template-columns: 110px minmax(0, 1fr); align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #edf0ee; }
+  .admin-subcategory-table td::before { content: attr(data-label); color: #929e97; font-size: 8px; font-weight: 900; text-transform: uppercase; }
+  .admin-subcategory-table td:last-child { border-bottom: 0; }
+}
+
+@media (max-width: 540px) {
+  .admin-subcategory-detail-card { padding: 17px; }
+}
