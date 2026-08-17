@@ -1,0 +1,119 @@
+/* Comment-specific Administrator UI. Shared shell, buttons, form fields,
+ * state indicators, breadcrumbs, dialogs, pagination and row actions come
+ * from admin-user-management.css, which is loaded by the Admin shell. */
+
+.admin-comment-list,
+.admin-comment-detail,
+.admin-comment-create,
+.admin-comment-edit { max-width: 980px; }
+
+.admin-comment-heading-row { margin-bottom: 20px; }
+
+.admin-comment-list-scope { margin: 0 0 14px; color: #886419; font-size: 10px; }
+
+.admin-comment-list-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 170px 170px;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding: 15px;
+  border: 1px solid var(--admin-line);
+  border-radius: 13px;
+  background: #fff;
+  box-shadow: var(--admin-shadow-soft);
+}
+.admin-comment-list-controls label,
+.admin-comment-refresh .control-label {
+  display: block;
+  margin-bottom: 6px;
+  color: #647169;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+.admin-comment-list-controls input,
+.admin-comment-list-controls select,
+.admin-comment-refresh button {
+  width: 100%;
+  height: 42px;
+  box-sizing: border-box;
+  border: 1px solid #dfe5e1;
+  border-radius: 8px;
+  background: #fff;
+  color: #354139;
+  font: inherit;
+  font-size: 12px;
+}
+.admin-comment-list-controls input,
+.admin-comment-list-controls select { padding: 0 12px; }
+.admin-comment-refresh button { padding: 0 14px; cursor: pointer; font-size: 10px; font-weight: 800; }
+.admin-comment-refresh button:disabled { opacity: .55; cursor: not-allowed; }
+
+.admin-comment-table {
+  overflow: hidden;
+  border: 1px solid var(--admin-line);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: var(--admin-shadow-soft);
+}
+.admin-comment-table table { width: 100%; border-collapse: collapse; }
+.admin-comment-table th {
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--admin-line);
+  background: #fafbfa;
+  color: #829087;
+  text-align: left;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.admin-comment-table td { padding: 13px 15px; border-bottom: 1px solid #edf0ee; color: #455048; font-size: 11px; }
+.admin-comment-table tbody tr:last-child td { border-bottom: 0; }
+
+.admin-comment-detail-card {
+  margin-bottom: 20px;
+  padding: 20px 24px;
+  border: 1px solid var(--admin-line);
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: var(--admin-shadow-soft);
+}
+.admin-comment-detail-card h2 { margin: 3px 0 8px; color: #354139; font-size: 20px; }
+
+.admin-comment-meta { display: grid; gap: 6px; margin: 14px 0; }
+.admin-comment-meta div { display: flex; gap: 8px; }
+.admin-comment-meta dt { margin: 0; color: #7c8981; font-size: 9px; font-weight: 900; text-transform: uppercase; }
+.admin-comment-meta dd { margin: 0; color: #354139; font-size: 12px; }
+
+.admin-comment-form {
+  display: grid;
+  gap: 18px;
+  padding: 24px;
+  border: 1px solid var(--admin-line);
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: var(--admin-shadow-soft);
+}
+.admin-comment-form textarea { min-height: 120px; resize: vertical; font: inherit; }
+
+@media (max-width: 768px) {
+  .admin-comment-list-controls { grid-template-columns: 1fr; }
+  .admin-comment-table { overflow: visible; border: 0; background: transparent; box-shadow: none; }
+  .admin-comment-table table,
+  .admin-comment-table tbody,
+  .admin-comment-table tr,
+  .admin-comment-table td { display: block; width: 100%; box-sizing: border-box; }
+  .admin-comment-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+  .admin-comment-table tbody { display: grid; gap: 10px; }
+  .admin-comment-table tr { padding: 15px; border: 1px solid var(--admin-line); border-radius: 13px; background: #fff; box-shadow: var(--admin-shadow-soft); }
+  .admin-comment-table td { display: grid; grid-template-columns: 110px minmax(0, 1fr); align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #edf0ee; }
+  .admin-comment-table td::before { content: attr(data-label); color: #929e97; font-size: 8px; font-weight: 900; text-transform: uppercase; }
+  .admin-comment-table td:last-child { border-bottom: 0; }
+}
+
+@media (max-width: 540px) {
+  .admin-comment-detail-card { padding: 17px; }
+  .admin-comment-form { padding: 18px; }
+}

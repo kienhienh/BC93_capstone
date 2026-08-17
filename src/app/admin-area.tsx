@@ -7,6 +7,8 @@ import { AdminCategoryManagementProvider } from "../features/admin-category-mana
 import { createCybersoftAdminCategoryManagementCapability } from "../infrastructure/cybersoft/admin-category-management";
 import { AdminSubcategoryManagementProvider } from "../features/admin-subcategory-management/wiring";
 import { createCybersoftAdminSubcategoryManagementCapability } from "../infrastructure/cybersoft/admin-subcategory-management";
+import { AdminCommentManagementProvider } from "../features/admin-comment-management/wiring";
+import { createCybersoftAdminCommentManagementCapability } from "../infrastructure/cybersoft/admin-comment-management";
 import Admin from "../pages/Admin";
 import type { RuntimeConfig } from "./runtime-config";
 
@@ -36,13 +38,19 @@ export default function AdminArea({ config }: { config: RuntimeConfig }) {
     () => createCybersoftAdminSubcategoryManagementCapability({ apiBaseUrl, cybersoftToken }),
     [apiBaseUrl, cybersoftToken],
   );
+  const commentCapability = useMemo(
+    () => createCybersoftAdminCommentManagementCapability({ apiBaseUrl, cybersoftToken }),
+    [apiBaseUrl, cybersoftToken],
+  );
 
   return (
     <AdminUserManagementProvider capability={capability}>
       <AdminServiceManagementProvider capability={serviceCapability}>
         <AdminCategoryManagementProvider capability={categoryCapability}>
           <AdminSubcategoryManagementProvider capability={subcategoryCapability}>
-            <Admin />
+            <AdminCommentManagementProvider capability={commentCapability}>
+              <Admin />
+            </AdminCommentManagementProvider>
           </AdminSubcategoryManagementProvider>
         </AdminCategoryManagementProvider>
       </AdminServiceManagementProvider>
