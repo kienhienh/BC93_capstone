@@ -1,75 +1,72 @@
-# React + TypeScript + Vite
+# BC93 Capstone — Fiverr Marketplace
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + TypeScript + Vite implementation of the Cybersoft Fiverr final project.
+The source is organized by business feature so API transport, route behavior,
+validation, responsive UI, and tests remain separated and maintainable.
 
-Currently, two official plugins are available:
+## Main journeys
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Home marketplace and Service taxonomy
+- Service discovery, search, filtering, sorting, and pagination
+- Service detail and Comments
+- Login, registration, Session, and exact `ADMIN` route protection
+- Current User Profile and avatar upload
+- Hire confirmation and Hired Services
+- Administrator dashboard with User, Service, and Service Category management safeguards
 
-## React Compiler
+## Source organization
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```text
+src/
+  app/                 Application composition and runtime configuration
+  features/            Business features and route behavior
+  infrastructure/      Cybersoft, browser, and deterministic test adapters
+  components/          UI shared across features
+  pages/               Legacy route screens awaiting incremental migration
+  test/                Shared Vitest/MSW test infrastructure
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Complex features may use their own `components/` and `routes/` folders so one
+route file does not grow into a multi-purpose module. See
+`docs/code-organization.md` for the complete architecture rules.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Requirements
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Node.js 22+
+- npm
 
+## Install and run
+
+```bash
+npm ci
+npm run dev
 ```
+
+## Quality gates
+
+Before a pull request or final handoff, run:
+
+```bash
+npm run typecheck
+npm run lint
+npm run lint:architecture
+npx vitest run --reporter=verbose --no-file-parallelism
+npm run test:coverage
+npm run build
+```
+
+## Runtime configuration
+
+Production configuration is validated by `src/app/runtime-config.ts`.
+Configure the environment values required by the Cybersoft adapter rather than
+hard-coding API credentials into source files.
+
+## Project references
+
+- `CONTEXT.md` — domain language and business terminology
+- `swagger-API.json` — Cybersoft API contract reference
+- `fiverr-wireframe.bmpr` — Balsamiq design source
+- `docs/code-organization.md` — architecture and clean-code rules
+- `docs/adr/` — architecture decision records
+- `docs/refactoring/clean-code-reorganization.md` — latest organization pass
+- `23-09-2025-02-37-39-[cybersoft]-du-an-cuoi-khoa-bcfe.pdf` — final-project criteria

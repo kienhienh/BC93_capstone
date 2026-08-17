@@ -16,7 +16,7 @@ export function ServiceImageUpload({ serviceId, currentImageUrl }: { serviceId: 
     mutation.reset();
     if (!file) return;
     const result = validateServiceImage(file);
-    if (!result.ok) {
+    if (result.ok === false) {
       setLocalError(result.message);
       if (inputRef.current) inputRef.current.value = "";
       return;
