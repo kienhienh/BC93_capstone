@@ -50,7 +50,7 @@ type ServiceFormState = {
 } & TaxonomySelection;
 
 type GuardFeedback = {
-  state: "validation-failure" | "blocked-dependency" | "stale" | "unknown-outcome";
+  state: "blocked-dependency" | "stale" | "unknown-outcome";
   message: string;
 };
 
@@ -1105,6 +1105,12 @@ export function AdminServiceEditRoute({ serviceId: suppliedServiceId }: { servic
     {feedback ? <GuardMessage feedback={feedback} onReload={() => void reloadLatest()}
       onReconcile={reconcileInput ? () => void reconcileUpdate(reconcileInput) : undefined} /> : null}
     {mutation.isError && kindOf(mutation.error) !== "unknown_outcome" ? <FailureMessage kind={kindOf(mutation.error)} action="update" /> : null}
+    {baseline && taxonomyQuery.isError ? (
+      <div className="state-indicator" data-state="relation-partial-failure" role="alert">
+        <span>The Service loaded, but its Category/Subcategory options could not be loaded.</span>
+        <button type="button" className="state-retry" onClick={() => void taxonomyQuery.refetch()}>Try again</button>
+      </div>
+    ) : null}
     {baseline ? <>
       <ServiceForm key={formKey} initialValue={formFromService(baseline, categories)} categories={categories}
         categoriesPending={taxonomyQuery.isPending} pending={pending}
