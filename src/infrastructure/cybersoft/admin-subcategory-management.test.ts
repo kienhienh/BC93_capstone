@@ -29,10 +29,16 @@ describe("Cybersoft Admin Service Subcategory Management adapter", () => {
     expect(headers?.get("token")).toBe("session-token");
     expect(headers?.get("tokenCybersoft")).toBe("cybersoft-token");
 
-    server.use(http.get(subcategoriesUrl, () => HttpResponse.json({ content: [subcategoryOne, subcategoryTwo] })));
+    server.use(http.get(subcategoriesUrl, () => HttpResponse.json({ content: [{
+      id: 10,
+      tenNhom: "Logo & Brand Identity",
+      maLoaiCongviec: 1,
+      hinhAnh: null,
+      dsChiTietLoai: [subcategoryOne, subcategoryTwo],
+    }] })));
     await expect(capability().listAllSubcategories("session-token")).resolves.toEqual([
-      { id: "100", name: "Logo Design" },
-      { id: "101", name: "Business Cards" },
+      { id: "100", name: "Logo Design", groupId: "10", groupName: "Logo & Brand Identity", categoryId: "1" },
+      { id: "101", name: "Business Cards", groupId: "10", groupName: "Logo & Brand Identity", categoryId: "1" },
     ]);
   });
 
@@ -40,7 +46,13 @@ describe("Cybersoft Admin Service Subcategory Management adapter", () => {
     let url: URL | undefined;
     server.use(http.get(pagingUrl, ({ request }) => {
       url = new URL(request.url);
-      return HttpResponse.json({ content: { pageIndex: 2, pageSize: 25, totalRow: 30, keywords: "logo", data: [subcategoryOne] } });
+      return HttpResponse.json({ content: {
+        pageIndex: 2,
+        pageSize: 25,
+        totalRow: 30,
+        keywords: "logo",
+        data: [{ id: 10, tenNhom: "Logo & Brand Identity", maLoaiCongviec: 1, hinhAnh: null, dsChiTietLoai: [subcategoryOne] }],
+      } });
     }));
     const result = await capability().listSubcategories({ pageIndex: 2, pageSize: 25, keyword: "logo" }, "session-token");
     expect(result.scope).toBe("server");
@@ -52,16 +64,33 @@ describe("Cybersoft Admin Service Subcategory Management adapter", () => {
   it("falls back to the complete Subcategory snapshot when paging is malformed", async () => {
     server.use(
       http.get(pagingUrl, () => HttpResponse.json({ content: "bad" })),
-      http.get(subcategoriesUrl, () => HttpResponse.json({ content: [subcategoryOne, subcategoryTwo] })),
+      http.get(subcategoriesUrl, () => HttpResponse.json({ content: [{
+        id: 10,
+        tenNhom: "Logo & Brand Identity",
+        maLoaiCongviec: 1,
+        hinhAnh: null,
+        dsChiTietLoai: [subcategoryOne, subcategoryTwo],
+      }] })),
     );
     const result = await capability().listSubcategories({ pageIndex: 1, pageSize: 10, keyword: "business" }, "session-token");
     expect(result.scope).toBe("client-fallback");
     expect(result.data.map((item) => item.name)).toEqual(["Business Cards"]);
   });
 
-  it("selects the requested Subcategory from the array-shaped detail response", async () => {
-    server.use(http.get(subcategoryUrl("101"), () => HttpResponse.json({ content: [subcategoryOne, subcategoryTwo] })));
-    await expect(capability().getSubcategoryById("101", "session-token")).resolves.toEqual({ id: "101", name: "Business Cards" });
+  it("resolves a requested Subcategory from the authoritative Group snapshot", async () => {
+    server.use(http.get(subcategoriesUrl, () => HttpResponse.json({ content: [{
+      id: 10,
+      tenNhom: "Logo & Brand Identity",
+      maLoaiCongviec: 1,
+      hinhAnh: null,
+      dsChiTietLoai: [subcategoryOne, subcategoryTwo],
+    }] })));
+    await expect(capability().getSubcategoryById("101", "session-token")).resolves.toMatchObject({
+      id: "101",
+      name: "Business Cards",
+      groupId: "10",
+      categoryId: "1",
+    });
   });
 
   it("maps Category hierarchy including the Category name without inventing Group or Subcategory levels", async () => {

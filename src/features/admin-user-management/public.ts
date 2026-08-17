@@ -6,7 +6,7 @@ export {
   type AdminUser,
   type AdminUserListParams,
   type AdminUserListResult,
-  type CreateUserInput,
+  type CreateAdministratorInput,
   type UpdateUserInput,
 } from "./capability";
 export { AdminUserManagementProvider } from "./provider";

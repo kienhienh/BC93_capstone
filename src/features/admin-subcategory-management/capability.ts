@@ -1,6 +1,10 @@
 export interface AdminSubcategory {
   id: string;
   name: string;
+  /** Relationship context is present when the API proves it from a Group snapshot. */
+  groupId?: string;
+  groupName?: string;
+  categoryId?: string;
 }
 
 export interface AdminSubcategoryListParams {
@@ -99,7 +103,7 @@ export interface AdminSubcategoryManagementCapability {
     sessionToken: string,
     signal?: AbortSignal,
   ): Promise<AdminSubcategoryListResult>;
-  /** GET /api/chi-tiet-loai-cong-viec/{id} */
+  /** Resolve one selectable leaf from the authoritative Group/Subcategory snapshot. */
   getSubcategoryById(id: string, sessionToken: string, signal?: AbortSignal): Promise<AdminSubcategory>;
   /** POST /api/chi-tiet-loai-cong-viec */
   createSubcategory(

@@ -4,7 +4,7 @@ import {
   type AdminUser,
   type AdminUserListResult,
   type AdminUserManagementCapability,
-  type CreateUserInput,
+  type CreateAdministratorInput,
   type UpdateUserInput,
   type AdminUserListParams,
 } from "../../features/admin-user-management/capability";
@@ -299,7 +299,7 @@ export function createCybersoftAdminUserManagementCapability(config: {
       }
     },
 
-    async createUser(input: CreateUserInput, sessionToken: string, signal?: AbortSignal) {
+    async createAdministrator(input: CreateAdministratorInput, sessionToken: string, signal?: AbortSignal) {
       try {
         const response = await fetch(`${config.apiBaseUrl}/users`, {
           method: "POST",
@@ -312,10 +312,11 @@ export function createCybersoftAdminUserManagementCapability(config: {
           body: JSON.stringify({
             name: input.name,
             email: input.email,
+            password: input.password,
             phone: input.phone,
             birthday: input.birthday,
             gender: input.gender,
-            role: input.role,
+            role: "ADMIN",
             skill: input.skills,
             certification: input.certifications,
           }),

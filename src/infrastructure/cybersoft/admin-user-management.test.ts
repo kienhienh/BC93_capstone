@@ -189,7 +189,7 @@ describe("Cybersoft Admin User Management adapter", () => {
     expect(headers?.get("tokenCybersoft")).toBe("cybersoft-token");
   });
 
-  it("creates a new user with validated input", async () => {
+  it("creates an Administrator with a password and a fixed ADMIN role", async () => {
     let body: unknown;
     server.use(
       http.post(usersUrl, async ({ request }) => {
@@ -200,14 +200,14 @@ describe("Cybersoft Admin User Management adapter", () => {
       }),
     );
 
-    const newUser = await capability().createUser(
+    const newUser = await capability().createAdministrator(
       {
         name: "Jane Smith",
         email: "jane@example.com",
+        password: "secret123",
         phone: "0987654321",
         birthday: "1992-05-15",
         gender: false,
-        role: "ADMIN",
         skills: ["React"],
         certifications: [],
       },
@@ -217,7 +217,7 @@ describe("Cybersoft Admin User Management adapter", () => {
     expect(newUser.name).toBe("John Doe");
     expect(body).toHaveProperty("name", "Jane Smith");
     expect(body).toHaveProperty("role", "ADMIN");
-    expect(body).not.toHaveProperty("password"); // Never expose password
+    expect(body).toHaveProperty("password", "secret123");
   });
 
   it("updates an existing user", async () => {

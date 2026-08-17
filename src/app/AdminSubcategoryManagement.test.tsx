@@ -16,7 +16,7 @@ const categoryOne = { id: 1, tenLoaiCongViec: "Graphics & Design" };
 const subcategoryOne = { id: 100, tenChiTiet: "Logo Design" };
 const subcategoryTwo = { id: 101, tenChiTiet: "Business Cards" };
 
-function paging(data = [subcategoryOne], totalRow = 60, pageIndex = 1, pageSize = 10, keywords: string | null = null) {
+function paging(data: unknown[] = [subcategoryOne], totalRow = 60, pageIndex = 1, pageSize = 10, keywords: string | null = null) {
   return { content: { pageIndex, pageSize, totalRow, keywords, data } };
 }
 
@@ -29,14 +29,20 @@ function installDefaultHandlers() {
     http.get(pagingUrl, ({ request }) => {
       const url = new URL(request.url);
       return HttpResponse.json(paging(
-        [subcategoryOne],
+        [{ id: 10, tenNhom: "Logo & Brand Identity", hinhAnh: null, maLoaiCongviec: 1, dsChiTietLoai: [subcategoryOne] }],
         60,
         Number(url.searchParams.get("pageIndex") ?? 1),
         Number(url.searchParams.get("pageSize") ?? 10),
         url.searchParams.get("keyword"),
       ));
     }),
-    http.get(subcategoriesUrl, () => HttpResponse.json({ content: [subcategoryOne, subcategoryTwo] })),
+    http.get(subcategoriesUrl, () => HttpResponse.json({ content: [{
+      id: 10,
+      tenNhom: "Logo & Brand Identity",
+      hinhAnh: null,
+      maLoaiCongviec: 1,
+      dsChiTietLoai: [subcategoryOne, subcategoryTwo],
+    }] })),
     http.get(subcategoryUrl("100"), () => HttpResponse.json({ content: [subcategoryOne] })),
     http.get(subcategoryUrl("101"), () => HttpResponse.json({ content: [subcategoryTwo] })),
     http.get(categoriesUrl, () => HttpResponse.json({ content: [categoryOne] })),
@@ -62,6 +68,8 @@ describe("Administrator Service Subcategory Management", () => {
     expect(within(grid).getByRole("link", { name: "View Logo Design" })).toHaveAttribute("href", `/admin/subcategories/100${query}`);
     expect(within(grid).getByRole("link", { name: "Edit Logo Design" })).toHaveAttribute("href", `/admin/subcategories/100/edit${query}`);
     expect(screen.getByRole("link", { name: /Create Subcategory/ })).toHaveAttribute("href", `/admin/subcategories/new${query}`);
+    expect(within(grid).getByText("Logo & Brand Identity")).toBeVisible();
+    expect(within(grid).getByText("Graphics & Design")).toBeVisible();
     app.unmount();
 
     const detail = renderTestApplication({ initialPath: `/admin/subcategories/100${query}`, isAdmin: true });
@@ -158,7 +166,6 @@ describe("Administrator Service Subcategory Management", () => {
   });
 
   it("distinguishes not-found, forbidden and offline failures", async () => {
-    server.use(http.get(subcategoryUrl("999"), () => HttpResponse.json({ message: "missing" }, { status: 404 })));
     const missing = renderTestApplication({ initialPath: "/admin/subcategories/999", isAdmin: true });
     expect(await screen.findByRole("alert")).toHaveTextContent("Not found.");
     missing.unmount();

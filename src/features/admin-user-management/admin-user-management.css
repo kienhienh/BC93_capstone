@@ -918,3 +918,5 @@ a.admin-primary-action:hover { color: #fff; background: var(--admin-brand-dark);
   background: #f3fbf7;
   color: #315c45;
 }
+
+.admin-role-fixed { display: flex; min-height: 42px; align-items: center; box-sizing: border-box; padding: 0 12px; border: 1px solid #dfe5e1; border-radius: 8px; background: #f7faf8; color: #14794f; font-size: 12px; font-weight: 800; }

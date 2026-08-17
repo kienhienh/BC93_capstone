@@ -3,7 +3,7 @@ import { useAdminUserManagementCapability } from "./context";
 import type {
   AdminUser,
   AdminUserListParams,
-  CreateUserInput,
+  CreateAdministratorInput,
   UpdateUserInput,
 } from "./capability";
 
@@ -28,7 +28,7 @@ export function useCreateAdminUser(sessionToken: string) {
   const capability = useAdminUserManagementCapability();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (input: CreateUserInput) => capability.createUser(input, sessionToken),
+    mutationFn: (input: CreateAdministratorInput) => capability.createAdministrator(input, sessionToken),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["admin-users"] }); },
   });
 }

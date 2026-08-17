@@ -16,14 +16,25 @@ const categoryListEnvelopeSchema = z.object({ content: z.array(categorySchema) }
 
 const subcategorySchema = z.object({ id: idSchema, tenChiTiet: z.string().trim().min(1) });
 const subcategoryEnvelopeSchema = z.object({ content: z.union([subcategorySchema, z.array(subcategorySchema)]) });
-const subcategoryListEnvelopeSchema = z.object({ content: z.array(subcategorySchema) });
+
+const groupSnapshotSchema = z.object({
+  id: idSchema,
+  tenNhom: z.string().trim().min(1),
+  hinhAnh: z.string().nullable().optional(),
+  maLoaiCongviec: idSchema.optional(),
+  maLoaiCongViec: idSchema.optional(),
+  dsChiTietLoai: z.array(subcategorySchema),
+});
+const subcategoryListEnvelopeSchema = z.object({
+  content: z.array(z.union([subcategorySchema, groupSnapshotSchema])),
+});
 const subcategoryPagingEnvelopeSchema = z.object({
   content: z.object({
     pageIndex: z.number().int().nonnegative(),
     pageSize: z.number().int().positive(),
     totalRow: z.number().int().nonnegative(),
     keywords: z.string().nullable().optional(),
-    data: z.array(subcategorySchema),
+    data: z.array(z.union([subcategorySchema, groupSnapshotSchema])),
   }),
 });
 
@@ -44,8 +55,36 @@ function mapCategory(value: z.infer<typeof categorySchema>): AdminTaxonomyCatego
   return { id: String(value.id), name: value.tenLoaiCongViec };
 }
 
-function mapSubcategory(value: z.infer<typeof subcategorySchema>): AdminSubcategory {
-  return { id: String(value.id), name: value.tenChiTiet };
+function mapSubcategory(
+  value: z.infer<typeof subcategorySchema>,
+  context?: { groupId: string; groupName: string; categoryId?: string },
+): AdminSubcategory {
+  return {
+    id: String(value.id),
+    name: value.tenChiTiet,
+    ...(context ? {
+      groupId: context.groupId,
+      groupName: context.groupName,
+      ...(context.categoryId ? { categoryId: context.categoryId } : {}),
+    } : {}),
+  };
+}
+
+function flattenSubcategoryItems(
+  values: readonly (z.infer<typeof subcategorySchema> | z.infer<typeof groupSnapshotSchema>)[],
+): AdminSubcategory[] {
+  return values.flatMap((value) => {
+    if ("dsChiTietLoai" in value) {
+      const rawCategoryId = value.maLoaiCongviec ?? value.maLoaiCongViec;
+      const categoryId = rawCategoryId === undefined ? undefined : String(rawCategoryId);
+      return value.dsChiTietLoai.map((subcategory) => mapSubcategory(subcategory, {
+        groupId: String(value.id),
+        groupName: value.tenNhom,
+        categoryId,
+      }));
+    }
+    return [mapSubcategory(value)];
+  });
 }
 
 function mapHierarchy(categoryId: string, value?: z.infer<typeof hierarchyCategorySchema>): AdminCategoryHierarchy {
@@ -56,7 +95,7 @@ function mapHierarchy(categoryId: string, value?: z.infer<typeof hierarchyCatego
       id: String(group.id),
       name: group.tenNhom,
       imageUrl: group.hinhAnh?.trim() || null,
-      subcategories: group.dsChiTietLoai.map(mapSubcategory),
+      subcategories: group.dsChiTietLoai.map((subcategory) => mapSubcategory(subcategory)),
     })) ?? [],
   };
 }
@@ -90,20 +129,26 @@ async function parseAllSubcategories(response: Response) {
   if (!response.ok) throw failure(response.status);
   const parsed = subcategoryListEnvelopeSchema.safeParse(await responseJson(response));
   if (!parsed.success) throw new AdminSubcategoryManagementFailure("malformed");
-  return parsed.data.content.map(mapSubcategory);
+  return flattenSubcategoryItems(parsed.data.content);
 }
 
 async function parsePaging(response: Response): Promise<AdminSubcategoryListResult> {
   if (!response.ok) throw failure(response.status);
   const parsed = subcategoryPagingEnvelopeSchema.safeParse(await responseJson(response));
   if (!parsed.success) throw new AdminSubcategoryManagementFailure("malformed");
+  const rawData = parsed.data.content.data;
+  const data = flattenSubcategoryItems(rawData);
+  const lacksHierarchyContext = rawData.some((item) => !("dsChiTietLoai" in item));
+  if (parsed.data.content.totalRow > 0 && (rawData.length === 0 || lacksHierarchyContext)) {
+    throw new AdminSubcategoryManagementFailure("malformed");
+  }
   return {
     pageIndex: parsed.data.content.pageIndex,
     pageSize: parsed.data.content.pageSize,
     totalRow: parsed.data.content.totalRow,
     keywords: parsed.data.content.keywords ?? null,
     scope: "server",
-    data: parsed.data.content.data.map(mapSubcategory),
+    data,
   };
 }
 
@@ -219,11 +264,17 @@ export function createCybersoftAdminSubcategoryManagementCapability(config: {
 
     async getSubcategoryById(id, sessionToken, signal) {
       try {
-        const response = await fetch(`${config.apiBaseUrl}/chi-tiet-loai-cong-viec/${encodeURIComponent(id)}`, {
+        // The published GET /chi-tiet-loai-cong-viec/{id} response is a Service Group,
+        // not a selectable leaf. Resolve a Subcategory from the complete Group snapshot
+        // so detail/edit safeguards never misinterpret a Group as a Subcategory.
+        const response = await fetch(`${config.apiBaseUrl}/chi-tiet-loai-cong-viec`, {
           signal,
           headers: authHeaders(sessionToken),
         });
-        return await parseOneSubcategory(response, id);
+        const all = await parseAllSubcategories(response);
+        const item = all.find((subcategory) => subcategory.id === id);
+        if (!item) throw new AdminSubcategoryManagementFailure("not_found");
+        return item;
       } catch (error) {
         throw transport(error, signal);
       }

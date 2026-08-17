@@ -7,13 +7,13 @@
 .admin-subcategory-create,
 .admin-subcategory-edit,
 .admin-group-create,
-.admin-group-edit { max-width: 980px; }
+.admin-group-edit { width: 100%; max-width: none; }
 
 .admin-subcategory-heading-row { margin-bottom: 20px; }
 
 .admin-subcategory-list-controls {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 170px 170px;
+  grid-template-columns: minmax(0, 1fr) 170px;
   gap: 16px;
   margin-bottom: 16px;
   padding: 15px;
@@ -47,6 +47,7 @@
 }
 .admin-subcategory-list-controls input,
 .admin-subcategory-list-controls select { padding: 0 12px; }
+.admin-subcategory-refresh { grid-column: 1 / -1; }
 .admin-subcategory-refresh button { padding: 0 14px; cursor: pointer; font-size: 10px; font-weight: 800; }
 .admin-subcategory-refresh button:disabled { opacity: .55; cursor: not-allowed; }
 .admin-subcategory-list-scope { margin: 0 0 14px; color: #7c8981; font-size: 10px; }
@@ -71,7 +72,16 @@
   letter-spacing: .06em;
   text-transform: uppercase;
 }
-.admin-subcategory-table td { padding: 13px 15px; border-bottom: 1px solid #edf0ee; color: #455048; font-size: 11px; }
+.admin-subcategory-table td { padding: 13px 15px; border-bottom: 1px solid #edf0ee; color: #455048; font-size: 11px; vertical-align: middle; }
+.admin-subcategory-primary { display: flex; align-items: center; gap: 10px; min-width: 220px; }
+.admin-subcategory-primary > div { min-width: 0; }
+.admin-subcategory-primary strong { display: block; color: #26352d; font-size: 11px; line-height: 1.35; }
+.admin-subcategory-primary small { display: block; margin-top: 2px; color: #8a968f; font-size: 9px; }
+.admin-subcategory-icon { display: inline-grid; width: 34px; height: 34px; flex: 0 0 34px; place-items: center; border-radius: 10px; background: #e8f7ef; color: #0b8f58; font-size: 8px; font-weight: 900; letter-spacing: .04em; }
+.taxonomy-context-chip { display: inline-flex; max-width: 220px; align-items: center; padding: 5px 8px; border-radius: 999px; background: #f1f4f2; color: #405047; font-size: 10px; font-weight: 700; line-height: 1.25; }
+.taxonomy-context-category { background: #eaf8f1; color: #14794f; }
+.taxonomy-context-muted { color: #8b968f; font-size: 10px; }
+.taxonomy-id { display: inline-flex; min-width: 28px; justify-content: center; padding: 4px 7px; border-radius: 7px; background: #f7f8f7; color: #5e6b63; font-size: 10px; font-variant-numeric: tabular-nums; }
 .admin-subcategory-table tbody tr:last-child td { border-bottom: 0; }
 
 .admin-subcategory-detail-card {
@@ -140,3 +150,4 @@
 @media (max-width: 540px) {
   .admin-subcategory-detail-card { padding: 17px; }
 }
+
