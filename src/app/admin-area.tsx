@@ -3,6 +3,8 @@ import { AdminUserManagementProvider } from "../features/admin-user-management/w
 import { createCybersoftAdminUserManagementCapability } from "../infrastructure/cybersoft/admin-user-management";
 import { AdminServiceManagementProvider } from "../features/admin-service-management/wiring";
 import { createCybersoftAdminServiceManagementCapability } from "../infrastructure/cybersoft/admin-service-management";
+import { AdminCategoryManagementProvider } from "../features/admin-category-management/wiring";
+import { createCybersoftAdminCategoryManagementCapability } from "../infrastructure/cybersoft/admin-category-management";
 import Admin from "../pages/Admin";
 import type { RuntimeConfig } from "./runtime-config";
 
@@ -24,11 +26,17 @@ export default function AdminArea({ config }: { config: RuntimeConfig }) {
     () => createCybersoftAdminServiceManagementCapability({ apiBaseUrl, cybersoftToken }),
     [apiBaseUrl, cybersoftToken],
   );
+  const categoryCapability = useMemo(
+    () => createCybersoftAdminCategoryManagementCapability({ apiBaseUrl, cybersoftToken }),
+    [apiBaseUrl, cybersoftToken],
+  );
 
   return (
     <AdminUserManagementProvider capability={capability}>
       <AdminServiceManagementProvider capability={serviceCapability}>
-        <Admin />
+        <AdminCategoryManagementProvider capability={categoryCapability}>
+          <Admin />
+        </AdminCategoryManagementProvider>
       </AdminServiceManagementProvider>
     </AdminUserManagementProvider>
   );

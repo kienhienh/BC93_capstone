@@ -17,7 +17,9 @@ src/
       provider.tsx      Capability provider
       screen-model.ts   Pure presentation and URL-state rules
       view.tsx          Feature-owned reusable UI
-      routes.tsx        Route orchestration
+      components/       Feature-only UI extracted when a route becomes large
+      routes/           Route-specific modules for complex multi-route features
+      routes.tsx        Small route barrel/orchestration entry point
       public.ts         Interface available to screens and other features
       wiring.ts         Interface available to the composition root
   infrastructure/      Cybersoft, browser, and deterministic test adapters
@@ -36,8 +38,9 @@ feature through `public.ts`; application composition imports through
 - Use camelCase for variables and functions, PascalCase for React components,
   classes, and exported model types, and kebab-case for feature folders.
 - Give each function one observable responsibility. Extract pure rules from
-  route JSX into `screen-model.ts` when they can be tested through routed
-  behavior.
+  route JSX into `screen-model.ts` or a focused feature module when they can be
+  tested through routed behavior. Split large route files into feature-owned
+  `routes/` and `components/` modules instead of growing one multi-purpose file.
 - Prefer a small feature interface with behavior hidden behind it. Do not add
   pass-through repositories or generic abstractions without a production and
   test adapter.

@@ -12,6 +12,12 @@ import {
   AdminServiceEditRoute,
   AdminServiceListRoute,
 } from "../features/admin-service-management/public";
+import {
+  AdminCategoryCreateRoute,
+  AdminCategoryDetailRoute,
+  AdminCategoryEditRoute,
+  AdminCategoryListRoute,
+} from "../features/admin-category-management/public";
 
 type AdminDestination = {
   label: string;
@@ -37,6 +43,7 @@ const destinations: AdminDestination[] = [
     label: "Service Categories",
     shortLabel: "CA",
     description: "Organize top-level marketplace service categories.",
+    to: "/admin/categories",
   },
   {
     label: "Service Subcategories",
@@ -82,8 +89,8 @@ function AdminDashboard() {
           <span className="admin-eyebrow">Marketplace administration</span>
           <h2 id="admin-welcome-title">Everything you manage, in one place.</h2>
           <p>
-            Start with User Management today. The remaining destinations stay visible so
-            the administration structure is clear as the next issues are implemented.
+            Open a delivered management area below. Future destinations stay visible so
+            the administration structure remains clear as the next issues are implemented.
           </p>
         </div>
         <Link to="/admin/users" className="admin-primary-action">
@@ -210,6 +217,10 @@ export default function Admin() {
             <Route path="services/new" element={<AdminServiceCreateRoute />} />
             <Route path="services/:serviceId/edit" element={<AdminServiceEditRoute />} />
             <Route path="services/:serviceId" element={<AdminServiceDetailRoute />} />
+            <Route path="categories" element={<AdminCategoryListRoute />} />
+            <Route path="categories/new" element={<AdminCategoryCreateRoute />} />
+            <Route path="categories/:categoryId/edit" element={<AdminCategoryEditRoute />} />
+            <Route path="categories/:categoryId" element={<AdminCategoryDetailRoute />} />
           </Routes>
         </div>
       </section>
