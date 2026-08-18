@@ -24,6 +24,10 @@ const createStoredSession = (role: string | null = "USER", expiresAt = 4_102_444
   },
 });
 
+async function openAccountMenu(user: ReturnType<typeof userEvent.setup>) {
+  await user.click(await screen.findByRole("button", { name: "Open your account menu" }));
+}
+
 function createSessionStore(initial: unknown) {
   let listener: (value: unknown) => void = () => undefined;
   const store: SessionStore = {
@@ -48,6 +52,7 @@ describe("Session", () => {
       subscribe: () => () => undefined,
     };
     const storedSession = createStoredSession();
+    const user = userEvent.setup();
 
     renderTestApplication("/orders", sessionStore);
 
@@ -55,7 +60,8 @@ describe("Session", () => {
     expect(screen.getByRole("heading", { name: "Restoring your session" })).toHaveFocus();
     expect(document.title).toBe("Restoring session | Fiverr Clone");
     await act(async () => finishReading(storedSession));
-    expect(await screen.findByRole("button", { name: "Logout" })).toBeVisible();
+    await openAccountMenu(user);
+    expect(screen.getByRole("menuitem", { name: "Logout" })).toBeVisible();
   });
 
   it("clears malformed and expired persisted data before protected UI renders", () => {
@@ -92,14 +98,17 @@ describe("Session", () => {
     });
     expect(JSON.stringify(vi.mocked(store.save).mock.calls)).not.toContain("password");
 
-    await user.click(await screen.findByRole("button", { name: "Logout" }));
+    await openAccountMenu(user);
+    await user.click(screen.getByRole("menuitem", { name: "Logout" }));
     expect(store.clear).toHaveBeenCalledOnce();
   });
 
-  it("fails closed when another tab logs out", () => {
+  it("fails closed when another tab logs out", async () => {
+    const user = userEvent.setup();
     const sessionBoundary = createSessionStore(createStoredSession());
     renderTestApplication("/orders", sessionBoundary.store);
-    expect(screen.getByRole("button", { name: "Logout" })).toBeVisible();
+    await openAccountMenu(user);
+    expect(screen.getByRole("menuitem", { name: "Logout" })).toBeVisible();
 
     act(() => sessionBoundary.emit(null));
 
@@ -159,7 +168,8 @@ describe("Session", () => {
     expect(store.clear).not.toHaveBeenCalled();
     expect(screen.getByRole("heading", { name: "Insufficient permission" })).toHaveFocus();
     await user.click(screen.getByRole("button", { name: "Return to current page" }));
-    expect(screen.getByRole("button", { name: "Logout" })).toBeVisible();
+    await openAccountMenu(user);
+    expect(screen.getByRole("menuitem", { name: "Logout" })).toBeVisible();
   });
 
   it("requires fresh confirmation after reauthentication without replaying an action", async () => {

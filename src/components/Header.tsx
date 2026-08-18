@@ -10,6 +10,7 @@ import {
 import { createPortal } from "react-dom";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSession } from "../features/authentication/public";
+import AccountMenu from "./AccountMenu";
 import AdminAccountMenu from "./AdminAccountMenu";
 import { useTaxonomy } from "../features/taxonomy/public";
 
@@ -108,9 +109,9 @@ function Drawer({
 
 function CategoryLinks({ onSelect }: { onSelect?: () => void }) {
   const taxonomy = useTaxonomy();
-  if (taxonomy.isPending) return <p aria-live="polite">Loading Service Categories...</p>;
-  if (taxonomy.isError) return <p>Service Categories are unavailable.</p>;
-  if (taxonomy.data.length === 0) return <p>No Service Categories are available.</p>;
+  if (taxonomy.isPending) return <p className="category-navigation-status" aria-live="polite">Loading Service Categories...</p>;
+  if (taxonomy.isError) return <p className="category-navigation-status">Service Categories are unavailable.</p>;
+  if (taxonomy.data.length === 0) return <p className="category-navigation-status">No Service Categories are available.</p>;
   return (
     <ul className="category-links">
       {taxonomy.data.map((category) => (
@@ -196,7 +197,7 @@ export default function Header() {
             ) : session.user.role === "ADMIN" ? (
               <AdminAccountMenu />
             ) : (
-              <><Link className="profile-link" to="/profile" aria-label="Open your Profile">{session.user.avatar ? <img src={session.user.avatar} alt="" /> : <span aria-hidden="true">{session.user.name.charAt(0).toUpperCase()}</span>}</Link><button type="button" onClick={signOut}>Logout</button></>
+              <AccountMenu />
             )}
           </div>
         )}

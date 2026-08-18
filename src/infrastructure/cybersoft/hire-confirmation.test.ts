@@ -44,31 +44,28 @@ describe("Cybersoft Hire confirmation capability", () => {
     });
   });
 
-  it("requests and maps the authenticated Hired Services reconciliation list", async () => {
+  it("requests and maps the authenticated Hired Services reconciliation list, stamping the caller's own userId", async () => {
     let headers: Headers | undefined;
     server.use(http.get(hiredServicesUrl, ({ request }) => {
       headers = request.headers;
       return HttpResponse.json({
         content: [{
           id: 901,
-          maCongViec: 42,
-          maNguoiThue: 700,
           ngayThue: "2026-08-14T08:15:00.000Z",
           hoanThanh: false,
-          congViec: { tenCongViec: "Accessible marketplace design", giaTien: 220 },
-          nguoiBan: { id: 810, name: "Design Master" },
+          congViec: { id: 42, tenCongViec: "Accessible marketplace design", giaTien: 220, nguoiTao: 810 },
         }],
       });
     }));
 
-    await expect(createCapability().listHiredServices("session-token")).resolves.toEqual([{
+    await expect(createCapability().listHiredServices("session-token", "700")).resolves.toEqual([{
       id: "901",
       serviceId: "42",
       userId: "700",
       hiredAt: "2026-08-14T08:15:00.000Z",
       completed: false,
       service: { title: "Accessible marketplace design", price: 220 },
-      seller: { id: "810", name: "Design Master" },
+      seller: null,
     }]);
     expect(headers?.get("token")).toBe("session-token");
     expect(headers?.get("tokenCybersoft")).toBe("private-test-token");
@@ -94,7 +91,7 @@ describe("Cybersoft Hire confirmation capability", () => {
     );
     const capability = createCapability();
 
-    await expect(capability.listHiredServices("session-token")).rejects.toMatchObject({
+    await expect(capability.listHiredServices("session-token", "700")).rejects.toMatchObject({
       kind: "malformed",
     } satisfies Partial<HireFailure>);
     await expect(capability.createHire({

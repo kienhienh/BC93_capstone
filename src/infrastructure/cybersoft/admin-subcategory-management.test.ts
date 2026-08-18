@@ -61,6 +61,20 @@ describe("Cybersoft Admin Service Subcategory Management adapter", () => {
     expect(url?.searchParams.get("keyword")).toBe("logo");
   });
 
+  it("falls back to client-side pagination when the paged Groups flatten into more Subcategories than pageSize, since the endpoint paginates at the Group level", async () => {
+    const groupOne = { id: 10, tenNhom: "Logo & Brand Identity", maLoaiCongviec: 1, hinhAnh: null, dsChiTietLoai: [subcategoryOne, subcategoryTwo] };
+    const groupTwo = { id: 11, tenNhom: "Web & App Design", maLoaiCongviec: 1, hinhAnh: null, dsChiTietLoai: [{ id: 102, tenChiTiet: "Website Design" }, { id: 103, tenChiTiet: "App Design" }] };
+    server.use(
+      http.get(pagingUrl, () => HttpResponse.json({ content: {
+        pageIndex: 1, pageSize: 2, totalRow: 21, keywords: null, data: [groupOne, groupTwo],
+      } })),
+      http.get(subcategoriesUrl, () => HttpResponse.json({ content: [groupOne, groupTwo] })),
+    );
+    const result = await capability().listSubcategories({ pageIndex: 1, pageSize: 2 }, "session-token");
+    expect(result.scope).toBe("client-fallback");
+    expect(result.data.length).toBeLessThanOrEqual(2);
+  });
+
   it("falls back to the complete Subcategory snapshot when paging is malformed", async () => {
     server.use(
       http.get(pagingUrl, () => HttpResponse.json({ content: "bad" })),

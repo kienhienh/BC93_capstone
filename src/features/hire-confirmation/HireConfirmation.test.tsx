@@ -115,8 +115,6 @@ describe("routed Hire confirmation", () => {
       http.get(hiredServicesUrl, () => HttpResponse.json({
         content: [{
           id: 901,
-          maCongViec: 42,
-          maNguoiThue: 700,
           ngayThue: "2026-08-14T08:15:00.000Z",
           hoanThanh: false,
           congViec: {
@@ -124,10 +122,6 @@ describe("routed Hire confirmation", () => {
             tenCongViec: "Accessible marketplace design",
             giaTien: 220,
             nguoiTao: 810,
-          },
-          nguoiBan: {
-            id: 810,
-            name: "Design Master",
           },
         }],
       })),
@@ -215,12 +209,9 @@ describe("routed Hire confirmation", () => {
       http.post(hireUrl, async () => {
         hiredList = [{
           id: 901,
-          maCongViec: 42,
-          maNguoiThue: 700,
           ngayThue: "2026-08-14T08:15:00.000Z",
           hoanThanh: false,
-          congViec: { tenCongViec: "Accessible marketplace design", giaTien: 220 },
-          nguoiBan: { id: 810, name: "Design Master" },
+          congViec: { id: 42, tenCongViec: "Accessible marketplace design", giaTien: 220, nguoiTao: 810 },
         }];
         return HttpResponse.json({ content: { id: 901 } }, { status: 201 });
       }),
