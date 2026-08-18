@@ -29,7 +29,7 @@ export function ServiceImageUpload({ serviceId, currentImageUrl }: { serviceId: 
       <h2 id="service-image-heading">Service Image</h2>
       <p>Saving metadata and uploading an image are separate, independently confirmed actions.</p>
       {currentImageUrl ? (
-        <img src={currentImageUrl} alt="" className="admin-service-image-preview" />
+        <img src={currentImageUrl} alt="" className="admin-service-image-preview" loading="lazy" decoding="async" />
       ) : (
         <div className="state-indicator" data-state="empty" role="status">No image uploaded.</div>
       )}

@@ -53,7 +53,7 @@ describe("routed Service Detail", () => {
     await user.click(await screen.findByRole("link", { name: "Add a Comment" }));
 
     expect(application.currentLocation()).toBe("/login?returnTo=%2Fservices%2F42");
-    await user.type(screen.getByRole("textbox", { name: "Email" }), "alex@example.com");
+    await user.type(await screen.findByRole("textbox", { name: "Email" }), "alex@example.com");
     await user.type(screen.getByLabelText("Password", { selector: "input" }), "secret1");
     await user.click(screen.getByRole("button", { name: "Login" }));
 
@@ -394,7 +394,7 @@ describe("routed Service Detail", () => {
 
     expect(await screen.findByRole("heading", { name: "Login" })).toBeVisible();
     expect(application.currentLocation()).toBe("/login?returnTo=%2Fservices%2F42");
-    await user.type(screen.getByRole("textbox", { name: "Email" }), "alex@example.com");
+    await user.type(await screen.findByRole("textbox", { name: "Email" }), "alex@example.com");
     await user.type(screen.getByLabelText("Password", { selector: "input" }), "secret1");
     await user.click(screen.getByRole("button", { name: "Login" }));
 

@@ -143,6 +143,9 @@ export default function Home() {
               alt="Business growth and professional services"
               width="753"
               height="424"
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
             />
             <p><strong>Expert Services for every business goal</strong></p>
           </div>
