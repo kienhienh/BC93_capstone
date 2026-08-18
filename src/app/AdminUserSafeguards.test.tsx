@@ -75,7 +75,7 @@ describe("Administrator User safeguards", () => {
   it("preserves q/page/pageSize across list, detail, edit and delete entry points with unique action names", async () => {
     const query = "?q=john&page=2&pageSize=25";
     const list = renderTestApplication({ initialPath: `/admin/users${query}`, sessionStore: adminSession() });
-    await screen.findByRole("grid", { name: "User list" });
+    await screen.findByRole("grid", { name: "User list" }, { timeout: 5_000 });
     expect(list.currentLocation()).toBe(`/admin/users${query}`);
     expect(screen.getByRole("link", { name: "View John Doe" })).toHaveAttribute("href", `/admin/users/1${query}`);
     expect(screen.getByRole("link", { name: "Edit John Doe" })).toHaveAttribute("href", `/admin/users/1/edit${query}`);

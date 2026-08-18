@@ -141,4 +141,21 @@ describe("Administrator Hired Service safeguards", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(trigger).toHaveFocus();
   });
+
+  it("traps Tab focus within the destructive confirmation dialog", async () => {
+    renderTestApplication({ initialPath: "/admin/hired-services/100", isAdmin: true });
+    const user = userEvent.setup();
+    await screen.findByRole("heading", { name: "Hired Service Detail" });
+    await user.click(await screen.findByRole("button", { name: "Cancel Hired Service 100" }));
+    const dialog = screen.getByRole("dialog", { name: "Cancel Hired Service 100?" });
+    const cancel = within(dialog).getByRole("button", { name: "Go back" });
+    const confirm = within(dialog).getByRole("button", { name: "Cancel Hired Service 100" });
+    expect(cancel).toHaveFocus();
+
+    await user.tab({ shift: true });
+    expect(confirm).toHaveFocus();
+
+    await user.tab();
+    expect(cancel).toHaveFocus();
+  });
 });

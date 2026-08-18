@@ -200,4 +200,23 @@ describe("Administrator Service Group membership", () => {
     await user.keyboard("{Escape}");
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
+
+  it("traps Tab focus within the Service Group review dialog", async () => {
+    defaults([]);
+    renderTestApplication({ initialPath: "/admin/subcategories/groups/1/new", isAdmin: true });
+    const user = userEvent.setup();
+    await screen.findByRole("heading", { name: "Add Service Group" });
+    await user.type(await screen.findByRole("textbox", { name: /Service Group name/ }), "Logo & Brand Identity");
+    await user.click(screen.getByRole("button", { name: "Review Group" }));
+    const dialog = screen.getByRole("dialog", { name: "Review Service Group membership?" });
+    const cancel = within(dialog).getByRole("button", { name: "Cancel" });
+    const confirm = within(dialog).getByRole("button", { name: "Confirm & save" });
+    expect(confirm).toHaveFocus();
+
+    await user.tab();
+    expect(cancel).toHaveFocus();
+
+    await user.tab({ shift: true });
+    expect(confirm).toHaveFocus();
+  });
 });

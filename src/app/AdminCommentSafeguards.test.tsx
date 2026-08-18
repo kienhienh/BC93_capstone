@@ -150,4 +150,21 @@ describe("Administrator Comment safeguards", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(trigger).toHaveFocus();
   });
+
+  it("traps Tab focus within the destructive confirmation dialog", async () => {
+    renderTestApplication({ initialPath: "/admin/comments/100", isAdmin: true });
+    const user = userEvent.setup();
+    await screen.findByRole("heading", { name: "Comment Detail" });
+    await user.click(await screen.findByRole("button", { name: "Delete Comment 100" }));
+    const dialog = screen.getByRole("dialog", { name: "Delete Comment?" });
+    const cancel = within(dialog).getByRole("button", { name: "Cancel" });
+    const confirm = within(dialog).getByRole("button", { name: "Delete Comment 100" });
+    expect(cancel).toHaveFocus();
+
+    await user.tab({ shift: true });
+    expect(confirm).toHaveFocus();
+
+    await user.tab();
+    expect(cancel).toHaveFocus();
+  });
 });

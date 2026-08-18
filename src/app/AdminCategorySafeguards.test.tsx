@@ -204,4 +204,21 @@ describe("Administrator Service Category safeguards", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(trigger).toHaveFocus();
   });
+
+  it("traps Tab focus within the destructive confirmation dialog", async () => {
+    renderTestApplication({ initialPath: "/admin/categories/1", isAdmin: true });
+    const user = userEvent.setup();
+    await screen.findByRole("heading", { name: "Service Category Detail" });
+    await user.click(await screen.findByRole("button", { name: "Delete Graphics & Design" }));
+    const dialog = screen.getByRole("dialog", { name: "Delete Service Category?" });
+    const cancel = within(dialog).getByRole("button", { name: "Cancel delete for Graphics & Design" });
+    const input = within(dialog).getByRole("textbox", { name: "Type Graphics & Design to confirm" });
+    expect(cancel).toHaveFocus();
+
+    await user.tab({ shift: true });
+    expect(input).toHaveFocus();
+
+    await user.tab();
+    expect(cancel).toHaveFocus();
+  });
 });
