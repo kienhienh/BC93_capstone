@@ -10,6 +10,7 @@ export default defineConfig({
     environment: 'jsdom',
     pool: 'threads',
     maxWorkers: 1,
+    exclude: ['**/node_modules/**', '**/dist/**', 'e2e/**'],
     setupFiles: ['./src/test/setup.ts'],
     coverage: {
       provider: 'v8',

@@ -20,6 +20,12 @@ export default defineConfig([
     },
   },
   {
+    files: ['e2e/**/*.{ts,tsx}'],
+    rules: {
+      'react-hooks/rules-of-hooks': 'off',
+    },
+  },
+  {
     files: ['src/features/**/*.{ts,tsx}'],
     rules: {
       'no-restricted-imports': [
