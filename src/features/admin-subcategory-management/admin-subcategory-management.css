@@ -145,6 +145,10 @@
   .admin-subcategory-table td { display: grid; grid-template-columns: 110px minmax(0, 1fr); align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #edf0ee; }
   .admin-subcategory-table td::before { content: attr(data-label); color: #929e97; font-size: 8px; font-weight: 900; text-transform: uppercase; }
   .admin-subcategory-table td:last-child { border-bottom: 0; }
+  /* The 220px desktop floor doesn't fit the 110px label + minmax(0,1fr)
+     card layout at narrow widths (e.g. 320px); let it shrink like its
+     own children already do. */
+  .admin-subcategory-primary { min-width: 0; }
 }
 
 @media (max-width: 540px) {
