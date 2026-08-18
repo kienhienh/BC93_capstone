@@ -1,8 +1,11 @@
 import "@testing-library/jest-dom/vitest";
 import { cleanup } from "@testing-library/react";
-import { afterAll, afterEach, beforeAll, vi } from "vitest";
+import { toHaveNoViolations } from "jest-axe";
+import { afterAll, afterEach, beforeAll, expect, vi } from "vitest";
 import { resetTestApplications } from "./render-application";
 import { resetTestData, server } from "./server";
+
+expect.extend(toHaveNoViolations);
 
 beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
 
