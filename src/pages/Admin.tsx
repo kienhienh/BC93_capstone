@@ -32,6 +32,10 @@ import {
   AdminCommentEditRoute,
   AdminCommentListRoute,
 } from "../features/admin-comment-management/public";
+import {
+  AdminHiredServiceDetailRoute,
+  AdminHiredServiceListRoute,
+} from "../features/admin-hired-service-management/public";
 
 type AdminDestination = {
   label: string;
@@ -75,6 +79,7 @@ const destinations: AdminDestination[] = [
     label: "Hired Services",
     shortLabel: "HS",
     description: "Inspect and manage service engagements.",
+    to: "/admin/hired-services",
   },
 ];
 
@@ -247,6 +252,8 @@ export default function Admin() {
             <Route path="comments/new" element={<AdminCommentCreateRoute />} />
             <Route path="comments/:commentId/edit" element={<AdminCommentEditRoute />} />
             <Route path="comments/:commentId" element={<AdminCommentDetailRoute />} />
+            <Route path="hired-services" element={<AdminHiredServiceListRoute />} />
+            <Route path="hired-services/:hiredServiceId" element={<AdminHiredServiceDetailRoute />} />
           </Routes>
         </div>
       </section>
