@@ -35,7 +35,7 @@ function AuthenticatedProfile({ session, acceptSession, logout, heading }: {
   heading: React.RefObject<HTMLHeadingElement | null>;
 }) {
   const profile = useCurrentProfile(session.user.id, session.token);
-  const hiredServices = useHiredServices(session.token);
+  const hiredServices = useHiredServices(session.token, session.user.id);
 
   useEffect(() => { document.title = "Your Profile | Fiverr Clone"; }, []);
   useEffect(() => {

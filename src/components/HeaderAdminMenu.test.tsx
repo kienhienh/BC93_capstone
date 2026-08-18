@@ -20,20 +20,20 @@ describe("Administrator header account menu", () => {
     await user.click(trigger);
     expect(trigger).toHaveAttribute("aria-expanded", "true");
     expect(screen.getByRole("menu", { name: "Admin account menu" })).toBeVisible();
-    expect(screen.getByRole("menuitem", { name: /Cập nhật.*CTRL\+O/i })).toBeVisible();
-    expect(screen.getByRole("menuitem", { name: /Đăng xuất/i })).toBeVisible();
+    expect(screen.getByRole("menuitem", { name: /Your Profile.*CTRL\+O/i })).toBeVisible();
+    expect(screen.getByRole("menuitem", { name: /Logout/i })).toBeVisible();
 
     await user.keyboard("{Escape}");
     expect(screen.queryByRole("menu", { name: "Admin account menu" })).not.toBeInTheDocument();
     expect(trigger).toHaveFocus();
   });
 
-  it("opens profile from Cập nhật and from the Ctrl+O shortcut", async () => {
+  it("opens profile from Your Profile and from the Ctrl+O shortcut", async () => {
     const user = userEvent.setup();
     const clickNavigation = renderTestApplication({ initialPath: "/services", isAdmin: true });
 
     await user.click(await screen.findByRole("button", { name: "Open Admin account menu" }));
-    await user.click(screen.getByRole("menuitem", { name: /Cập nhật.*CTRL\+O/i }));
+    await user.click(screen.getByRole("menuitem", { name: /Your Profile.*CTRL\+O/i }));
     expect(clickNavigation.currentLocation()).toBe("/profile");
     clickNavigation.unmount();
 
@@ -47,7 +47,7 @@ describe("Administrator header account menu", () => {
     const application = renderTestApplication({ initialPath: "/services", isAdmin: true });
 
     await user.click(await screen.findByRole("button", { name: "Open Admin account menu" }));
-    await user.click(screen.getByRole("menuitem", { name: /Đăng xuất/i }));
+    await user.click(screen.getByRole("menuitem", { name: /Logout/i }));
 
     expect(application.currentLocation()).toBe("/");
     expect(screen.queryByRole("button", { name: "Open Admin account menu" })).not.toBeInTheDocument();

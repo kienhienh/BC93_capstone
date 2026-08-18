@@ -121,7 +121,8 @@ describe("authentication routes", () => {
     await user.click(screen.getByRole("button", { name: "Login" }));
 
     expect(await screen.findByRole("heading", { name: "Danh sách công việc" })).toBeVisible();
-    expect(screen.getByRole("button", { name: "Logout" })).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Open your account menu" }));
+    expect(screen.getByRole("menuitem", { name: "Logout" })).toBeVisible();
     expect(localStorage.getItem("token")).toBeNull();
   });
 

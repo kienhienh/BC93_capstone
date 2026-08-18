@@ -102,7 +102,6 @@ function DiscoveryContent() {
             <p>{filtered.length} services available</p>
             <div>
               <button type="button" onClick={() => void query.refetch()}>Refresh results</button>
-              <span>Sort by <strong>{state.sort === "api" ? "Relevance" : "Selected option"}</strong></span>
             </div>
           </div>
           {filtered.length === 0 ? (

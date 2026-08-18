@@ -73,11 +73,18 @@ export class HireFailure extends Error {
   }
 }
 
+/**
+ * `listHiredServices`/`getHiredService` take the caller's own `userId`
+ * because the live read they wrap (`lay-danh-sach-da-thue`) is already
+ * scoped to the authenticated session and never echoes the owning User's
+ * id back — it is stamped onto each mapped record from the known caller
+ * identity, not fabricated.
+ */
 export interface HireConfirmationCapability {
   getService(serviceId: string, signal: AbortSignal): Promise<HireService>;
   createHire(input: CreateHireInput, signal?: AbortSignal): Promise<CreateHireResult>;
-  listHiredServices(sessionToken: string, signal?: AbortSignal): Promise<HiredService[]>;
-  getHiredService(hireId: string, sessionToken: string, signal?: AbortSignal): Promise<HiredService>;
+  listHiredServices(sessionToken: string, userId: string, signal?: AbortSignal): Promise<HiredService[]>;
+  getHiredService(hireId: string, sessionToken: string, userId: string, signal?: AbortSignal): Promise<HiredService>;
   completeHire(hireId: string, sessionToken: string, signal?: AbortSignal): Promise<CompleteHireResult>;
   cancelHire(hireId: string, sessionToken: string, signal?: AbortSignal): Promise<CancelHireResult>;
 }

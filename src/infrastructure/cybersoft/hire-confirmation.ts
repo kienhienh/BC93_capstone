@@ -10,19 +10,21 @@ import { ServiceDetailFailure } from "../../features/service-detail/capability";
 
 const idSchema = z.union([z.number().int().nonnegative(), z.string().trim().min(1)]);
 const acceptedSchema = z.object({ content: z.object({ id: idSchema }) });
+/**
+ * The live `lay-danh-sach-da-thue` read (self-scoped to the session's own
+ * Hires) does not echo `maCongViec`, `maNguoiThue`, or a `nguoiBan` object —
+ * only a nested `congViec` with the Service id/title/price and the Seller's
+ * numeric id (`nguoiTao`), never a name.
+ */
 const hiredServiceSchema = z.object({
   id: idSchema,
-  maCongViec: idSchema,
-  maNguoiThue: idSchema,
   ngayThue: z.string().trim().min(1),
   hoanThanh: z.boolean(),
   congViec: z.object({
+    id: idSchema,
     tenCongViec: z.string().trim().min(1),
     giaTien: z.number().finite().nonnegative(),
-  }).optional(),
-  nguoiBan: z.object({
-    id: idSchema,
-    name: z.string().trim().min(1),
+    nguoiTao: idSchema.nullable().optional(),
   }).optional(),
 });
 const hiredServicesSchema = z.object({ content: z.array(hiredServiceSchema) });
@@ -49,6 +51,18 @@ async function safeJson(response: Response) {
   } catch {
     return null;
   }
+}
+
+function mapHiredService(item: z.infer<typeof hiredServiceSchema>, userId: string): HiredService {
+  return {
+    id: String(item.id),
+    serviceId: item.congViec ? String(item.congViec.id) : "unknown",
+    userId,
+    hiredAt: item.ngayThue,
+    completed: item.hoanThanh,
+    service: item.congViec ? { title: item.congViec.tenCongViec, price: item.congViec.giaTien } : null,
+    seller: null,
+  };
 }
 
 function responseFailure(response: Response) {
@@ -114,7 +128,7 @@ export function createCybersoftHireConfirmationCapability(config: {
         throw transportFailure(error, signal);
       }
     },
-    async listHiredServices(sessionToken, signal) {
+    async listHiredServices(sessionToken, userId, signal) {
       try {
         const response = await fetch(`${config.apiBaseUrl}/thue-cong-viec/lay-danh-sach-da-thue`, {
           signal,
@@ -123,24 +137,12 @@ export function createCybersoftHireConfirmationCapability(config: {
         if (!response.ok) throw responseFailure(response);
         const parsed = hiredServicesSchema.safeParse(await safeJson(response));
         if (!parsed.success) throw new HireFailure("malformed");
-        return parsed.data.content.map((item): HiredService => ({
-          id: String(item.id),
-          serviceId: String(item.maCongViec),
-          userId: String(item.maNguoiThue),
-          hiredAt: item.ngayThue,
-          completed: item.hoanThanh,
-          service: item.congViec
-            ? { title: item.congViec.tenCongViec, price: item.congViec.giaTien }
-            : null,
-          seller: item.nguoiBan
-            ? { id: String(item.nguoiBan.id), name: item.nguoiBan.name }
-            : null,
-        }));
+        return parsed.data.content.map((item): HiredService => mapHiredService(item, userId));
       } catch (error) {
         throw transportFailure(error, signal);
       }
     },
-    async getHiredService(hireId, sessionToken, signal) {
+    async getHiredService(hireId, sessionToken, userId, signal) {
       try {
         const response = await fetch(`${config.apiBaseUrl}/thue-cong-viec/lay-danh-sach-da-thue`, {
           signal,
@@ -151,19 +153,7 @@ export function createCybersoftHireConfirmationCapability(config: {
         if (!parsed.success) throw new HireFailure("malformed");
         const item = parsed.data.content.find((x) => String(x.id) === hireId);
         if (!item) throw new HireFailure("not_found");
-        return {
-          id: String(item.id),
-          serviceId: String(item.maCongViec),
-          userId: String(item.maNguoiThue),
-          hiredAt: item.ngayThue,
-          completed: item.hoanThanh,
-          service: item.congViec
-            ? { title: item.congViec.tenCongViec, price: item.congViec.giaTien }
-            : null,
-          seller: item.nguoiBan
-            ? { id: String(item.nguoiBan.id), name: item.nguoiBan.name }
-            : null,
-        };
+        return mapHiredService(item, userId);
       } catch (error) {
         throw transportFailure(error, signal);
       }

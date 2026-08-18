@@ -12,7 +12,7 @@ export function HiredServicesRoute() {
   const location = useLocation();
   const navigate = useNavigate();
   const heading = useRef<HTMLHeadingElement>(null);
-  const hiredServices = useHiredServices(session?.token ?? null);
+  const hiredServices = useHiredServices(session?.token ?? null, session?.user.id ?? null);
   const completeHire = useCompleteHire();
   const cancelHire = useCancelHire();
   const state = location.state as { message?: string } | null;

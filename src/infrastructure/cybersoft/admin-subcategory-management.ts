@@ -142,6 +142,18 @@ async function parsePaging(response: Response): Promise<AdminSubcategoryListResu
   if (parsed.data.content.totalRow > 0 && (rawData.length === 0 || lacksHierarchyContext)) {
     throw new AdminSubcategoryManagementFailure("malformed");
   }
+  /**
+   * The endpoint paginates at the Group level, not the Subcategory (leaf)
+   * level: a page of `pageSize` Groups can flatten into far more than
+   * `pageSize` Subcategory rows once each Group's nested
+   * `dsChiTietLoai` is expanded. Both `pageSize` and `totalRow` in this
+   * response describe Groups, so they cannot honestly describe the
+   * flattened Subcategory list this feature displays — fall back to the
+   * proven client-side pagination over the complete Subcategory snapshot.
+   */
+  if (data.length > parsed.data.content.pageSize) {
+    throw new AdminSubcategoryManagementFailure("malformed");
+  }
   return {
     pageIndex: parsed.data.content.pageIndex,
     pageSize: parsed.data.content.pageSize,

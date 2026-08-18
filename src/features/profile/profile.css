@@ -263,12 +263,12 @@
   text-decoration: none;
 }
 
-.hired-profile-card .progress {
+.hired-profile-card .hired-status-progress {
   background: #fff4cc;
   color: #7a4f01;
 }
 
-.hired-profile-card .complete {
+.hired-profile-card .hired-status-complete {
   background: #d5f5e7;
   color: #087a4b;
 }

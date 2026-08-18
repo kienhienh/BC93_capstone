@@ -28,11 +28,93 @@ body {
   outline-offset: 3px;
 }
 
+/* Route headings are focused programmatically on mount (tabindex="-1") so
+   screen readers announce the new page; they are never reachable by
+   pressing Tab, so showing a focus ring on them would misleadingly imply
+   otherwise for sighted keyboard users. */
+[tabindex="-1"]:focus-visible {
+  outline: none;
+}
+
 .home-intro,
 .home-taxonomy,
 .service-preview {
   width: min(100% - 2rem, 1200px);
   margin-inline: auto;
+}
+
+.session-status {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #17a866;
+  background: #1dbf73;
+  color: #fff;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.session-confirmation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f0c649;
+  background: #fff4cc;
+  color: #7a4f01;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.session-confirmation p {
+  margin: 0;
+  font-weight: 600;
+}
+
+.session-confirmation button {
+  border: 1px solid #7a4f01;
+  border-radius: 0.3rem;
+  padding: 0.4rem 0.85rem;
+  background: #fff;
+  color: #7a4f01;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.authorization-message,
+.session-restoration {
+  display: grid;
+  gap: 0.75rem;
+  width: min(100% - 2rem, 640px);
+  margin: 4rem auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.authorization-message h1,
+.session-restoration h1 {
+  margin: 0;
+  font-size: 1.75rem;
+}
+
+.authorization-message p,
+.session-restoration p {
+  margin: 0;
+  color: #62646a;
+}
+
+.authorization-message button {
+  justify-self: center;
+  border: 1px solid #087a4b;
+  border-radius: 0.3rem;
+  padding: 0.65rem 1.1rem;
+  background: #1dbf73;
+  color: #083d2c;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 .marketplace-header {
@@ -134,7 +216,7 @@ body {
   font-weight: 800;
 }
 
-/* Administrator account control mirrors the compact wireframe layout. */
+/* Shared compact avatar-menu control, used for both Admin and User accounts. */
 .admin-account {
   position: relative;
   display: inline-flex;
@@ -284,6 +366,13 @@ body {
 .category-navigation a {
   display: block;
   padding-block: 0.8rem;
+}
+
+.category-navigation-status {
+  width: min(100% - 2rem, 1200px);
+  margin: 0 auto;
+  padding-block: 0.8rem;
+  color: #62646a;
 }
 
 .marketplace-header:not(.marketplace-header-home) .primary-navigation {
@@ -1470,7 +1559,9 @@ body {
   color: #fff;
 }
 
-.marketplace-header-home .account-links .admin-account-menu a {
+.marketplace-header-home .account-links .admin-account-menu a,
+.marketplace-header-home .account-links .admin-account-menu a:hover,
+.marketplace-header-home .account-links .admin-account-menu a:focus-visible {
   color: #222325;
 }
 

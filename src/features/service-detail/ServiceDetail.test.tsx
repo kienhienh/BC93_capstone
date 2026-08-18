@@ -368,7 +368,8 @@ describe("routed Service Detail", () => {
     const restored = await screen.findByRole("form", { name: "Add a Comment" });
     expect(within(restored).getByRole("radio", { name: "2 stars" })).toBeChecked();
     expect(within(restored).getByRole("textbox", { name: "Comment" })).toHaveValue("Keep after forbidden.");
-    expect(screen.getByRole("button", { name: "Logout" })).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Open your account menu" }));
+    expect(screen.getByRole("menuitem", { name: "Logout" })).toBeVisible();
   });
 
   it("restores a safe draft after 401 reauthentication without replaying the Comment", async () => {

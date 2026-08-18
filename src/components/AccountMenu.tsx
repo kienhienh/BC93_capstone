@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSession } from "../features/authentication/public";
 
-export default function AdminAccountMenu() {
+export default function AccountMenu() {
   const navigate = useNavigate();
   const { session, logout } = useSession();
   const accountRef = useRef<HTMLDivElement>(null);
@@ -30,20 +30,7 @@ export default function AdminAccountMenu() {
     };
   }, [open]);
 
-  useEffect(() => {
-    if (session?.user.role !== "ADMIN") return;
-    const openProfileShortcut = (event: globalThis.KeyboardEvent) => {
-      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "o") {
-        event.preventDefault();
-        setOpen(false);
-        navigate("/profile");
-      }
-    };
-    window.addEventListener("keydown", openProfileShortcut);
-    return () => window.removeEventListener("keydown", openProfileShortcut);
-  }, [navigate, session?.user.role]);
-
-  if (!session || session.user.role !== "ADMIN") return null;
+  if (!session || session.user.role === "ADMIN") return null;
 
   const signOut = () => {
     setOpen(false);
@@ -53,12 +40,11 @@ export default function AdminAccountMenu() {
 
   return (
     <div ref={accountRef} className="admin-account">
-      <Link className="admin-account-label" to="/admin" aria-label="Administrator">Admin</Link>
       <button
         ref={menuButtonRef}
         className="admin-account-trigger"
         type="button"
-        aria-label="Open Admin account menu"
+        aria-label="Open your account menu"
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={() => setOpen((current) => !current)}
@@ -71,12 +57,12 @@ export default function AdminAccountMenu() {
         <span className="admin-account-caret" aria-hidden="true" />
       </button>
       {open ? (
-        <div className="admin-account-menu" role="menu" aria-label="Admin account menu">
+        <div className="admin-account-menu" role="menu" aria-label="Account menu">
           <Link role="menuitem" to="/profile" onClick={() => setOpen(false)}>
-            <span>Your Profile</span><kbd>CTRL+O</kbd>
+            <span>Your Profile</span>
           </Link>
           <button role="menuitem" type="button" onClick={signOut}>
-            <span>Logout</span><span aria-hidden="true" className="admin-logout-icon">↩</span>
+            <span>Logout</span>
           </button>
         </div>
       ) : null}

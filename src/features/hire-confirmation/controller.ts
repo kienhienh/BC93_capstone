@@ -79,7 +79,7 @@ export function useCheckHiredService() {
       userId: string;
       hiredAt: string;
     }) => {
-      const hiredServices = await capability.listHiredServices(sessionToken);
+      const hiredServices = await capability.listHiredServices(sessionToken, userId);
       return hiredServices.find((item) => hireId
         ? item.id === hireId
         : item.serviceId === serviceId && item.userId === userId && item.hiredAt === hiredAt) ?? null;
@@ -87,12 +87,12 @@ export function useCheckHiredService() {
   });
 }
 
-export function useHiredServices(sessionToken: string | null) {
+export function useHiredServices(sessionToken: string | null, userId: string | null) {
   const capability = useHireConfirmationCapability();
   return useQuery({
     queryKey: ["hired-services", sessionToken],
-    enabled: Boolean(sessionToken),
-    queryFn: ({ signal }) => capability.listHiredServices(sessionToken ?? "", signal),
+    enabled: Boolean(sessionToken) && Boolean(userId),
+    queryFn: ({ signal }) => capability.listHiredServices(sessionToken ?? "", userId ?? "", signal),
   });
 }
 
@@ -106,9 +106,8 @@ export function useCompleteHire() {
       sessionToken: string;
       userId: string;
     }) => {
-      const current = await capability.getHiredService(hireId, sessionToken);
+      const current = await capability.getHiredService(hireId, sessionToken, userId);
       if (current.completed) throw new HireFailure("unknown");
-      if (current.userId !== userId) throw new HireFailure("forbidden");
 
       const result = await capability.completeHire(hireId, sessionToken);
       if (result.kind !== "accepted") throw new HireFailure("unknown");
@@ -131,9 +130,8 @@ export function useCancelHire() {
       sessionToken: string;
       userId: string;
     }) => {
-      const current = await capability.getHiredService(hireId, sessionToken);
+      const current = await capability.getHiredService(hireId, sessionToken, userId);
       if (current.completed) throw new HireFailure("unknown");
-      if (current.userId !== userId) throw new HireFailure("forbidden");
 
       const result = await capability.cancelHire(hireId, sessionToken);
       if (result.kind !== "accepted") throw new HireFailure("unknown");
