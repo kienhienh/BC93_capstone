@@ -159,58 +159,6 @@
   background: #dcfce7;
   color: #166534;
 }
-.hired-service-actions {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 1rem;
-}
-.hired-service-btn {
-  flex: 1;
-  min-height: 2.75rem;
-  padding: 0.65rem 1rem;
-  border-radius: 0.5rem;
-  border: 1px solid #222325;
-  background: #fff;
-  color: #222325;
-  font-weight: 700;
-  cursor: pointer;
-}
-.hired-service-btn:focus-visible {
-  outline: 3px solid #1dbf73;
-  outline-offset: 2px;
-}
-.hired-service-btn:disabled {
-  opacity: 0.58;
-  cursor: not-allowed;
-}
-.hired-service-btn--complete {
-  border-color: #1dbf73;
-  color: #1dbf73;
-}
-.hired-service-btn--complete:not(:disabled):hover {
-  background: #f0faf6;
-}
-.hired-service-btn--cancel {
-  border-color: #a5322c;
-  color: #a5322c;
-}
-.hired-service-btn--cancel:not(:disabled):hover {
-  background: #fef3f2;
-}
-.hired-service-btn--secondary {
-  border-color: #d7dadc;
-  background: #f8f9f9;
-  color: #222325;
-}
-.hired-service-btn--secondary:not(:disabled):hover {
-  background: #e8eaed;
-}
-.hired-service-item--completed {
-  opacity: 0.85;
-}
-.hired-service-item--completed .hired-service-actions {
-  display: none;
-}
 .hired-services-group-title {
   margin: 2rem 0 1rem;
   font-size: 1.5rem;
@@ -218,49 +166,6 @@
 }
 .hired-services-group-title:first-of-type {
   margin-top: 0;
-}
-.hired-service-dialog-overlay {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgb(0 0 0 / 50%);
-  z-index: 1000;
-}
-.hired-service-dialog {
-  position: relative;
-  width: min(100% - 2rem, 28rem);
-  max-height: 90vh;
-  padding: 2rem;
-  border: none;
-  border-radius: 1rem;
-  background: #fff;
-  box-shadow: 0 1rem 3rem rgb(0 0 0 / 15%);
-}
-.hired-service-dialog::backdrop {
-  display: none;
-}
-.hired-service-dialog h2 {
-  margin: 0 0 1rem;
-  font-size: 1.5rem;
-}
-.hired-service-dialog p {
-  margin: 0.75rem 0;
-  line-height: 1.6;
-}
-.hired-service-dialog-error {
-  margin: 1rem 0 !important;
-  padding: 0.75rem;
-  background: #fff3f2;
-  color: #a5322c;
-  border-radius: 0.5rem;
-  font-size: 0.95rem;
-}
-.hired-service-dialog-actions {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 1.75rem;
 }
 @media (max-width: 760px) {
   .hire-confirmation-page,
@@ -272,12 +177,6 @@
     flex-direction: column;
   }
   .hired-services-refresh {
-    width: 100%;
-  }
-  .hired-service-actions {
-    flex-direction: column;
-  }
-  .hired-service-btn {
     width: 100%;
   }
 }

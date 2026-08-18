@@ -1,11 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSession } from "../authentication/public";
-import { useHiredServices, useCompleteHire, useCancelHire } from "./controller";
+import { useHiredServices } from "./controller";
 import "./hire-confirmation.css";
-
-type ActionType = "complete" | "cancel" | null;
-type ConfirmingItem = { id: string; title: string; action: ActionType } | null;
 
 export function HiredServicesRoute() {
   const { session } = useSession();
@@ -13,12 +10,7 @@ export function HiredServicesRoute() {
   const navigate = useNavigate();
   const heading = useRef<HTMLHeadingElement>(null);
   const hiredServices = useHiredServices(session?.token ?? null, session?.user.id ?? null);
-  const completeHire = useCompleteHire();
-  const cancelHire = useCancelHire();
   const state = location.state as { message?: string } | null;
-
-  const [confirming, setConfirming] = useState<ConfirmingItem>(null);
-  const [actionError, setActionError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!session) navigate(`/login?returnTo=${encodeURIComponent(location.pathname)}`, { replace: true });
@@ -34,30 +26,6 @@ export function HiredServicesRoute() {
   const items = hiredServices.data ?? [];
   const activeServices = items.filter((item) => !item.completed).sort((a, b) => new Date(b.hiredAt).getTime() - new Date(a.hiredAt).getTime());
   const completedServices = items.filter((item) => item.completed).sort((a, b) => new Date(b.hiredAt).getTime() - new Date(a.hiredAt).getTime());
-
-  const handleConfirm = async () => {
-    if (!confirming) return;
-    setActionError(null);
-
-    try {
-      if (confirming.action === "complete") {
-        await completeHire.mutateAsync({
-          hireId: confirming.id,
-          sessionToken: session.token,
-          userId: session.user.id,
-        });
-      } else if (confirming.action === "cancel") {
-        await cancelHire.mutateAsync({
-          hireId: confirming.id,
-          sessionToken: session.token,
-          userId: session.user.id,
-        });
-      }
-      setConfirming(null);
-    } catch (error) {
-      setActionError(error instanceof Error ? error.message : "Action failed");
-    }
-  };
 
   return (
     <main id="main-content" className="hired-services-page">
@@ -98,22 +66,6 @@ export function HiredServicesRoute() {
                   <p className="hired-service-seller">By {seller}</p>
                   <p className="hired-service-date">Hired on {date}</p>
                   {item.service ? <p className="hired-service-price">${item.service.price}</p> : null}
-                  <div className="hired-service-actions">
-                    <button
-                      className="hired-service-btn hired-service-btn--complete"
-                      type="button"
-                      onClick={() => setConfirming({ id: item.id, title, action: "complete" })}
-                    >
-                      Complete
-                    </button>
-                    <button
-                      className="hired-service-btn hired-service-btn--cancel"
-                      type="button"
-                      onClick={() => setConfirming({ id: item.id, title, action: "cancel" })}
-                    >
-                      Cancel
-                    </button>
-                  </div>
                 </article>
               );
             })}
@@ -143,37 +95,6 @@ export function HiredServicesRoute() {
             })}
           </div>
         </section>
-      ) : null}
-
-      {confirming ? (
-        <div className="hired-service-dialog-overlay" onClick={() => setConfirming(null)}>
-          <dialog className="hired-service-dialog" open>
-            <h2>Confirm {confirming.action === "complete" ? "Complete" : "Cancel"}</h2>
-            <p>
-              {confirming.action === "complete"
-                ? `Mark "${confirming.title}" as complete? This action cannot be undone.`
-                : `Cancel "${confirming.title}"? This action cannot be undone.`}
-            </p>
-            {actionError ? <p className="hired-service-dialog-error">{actionError}</p> : null}
-            <div className="hired-service-dialog-actions">
-              <button
-                className="hired-service-btn hired-service-btn--secondary"
-                type="button"
-                onClick={() => setConfirming(null)}
-              >
-                Go back
-              </button>
-              <button
-                className={`hired-service-btn ${confirming.action === "complete" ? "hired-service-btn--complete" : "hired-service-btn--cancel"}`}
-                type="button"
-                onClick={() => void handleConfirm()}
-                disabled={completeHire.isPending || cancelHire.isPending}
-              >
-                {completeHire.isPending || cancelHire.isPending ? "Confirming..." : "Confirm"}
-              </button>
-            </div>
-          </dialog>
-        </div>
       ) : null}
     </main>
   );
