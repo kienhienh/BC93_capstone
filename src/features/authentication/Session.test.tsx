@@ -64,7 +64,7 @@ describe("Session", () => {
     expect(screen.getByRole("menuitem", { name: "Logout" })).toBeVisible();
   });
 
-  it("clears malformed and expired persisted data before protected UI renders", () => {
+  it("clears malformed and expired persisted data before protected UI renders", async () => {
     const { store } = createSessionStore({
       ...createStoredSession("USER", Date.now() - 1_000),
       password: "must-never-be-persisted",
@@ -72,7 +72,7 @@ describe("Session", () => {
 
     renderTestApplication("/orders", store);
 
-    expect(screen.getByRole("heading", { name: "Login" })).toBeVisible();
+    expect(await screen.findByRole("heading", { name: "Login" })).toBeVisible();
     expect(screen.queryByRole("button", { name: "Logout" })).not.toBeInTheDocument();
     expect(store.clear).toHaveBeenCalledOnce();
   });
@@ -82,7 +82,7 @@ describe("Session", () => {
     const { store } = createSessionStore(null);
     renderTestApplication("/login", store);
 
-    await user.type(screen.getByRole("textbox", { name: "Email" }), "alex@example.com");
+    await user.type(await screen.findByRole("textbox", { name: "Email" }), "alex@example.com");
     await user.type(screen.getByLabelText("Password", { selector: "input" }), "secret1");
     await user.click(screen.getByRole("button", { name: "Login" }));
 

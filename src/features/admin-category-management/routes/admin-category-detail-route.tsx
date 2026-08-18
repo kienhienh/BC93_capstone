@@ -55,7 +55,7 @@ export function AdminCategoryDetailRoute() {
         {hierarchyQuery.data?.groups.map((group) => <article key={group.id} className="admin-category-group">
           <header>
             <div className="admin-category-group-heading">
-              {group.imageUrl ? <img src={group.imageUrl} alt="" /> : null}
+              {group.imageUrl ? <img src={group.imageUrl} alt="" loading="lazy" decoding="async" /> : null}
               <div><h3>{group.name}</h3><small>Group ID {group.id}</small></div>
             </div>
             <div className="row-actions">

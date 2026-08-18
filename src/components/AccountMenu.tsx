@@ -51,7 +51,7 @@ export default function AccountMenu() {
       >
         <span className="admin-account-avatar" aria-hidden="true">
           {session.user.avatar
-            ? <img src={session.user.avatar} alt="" />
+            ? <img src={session.user.avatar} alt="" decoding="async" />
             : session.user.name.charAt(0).toUpperCase()}
         </span>
         <span className="admin-account-caret" aria-hidden="true" />

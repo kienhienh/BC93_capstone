@@ -169,7 +169,7 @@ export function ServiceDetailRoute() {
           ) : null}
           <div className="service-owner-summary">
             {detail.seller?.avatarUrl ? (
-              <img src={detail.seller.avatarUrl} alt="" width="32" height="32" />
+              <img src={detail.seller.avatarUrl} alt="" width="32" height="32" decoding="async" />
             ) : (
               <span className="service-owner-avatar" aria-hidden="true">
                 {(detail.seller?.name ?? "Marketplace Seller").charAt(0)}
@@ -186,7 +186,15 @@ export function ServiceDetailRoute() {
           </div>
           {detail.imageUrl ? (
             <div className="service-detail-media">
-              <img src={detail.imageUrl} alt={detail.title} width="900" height="560" />
+              <img
+                src={detail.imageUrl}
+                alt={detail.title}
+                width="900"
+                height="560"
+                loading="eager"
+                decoding="async"
+                fetchPriority="high"
+              />
             </div>
           ) : (
             <div className="service-detail-media service-detail-media-empty">
@@ -216,6 +224,8 @@ export function ServiceDetailRoute() {
                 alt={detail.seller.name ?? "Seller"}
                 width="64"
                 height="64"
+                loading="lazy"
+                decoding="async"
               />
             ) : (
               <span
@@ -339,7 +349,14 @@ export function ServiceDetailRoute() {
                   return (
                     <article key={comment.id} className="service-comment">
                       {comment.avatarUrl ? (
-                        <img src={comment.avatarUrl} alt={authorName} width="48" height="48" />
+                        <img
+                          src={comment.avatarUrl}
+                          alt={authorName}
+                          width="48"
+                          height="48"
+                          loading="lazy"
+                          decoding="async"
+                        />
                       ) : (
                         <span className="service-comment-avatar" role="img" aria-label={authorName}>
                           {authorName.charAt(0).toUpperCase() || "?"}

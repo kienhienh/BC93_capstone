@@ -3,7 +3,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Routes, Route } from "react-router-dom";
 import { ServicePreviewProvider } from "./features/service-preview/wiring";
 import { AuthenticationProvider } from "./features/authentication/wiring";
-import { AdminRoute, LoginRoute, RegisterRoute } from "./features/authentication/public";
+import { AdminRoute } from "./features/authentication/public";
 import { composeApplication, type ApplicationComposition } from "./app/composition";
 import Home from "./pages/Home";
 import Jobs from "./pages/Jobs";
@@ -12,25 +12,53 @@ import Header from "./components/Header";
 import Footer from './components/Footer';
 import Orders from './pages/Orders';
 import PrivateRoute from "./components/PrivateRoute";
-import { ServiceDiscoveryRoute } from "./features/service-discovery/public";
-import { CategoryLandingRoute } from "./features/taxonomy/public";
 import { TaxonomyProvider } from "./features/taxonomy/wiring";
 import { ServiceDiscoveryProvider } from "./features/service-discovery/wiring";
 import { ServiceDetailProvider } from "./features/service-detail/wiring";
-import { ServiceDetailRoute } from "./features/service-detail/public";
 import { CommentSubmissionProvider } from "./features/comment-submission/wiring";
 import { HireConfirmationProvider } from "./features/hire-confirmation/wiring";
-import { HiredServicesRoute, HireConfirmationRoute } from "./features/hire-confirmation/public";
 import { ProfileProvider } from "./features/profile/wiring";
-import { ProfileRoute } from "./features/profile/public";
 
 const AdminArea = lazy(() => import("./app/admin-area"));
+const ServiceDiscoveryRoute = lazy(() =>
+  import("./features/service-discovery/routes").then((m) => ({ default: m.ServiceDiscoveryRoute })),
+);
+const CategoryLandingRoute = lazy(() =>
+  import("./features/taxonomy/routes").then((m) => ({ default: m.CategoryLandingRoute })),
+);
+const ServiceDetailRoute = lazy(() =>
+  import("./features/service-detail/routes").then((m) => ({ default: m.ServiceDetailRoute })),
+);
+const HireConfirmationRoute = lazy(() =>
+  import("./features/hire-confirmation/routes").then((m) => ({ default: m.HireConfirmationRoute })),
+);
+const HiredServicesRoute = lazy(() =>
+  import("./features/hire-confirmation/hired-services-route").then((m) => ({ default: m.HiredServicesRoute })),
+);
+const ProfileRoute = lazy(() =>
+  import("./features/profile/routes").then((m) => ({ default: m.ProfileRoute })),
+);
+const LoginRoute = lazy(() =>
+  import("./features/authentication/routes").then((m) => ({ default: m.LoginRoute })),
+);
+const RegisterRoute = lazy(() =>
+  import("./features/authentication/routes").then((m) => ({ default: m.RegisterRoute })),
+);
 
 function AdminLoading() {
   return (
     <main id="main-content" className="authorization-message" aria-busy="true">
       <h1 tabIndex={-1}>Loading Administrator</h1>
       <p role="status">Preparing Administrator workspace...</p>
+    </main>
+  );
+}
+
+function RouteLoading() {
+  return (
+    <main id="main-content" className="authorization-message" aria-busy="true">
+      <h1 tabIndex={-1}>Loading</h1>
+      <p role="status">Preparing this page...</p>
     </main>
   );
 }
@@ -75,6 +103,7 @@ function App({ composition: suppliedComposition }: { composition?: ApplicationCo
           <div id="application-content">
             <Header />
 
+            <Suspense fallback={<RouteLoading />}>
             <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/categories/:categoryId" element={<CategoryLandingRoute />} />
@@ -115,6 +144,7 @@ function App({ composition: suppliedComposition }: { composition?: ApplicationCo
               }
             />
             </Routes>
+            </Suspense>
 
             <Footer />
           </div>

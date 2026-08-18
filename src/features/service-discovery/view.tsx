@@ -55,12 +55,16 @@ export function ServiceCard({ service }: { service: ServiceDiscoveryItem }) {
       aria-label={service.title + ", from $" + service.price}
     >
       <div className="discovery-card-media">
-        {service.imageUrl ? <img src={service.imageUrl} alt="" /> : <span aria-hidden="true">No image</span>}
+        {service.imageUrl ? (
+          <img src={service.imageUrl} alt="" loading="lazy" decoding="async" />
+        ) : (
+          <span aria-hidden="true">No image</span>
+        )}
       </div>
       <div className="discovery-card-body">
         <div className="discovery-seller">
           {service.sellerAvatarUrl ? (
-            <img src={service.sellerAvatarUrl} alt="" />
+            <img src={service.sellerAvatarUrl} alt="" loading="lazy" decoding="async" />
           ) : (
             <span aria-hidden="true">{service.sellerName?.slice(0, 1) || "F"}</span>
           )}

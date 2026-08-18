@@ -24,7 +24,7 @@ export function AdminServiceDetailRoute({ serviceId: suppliedServiceId }: { serv
     {detailQuery.isError && <FailureMessage kind={kindOf(detailQuery.error)} action="load" onRetry={() => void detailQuery.refetch()} />}
     {detailQuery.data ? <div className="admin-service-detail-body">
       {detailQuery.data.imageUrl ? (
-        <img src={detailQuery.data.imageUrl} alt="" className="admin-service-image-preview" />
+        <img src={detailQuery.data.imageUrl} alt="" className="admin-service-image-preview" loading="lazy" decoding="async" />
       ) : (
         <div className="state-indicator" data-state="empty" role="status">No image uploaded.</div>
       )}

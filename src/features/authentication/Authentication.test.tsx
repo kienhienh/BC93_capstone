@@ -10,7 +10,7 @@ describe("authentication routes", () => {
     const user = userEvent.setup();
     renderTestApplication("/register");
 
-    await user.type(screen.getByRole("textbox", { name: "Full name" }), "  Alex Morgan  ");
+    await user.type(await screen.findByRole("textbox", { name: "Full name" }), "  Alex Morgan  ");
     await user.type(screen.getByRole("textbox", { name: "Email" }), "ALEX@EXAMPLE.COM");
     await user.type(screen.getByLabelText("Password", { selector: "input" }), "secret1");
     await user.type(screen.getByLabelText("Confirm password"), "secret1");
@@ -29,7 +29,7 @@ describe("authentication routes", () => {
     const user = userEvent.setup();
     renderTestApplication("/register");
 
-    await user.type(screen.getByRole("textbox", { name: "Full name" }), "A");
+    await user.type(await screen.findByRole("textbox", { name: "Full name" }), "A");
     await user.type(screen.getByRole("textbox", { name: "Email" }), "not-an-email");
     await user.type(screen.getByLabelText("Password", { selector: "input" }), "123");
     await user.type(screen.getByLabelText("Confirm password"), "different");
@@ -54,7 +54,7 @@ describe("authentication routes", () => {
     const user = userEvent.setup();
     renderTestApplication("/register");
 
-    await user.type(screen.getByRole("textbox", { name: "Full name" }), "Alex Morgan");
+    await user.type(await screen.findByRole("textbox", { name: "Full name" }), "Alex Morgan");
     await user.type(screen.getByRole("textbox", { name: "Email" }), "alex@example.com");
     await user.type(screen.getByLabelText("Password", { selector: "input" }), "secret1");
     await user.type(screen.getByLabelText("Confirm password"), "secret1");
@@ -76,7 +76,7 @@ describe("authentication routes", () => {
     const user = userEvent.setup();
     renderTestApplication("/register");
 
-    await user.type(screen.getByRole("textbox", { name: "Full name" }), "Alex Morgan");
+    await user.type(await screen.findByRole("textbox", { name: "Full name" }), "Alex Morgan");
     await user.type(screen.getByRole("textbox", { name: "Email" }), "alex@example.com");
     await user.type(screen.getByLabelText("Password", { selector: "input" }), "secret1");
     await user.type(screen.getByLabelText("Confirm password"), "secret1");
@@ -99,7 +99,7 @@ describe("authentication routes", () => {
     const user = userEvent.setup();
     renderTestApplication("/register");
 
-    await user.type(screen.getByRole("textbox", { name: "Full name" }), "Alex Morgan");
+    await user.type(await screen.findByRole("textbox", { name: "Full name" }), "Alex Morgan");
     await user.type(screen.getByRole("textbox", { name: "Email" }), "alex@example.com");
     await user.type(screen.getByLabelText("Password", { selector: "input" }), "secret1");
     await user.type(screen.getByLabelText("Confirm password"), "secret1");
@@ -116,7 +116,7 @@ describe("authentication routes", () => {
     const user = userEvent.setup();
     renderTestApplication("/login?returnTo=%2Fjobs");
 
-    await user.type(screen.getByRole("textbox", { name: "Email" }), "alex@example.com");
+    await user.type(await screen.findByRole("textbox", { name: "Email" }), "alex@example.com");
     await user.type(screen.getByLabelText("Password", { selector: "input" }), "secret1");
     await user.click(screen.getByRole("button", { name: "Login" }));
 
@@ -135,7 +135,7 @@ describe("authentication routes", () => {
     const user = userEvent.setup();
     renderTestApplication("/login");
 
-    await user.type(screen.getByRole("textbox", { name: "Email" }), "alex@example.com");
+    await user.type(await screen.findByRole("textbox", { name: "Email" }), "alex@example.com");
     await user.type(screen.getByLabelText("Password", { selector: "input" }), "incorrect");
     await user.click(screen.getByRole("button", { name: "Login" }));
 
@@ -151,7 +151,7 @@ describe("authentication routes", () => {
     const user = userEvent.setup();
     renderTestApplication("/login");
 
-    await user.type(screen.getByRole("textbox", { name: "Email" }), "alex@example.com");
+    await user.type(await screen.findByRole("textbox", { name: "Email" }), "alex@example.com");
     await user.type(screen.getByLabelText("Password", { selector: "input" }), "secret1");
     await user.click(screen.getByRole("button", { name: "Login" }));
 
@@ -166,7 +166,7 @@ describe("authentication routes", () => {
     const user = userEvent.setup();
     renderTestApplication("/login");
 
-    await user.type(screen.getByRole("textbox", { name: "Email" }), "not-an-email");
+    await user.type(await screen.findByRole("textbox", { name: "Email" }), "not-an-email");
     await user.click(screen.getByRole("button", { name: "Login" }));
 
     expect(screen.getByRole("textbox", { name: "Email" })).toHaveFocus();
@@ -185,7 +185,7 @@ describe("authentication routes", () => {
     const user = userEvent.setup();
     renderTestApplication("/login");
 
-    await user.type(screen.getByRole("textbox", { name: "Email" }), "alex@example.com");
+    await user.type(await screen.findByRole("textbox", { name: "Email" }), "alex@example.com");
     await user.type(screen.getByLabelText("Password", { selector: "input" }), "secret1");
     await user.click(screen.getByRole("button", { name: "Login" }));
 
@@ -202,7 +202,7 @@ describe("authentication routes", () => {
     const user = userEvent.setup();
     renderTestApplication("/login");
 
-    await user.type(screen.getByRole("textbox", { name: "Email" }), "alex@example.com");
+    await user.type(await screen.findByRole("textbox", { name: "Email" }), "alex@example.com");
     await user.type(screen.getByLabelText("Password", { selector: "input" }), "secret1");
     await user.click(screen.getByRole("button", { name: "Login" }));
 
@@ -216,7 +216,7 @@ describe("authentication routes", () => {
     const user = userEvent.setup();
     renderTestApplication("/login?returnTo=https%3A%2F%2Fevil.example");
 
-    await user.type(screen.getByRole("textbox", { name: "Email" }), "alex@example.com");
+    await user.type(await screen.findByRole("textbox", { name: "Email" }), "alex@example.com");
     await user.type(screen.getByLabelText("Password", { selector: "input" }), "secret1");
     await user.click(screen.getByRole("button", { name: "Login" }));
 

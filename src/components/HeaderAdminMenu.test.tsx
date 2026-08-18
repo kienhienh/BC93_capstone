@@ -14,6 +14,10 @@ describe("Administrator header account menu", () => {
     renderTestApplication({ initialPath: "/services", isAdmin: true });
 
     expect(await screen.findByRole("link", { name: "Administrator" })).toHaveTextContent("Admin");
+    // Wait for the routed Service Discovery content (now lazy-loaded) to finish
+    // mounting and running its own heading-focus effect before interacting,
+    // otherwise that effect can steal focus back from the trigger below.
+    await screen.findByRole("heading", { name: "All Services" });
     const trigger = screen.getByRole("button", { name: "Open Admin account menu" });
     expect(trigger).toHaveAttribute("aria-expanded", "false");
 
