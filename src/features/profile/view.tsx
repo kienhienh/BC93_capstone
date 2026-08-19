@@ -77,12 +77,12 @@ export function ProfileView({ profile, session, acceptSession, hiredServices, he
       <section className="profile-card" aria-label="Profile details">
         <ProfileIdentity profile={profile} />
         <form onSubmit={submit} noValidate>
-          <label>Full name<input ref={nameField} value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} aria-invalid={Boolean(errors.name)} /></label>{errors.name && <p className="field-error">{errors.name}</p>}
-          <label>Phone<input ref={phoneField} value={form.phone} onChange={(event) => setForm({ ...form, phone: event.target.value })} aria-invalid={Boolean(errors.phone)} /></label>{errors.phone && <p className="field-error">{errors.phone}</p>}
+          <label>Full name<input ref={nameField} placeholder="Your full name" value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} aria-invalid={Boolean(errors.name)} /></label>{errors.name && <p className="field-error">{errors.name}</p>}
+          <label>Phone<input ref={phoneField} placeholder="e.g. 0901234567" value={form.phone} onChange={(event) => setForm({ ...form, phone: event.target.value })} aria-invalid={Boolean(errors.phone)} /></label>{errors.phone && <p className="field-error">{errors.phone}</p>}
           <label>Birthday<input ref={birthdayField} type="date" value={form.birthday} onChange={(event) => setForm({ ...form, birthday: event.target.value })} /></label>
           <fieldset><legend>Gender</legend><label><input type="radio" checked={form.gender} onChange={() => setForm({ ...form, gender: true })} /> Male</label><label><input type="radio" checked={!form.gender} onChange={() => setForm({ ...form, gender: false })} /> Female</label><small>API compatibility: Male = true, Female = false.</small></fieldset>
-          <label>Skills<input value={skills} onChange={(event) => setSkills(event.target.value)} /></label><small>Separate entries with commas.</small>
-          <label>Certifications<input value={certifications} onChange={(event) => setCertifications(event.target.value)} /></label>
+          <label>Skills<input placeholder="React, TypeScript" value={skills} onChange={(event) => setSkills(event.target.value)} /></label><small>Separate entries with commas.</small>
+          <label>Certifications<input placeholder="WCAG, AWS" value={certifications} onChange={(event) => setCertifications(event.target.value)} /></label>
           <button type="submit" disabled={save.isPending}>{save.isPending ? "Saving Profile..." : "Save Profile"}</button>
           {save.isSuccess && <p role="status">Profile saved successfully.</p>}
           {save.isError && <p role="alert">{save.error instanceof ProfileFailure && save.error.kind === "stale" ? "Your Profile changed elsewhere. Refresh before saving again." : save.error instanceof ProfileFailure && save.error.kind === "unknown" ? "We could not confirm whether your Profile was saved. Refresh before trying again." : "Profile was not saved. Review the latest data and try again."}</p>}
