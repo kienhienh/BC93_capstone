@@ -1084,11 +1084,13 @@ body {
 
 .service-preview-card {
   position: relative;
+  overflow: hidden;
   min-height: 0;
   aspect-ratio: 3 / 4;
   border: 0;
   border-radius: 0.35rem;
   background: #234236;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .service-preview-card:nth-child(2n) {
@@ -1099,6 +1101,12 @@ body {
   background: #21475b;
 }
 
+.service-preview-card:hover,
+.service-preview-card:focus-within {
+  transform: translateY(-0.4rem);
+  box-shadow: 0 1.25rem 2.5rem rgb(0 0 0 / 30%);
+}
+
 .service-preview-image {
   position: absolute;
   inset: 0;
@@ -1106,11 +1114,26 @@ body {
   background: transparent;
 }
 
+.service-preview-image img {
+  transition: transform 0.3s ease;
+}
+
+.service-preview-card:hover .service-preview-image img,
+.service-preview-card:focus-within .service-preview-image img {
+  transform: scale(1.08);
+}
+
 .service-preview-image::after {
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, rgb(0 0 0 / 55%), transparent 45%, rgb(0 0 0 / 15%));
+  transition: background 0.25s ease;
   content: "";
+}
+
+.service-preview-card:hover .service-preview-image::after,
+.service-preview-card:focus-within .service-preview-image::after {
+  background: linear-gradient(180deg, rgb(0 0 0 / 65%), transparent 40%, rgb(0 0 0 / 25%));
 }
 
 .service-preview-copy {
