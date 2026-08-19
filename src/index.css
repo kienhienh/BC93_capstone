@@ -422,16 +422,6 @@ body {
 
 .header-utilities .business-link { color: #40407a; font-weight: 700; }
 
-.primary-navigation .header-utility-button {
-  min-height: auto;
-  border: 0;
-  padding: 0;
-  background: transparent;
-  color: #62646a;
-  font-size: 0.82rem;
-  font-weight: 500;
-}
-
 .marketplace-header:not(.marketplace-header-home) .account-links {
   margin-left: 0;
   gap: 1.15rem;
