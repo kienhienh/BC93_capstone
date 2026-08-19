@@ -82,20 +82,23 @@ describe("Administrator Hired Service Management", () => {
     expect(await screen.findByText(/No Hired Services match your search/)).toHaveAttribute("data-state", "query-empty");
   });
 
-  it("labels the status filter as current-page-only and never changes the total count", async () => {
+  it("filters by status against the full list, updating both rows and the total count", async () => {
     const bulk = Array.from({ length: 11 }, (_, index) => ({
       id: 200 + index, maCongViec: 1, maNguoiThue: 5, ngayThue: "2025-01-01", hoanThanh: false,
     }));
     server.use(http.get(hiredServicesUrl, () => HttpResponse.json({ content: bulk })));
     renderTestApplication({ initialPath: "/admin/hired-services", isAdmin: true });
     await screen.findByRole("grid", { name: "Hired Service list" });
-    expect(screen.getByText(/only affects rows already on the current page/)).toBeVisible();
     const user = userEvent.setup();
     expect(screen.getByText("Page 1 of 2 (Total: 11 Hired Services)")).toBeVisible();
     await user.selectOptions(screen.getByRole("combobox", { name: /Status/ }), "completed");
-    expect(await screen.findByText(/No rows on this page match the selected status/)).toBeVisible();
+    expect(await screen.findByText("No Hired Services found.")).toBeVisible();
     expect(screen.queryByRole("link", { name: "View Hired Service 200" })).not.toBeInTheDocument();
+
+    await user.selectOptions(screen.getByRole("combobox", { name: /Status/ }), "active");
+    await screen.findByRole("grid", { name: "Hired Service list" });
     expect(screen.getByText("Page 1 of 2 (Total: 11 Hired Services)")).toBeVisible();
+    expect(screen.getByRole("link", { name: "View Hired Service 200" })).toBeInTheDocument();
   });
 
   it("only exposes Complete/Cancel on eligible Active records; Completed records expose no terminal actions", async () => {

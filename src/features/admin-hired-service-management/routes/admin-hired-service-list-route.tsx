@@ -5,7 +5,7 @@ import { CancelHiredServiceControl } from "../components/cancel-hired-service-co
 import { CompleteHiredServiceControl } from "../components/complete-hired-service-control";
 import { FailureMessage } from "../components/feedback";
 import { useAdminAllHiredServices, useAdminHiredServiceServices, useAdminHiredServiceUsers } from "../controller";
-import { filterCurrentPageByStatus, searchAndPaginateHiredServices } from "../hired-service-safeguards";
+import { searchAndPaginateHiredServices } from "../hired-service-safeguards";
 import { STATUS_FILTERS, VALID_PAGE_SIZES, kindOf, pageSizeFrom, positiveInteger, statusFilterFrom, withSearch, type StatusFilter } from "../route-utils";
 
 export function AdminHiredServiceListRoute() {
@@ -36,11 +36,11 @@ export function AdminHiredServiceListRoute() {
   };
 
   const result = hiredServicesQuery.data
-    ? searchAndPaginateHiredServices(hiredServicesQuery.data, { pageIndex: page, pageSize, keyword: q || undefined },
+    ? searchAndPaginateHiredServices(hiredServicesQuery.data, { pageIndex: page, pageSize, keyword: q || undefined, status },
       (hiredService) => `${userNameOf(hiredService.clientId)} ${serviceTitleOf(hiredService.serviceId)} ${sellerNameOf(hiredService.serviceId)}`)
     : null;
   const totalPages = result ? Math.max(1, Math.ceil(result.totalRow / pageSize)) : 1;
-  const visibleRows = result ? filterCurrentPageByStatus(result.data, status) : [];
+  const visibleRows = result?.data ?? [];
 
   useEffect(() => {
     const canonical = new URLSearchParams();
@@ -77,10 +77,6 @@ export function AdminHiredServiceListRoute() {
     <p className="admin-hired-service-list-scope" data-scope="client-fallback">
       The Hired Service API's keyword search does not work server-side; this list is searched and paginated from the complete snapshot.
     </p>
-    <p className="admin-hired-service-status-scope" data-scope="current-page-only">
-      The status filter below only affects rows already on the current page — it does not change the total count or re-run the search.
-    </p>
-
     {hiredServicesQuery.isPending ? <div className="state-indicator" data-state="loading" role="status">Loading Hired Services...</div> : null}
     {hiredServicesQuery.isRefetching && !hiredServicesQuery.isPending ? <div className="state-indicator" data-state="refreshing" role="status">Refreshing Hired Services...</div> : null}
     {hiredServicesQuery.isError ? <FailureMessage kind={kindOf(hiredServicesQuery.error)} action="load" onRetry={() => void hiredServicesQuery.refetch()} /> : null}
@@ -97,7 +93,7 @@ export function AdminHiredServiceListRoute() {
       <div><label htmlFor="hired-service-search">Search Hired Services</label>
         <input id="hired-service-search" type="search" value={q} placeholder="Search by client, service, or seller..." aria-label="Search Hired Services by client, service, or seller"
           onChange={(event) => setListState({ q: event.target.value, page: 1, pageSize, status }, true)} /></div>
-      <div><label htmlFor="hired-service-status">Status (current page only)</label>
+      <div><label htmlFor="hired-service-status">Status</label>
         <select id="hired-service-status" value={status} onChange={(event) => setListState({ q, page, pageSize, status: statusFilterFrom(event.target.value) }, true)}>
           {STATUS_FILTERS.map((option) => <option key={option} value={option}>{option === "all" ? "All" : option === "active" ? "Active" : "Completed"}</option>)}
         </select></div>
@@ -139,7 +135,6 @@ export function AdminHiredServiceListRoute() {
           </div></td>
         </tr>)}</tbody>
       </table>
-      {visibleRows.length === 0 ? <p className="admin-hired-service-status-scope" data-scope="current-page-only">No rows on this page match the selected status.</p> : null}
     </div> : null}
 
     {listState === "confirmed-success" && result && totalPages > 1 ? <nav className="pagination" aria-label="Pagination">

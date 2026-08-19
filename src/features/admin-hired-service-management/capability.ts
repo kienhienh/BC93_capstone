@@ -30,6 +30,7 @@ export interface AdminHiredServiceListParams {
   pageIndex: number;
   pageSize: number;
   keyword?: string;
+  status?: "all" | "active" | "completed";
 }
 
 export interface AdminHiredServiceListResult {
