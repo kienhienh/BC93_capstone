@@ -419,7 +419,9 @@ a.admin-primary-action:hover { color: #fff; background: var(--admin-brand-dark);
   cursor: pointer;
 }
 .row-actions a:hover,
-.row-actions a:focus-visible { color: var(--admin-brand-dark); background: var(--admin-brand-soft); }
+.row-actions a:focus-visible,
+.link-button:not(.danger-link):hover,
+.link-button:not(.danger-link):focus-visible { color: var(--admin-brand-dark); background: var(--admin-brand-soft); }
 .danger-link { color: var(--admin-danger); }
 .danger-link:hover,
 .danger-link:focus-visible { background: var(--admin-danger-soft); }
