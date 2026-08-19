@@ -82,6 +82,7 @@ export function RegisterRoute() {
           <input
             id="register-name"
             autoComplete="name"
+            placeholder="Your full name"
             value={name}
             onChange={(event) => setName(event.target.value)}
             disabled={registration.isPending}
@@ -95,6 +96,7 @@ export function RegisterRoute() {
             id="register-email"
             type="email"
             autoComplete="email"
+            placeholder="you@example.com"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             disabled={registration.isPending}
@@ -108,6 +110,7 @@ export function RegisterRoute() {
             id="register-password"
             type="password"
             autoComplete="new-password"
+            placeholder="Enter your password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             disabled={registration.isPending}
@@ -121,6 +124,7 @@ export function RegisterRoute() {
             id="register-confirm-password"
             type="password"
             autoComplete="new-password"
+            placeholder="Re-enter your password"
             value={confirmPassword}
             onChange={(event) => setConfirmPassword(event.target.value)}
             disabled={registration.isPending}
@@ -139,6 +143,7 @@ export function RegisterRoute() {
             id="register-phone"
             type="tel"
             autoComplete="tel"
+            placeholder="e.g. 0901234567"
             value={phone}
             onChange={(event) => setPhone(event.target.value)}
             disabled={registration.isPending}
@@ -255,6 +260,7 @@ export function LoginRoute() {
             id="login-email"
             type="email"
             autoComplete="email"
+            placeholder="you@example.com"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             disabled={signIn.isPending}
@@ -267,6 +273,7 @@ export function LoginRoute() {
             id="login-password"
             type="password"
             autoComplete="current-password"
+            placeholder="Enter your password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             disabled={signIn.isPending}
