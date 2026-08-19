@@ -4,7 +4,6 @@ import type {
   AdminHiredServiceListParams,
   AdminHiredServiceListResult,
 } from "./capability";
-import type { StatusFilter } from "./route-utils";
 
 export type GuardFeedback = {
   state: "blocked-dependency" | "stale" | "unknown-outcome";
@@ -21,9 +20,13 @@ export function searchAndPaginateHiredServices(
   nameOf: (hiredService: AdminHiredService) => string,
 ): AdminHiredServiceListResult {
   const needle = params.keyword?.trim().toLocaleLowerCase();
-  const filtered = needle
+  const byKeyword = needle
     ? hiredServices.filter((hiredService) => nameOf(hiredService).toLocaleLowerCase().includes(needle))
     : hiredServices;
+  const status = params.status ?? "all";
+  const filtered = status === "all"
+    ? byKeyword
+    : byKeyword.filter((hiredService) => (status === "completed" ? hiredService.completed : !hiredService.completed));
   const start = (params.pageIndex - 1) * params.pageSize;
   return {
     pageIndex: params.pageIndex,
@@ -33,18 +36,4 @@ export function searchAndPaginateHiredServices(
     scope: "client-fallback",
     data: filtered.slice(start, start + params.pageSize),
   };
-}
-
-/**
- * Applies the Active/Completed quick filter to rows already on the current
- * page only. It never changes `totalRow`/pagination math, because the
- * underlying list read has no server-side status filter to re-query against
- * — filtering here would silently misrepresent how many records match.
- */
-export function filterCurrentPageByStatus(
-  hiredServices: readonly AdminHiredService[],
-  status: StatusFilter,
-): readonly AdminHiredService[] {
-  if (status === "all") return hiredServices;
-  return hiredServices.filter((hiredService) => (status === "completed" ? hiredService.completed : !hiredService.completed));
 }
