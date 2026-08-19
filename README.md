@@ -61,6 +61,14 @@ Production configuration is validated by `src/app/runtime-config.ts`.
 Configure the environment values required by the Cybersoft adapter rather than
 hard-coding API credentials into source files.
 
+## Deployment and release
+
+Repository-owned Vercel deployment configuration is `vercel.json`, validated
+by `npm run check:deploy`. See `docs/deployment/vercel.md` for the full
+configuration and environment variable reference, and
+`docs/release/release-checklist.md` for what must be true before a
+Production promotion.
+
 ## Project references
 
 - `CONTEXT.md` — domain language and business terminology
@@ -69,4 +77,6 @@ hard-coding API credentials into source files.
 - `docs/code-organization.md` — architecture and clean-code rules
 - `docs/adr/` — architecture decision records
 - `docs/refactoring/clean-code-reorganization.md` — latest organization pass
+- `docs/deployment/vercel.md` — Vercel deployment configuration
+- `docs/release/release-checklist.md` — release evidence checklist
 - `23-09-2025-02-37-39-[cybersoft]-du-an-cuoi-khoa-bcfe.pdf` — final-project criteria

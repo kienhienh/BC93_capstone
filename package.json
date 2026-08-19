@@ -3,11 +3,15 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "vite",
     "typecheck": "tsc -b",
     "build": "tsc -b && vite build",
     "check:budgets": "node scripts/check-bundle-budgets.mjs",
+    "check:deploy": "node scripts/check-deploy-config.mjs",
     "lint": "eslint .",
     "lint:architecture": "eslint src --no-cache",
     "test": "vitest run",
