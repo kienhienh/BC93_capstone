@@ -114,6 +114,7 @@ describe("Administrator Comment Management", () => {
       id: 100, maCongViec: 1, maNguoiBinhLuan: 5, ngayBinhLuan: "2025-01-01", noiDung: "Even better work", saoBinhLuan: 5,
     }));
     await waitFor(() => expect(app.currentLocation()).toBe("/admin/comments/100"));
+    expect(await screen.findByText(/updated successfully/)).toHaveAttribute("data-state", "confirmed-success");
   });
 
   it("shows a non-blocking partial relation failure and falls back to numeric identifiers", async () => {

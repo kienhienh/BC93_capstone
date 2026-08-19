@@ -9,7 +9,7 @@ import { kindOf, listPath, withSearch } from "../route-utils";
 export function AdminCommentDetailRoute() {
   const { commentId = "" } = useParams();
   const { session } = useSession();
-  const location = useLocation();
+  const location = useLocation() as ReturnType<typeof useLocation> & { state?: { adminFeedback?: string } | null };
   const navigate = useNavigate();
   const heading = useRef<HTMLHeadingElement>(null);
   const commentsQuery = useAdminAllComments(session?.token ?? "");
@@ -32,6 +32,7 @@ export function AdminCommentDetailRoute() {
     <nav className="admin-breadcrumbs" aria-label="Breadcrumb"><Link to="/admin">Overview</Link><span aria-hidden="true">/</span><Link to={back}>Comments</Link><span aria-hidden="true">/</span><span aria-current="page">Detail</span></nav>
     <header className="admin-page-heading"><div><span className="admin-eyebrow">Moderation record</span><h1 ref={heading} tabIndex={-1}>Comment Detail</h1><p>Review the Comment, its author, and the Service it targets.</p></div></header>
 
+    {location.state?.adminFeedback ? <div className="state-indicator" data-state="confirmed-success" role="status">{location.state.adminFeedback}</div> : null}
     {commentsQuery.isPending ? <div className="state-indicator" data-state="loading" role="status">Loading Comment...</div> : null}
     {commentsQuery.isRefetching && !commentsQuery.isPending ? <div className="state-indicator" data-state="refreshing" role="status">Refreshing Comment...</div> : null}
     {commentsQuery.isError ? <FailureMessage kind={kindOf(commentsQuery.error)} action="load" onRetry={() => void commentsQuery.refetch()} /> : null}
