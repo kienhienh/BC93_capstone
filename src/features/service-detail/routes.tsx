@@ -113,7 +113,11 @@ export function ServiceDetailRoute() {
   }, [service.data]);
 
   if (service.isPending) {
-    return <main id="main-content"><p role="status" aria-busy="true">Loading Service...</p></main>;
+    return (
+      <main id="main-content" className="service-detail-state">
+        <p role="status" aria-busy="true">Loading Service...</p>
+      </main>
+    );
   }
 
   if (service.isError) {

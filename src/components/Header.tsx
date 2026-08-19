@@ -177,8 +177,6 @@ export default function Header() {
           <div className="header-utilities" aria-label="Marketplace utilities">
             <Link className="business-link" to="/services">Fiverr Business</Link>
             <Link to="/services">Explore</Link>
-            <button className="header-utility-button" type="button"><i className="bi bi-globe2" aria-hidden="true" /> English</button>
-            <button className="header-utility-button" type="button">US$ USD</button>
           </div>
         ) : null}
 
