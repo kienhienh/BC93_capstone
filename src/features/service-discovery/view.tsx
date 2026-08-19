@@ -19,11 +19,11 @@ export function ServiceFilters({
     <section className="discovery-filters" aria-label="Filter services">
       <label>
         Minimum price
-        <input name="minPrice" type="number" min="0" value={state.minPrice ?? ""} onChange={handleChange} />
+        <input name="minPrice" type="number" min="0" placeholder="$0" value={state.minPrice ?? ""} onChange={handleChange} />
       </label>
       <label>
         Maximum price
-        <input name="maxPrice" type="number" min="0" value={state.maxPrice ?? ""} onChange={handleChange} />
+        <input name="maxPrice" type="number" min="0" placeholder="Any" value={state.maxPrice ?? ""} onChange={handleChange} />
       </label>
       <label>
         Minimum rating
