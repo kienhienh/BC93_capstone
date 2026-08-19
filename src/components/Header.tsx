@@ -17,8 +17,9 @@ import { useTaxonomy } from "../features/taxonomy/public";
 type Viewport = "phone" | "tablet" | "desktop";
 
 function getViewport(): Viewport {
-  if (window.innerWidth < 600) return "phone";
-  if (window.innerWidth < 1024) return "tablet";
+  const width = document.documentElement.clientWidth || window.innerWidth;
+  if (width < 600) return "phone";
+  if (width < 1024) return "tablet";
   return "desktop";
 }
 
