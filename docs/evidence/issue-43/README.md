@@ -19,13 +19,28 @@ ready to close. Status against each acceptance criterion:
 | 3 | NVDA + Chrome (landmarks, roles, forms/errors, announcements, route changes, drawers, tables, mutation feedback) | **Waived** — excluded from the capstone-report scope by the project owner; no screen-reader or full WCAG-conformance claim is made |
 | 4 | Physical smartphone, full journey, no horizontal overflow | **Done** — iPhone XR / Safari, see below |
 | 5 | Contrast, 200%/400% zoom, 320px reflow, text spacing, reduced motion, visible focus, target size | **Done for the approved capstone scope** — zoom, text spacing, reduced motion, visible focus, and target size passed; contrast and 320px defects were resolved |
-| 6 | Evidence recorded with device/browser/AT/viewport/URL/observer/date/pass-fail | **Partial** — recorded for everything actually tested |
+| 6 | Evidence recorded with device/browser/AT/viewport/URL/observer/date/pass-fail | **Partial** — Edge and iPhone versions, branch, commit, observer, date, and recorded viewports are present; the full untruncated Preview URL and Safari viewport remain missing |
 | 7 | Release-blocking defects filed and resolved | **Done** — [#98](https://github.com/kienhienh/BC93_capstone/issues/98), [#99](https://github.com/kienhienh/BC93_capstone/issues/99), [#100](https://github.com/kienhienh/BC93_capstone/issues/100), and [#101](https://github.com/kienhienh/BC93_capstone/issues/101) were fixed, merged, and closed |
 
-**Issue #43 is not ready to close.** Remaining work is completing the
-missing browser/device/Preview metadata noted in the evidence.
+**Issue #43 is not ready to close.** Remaining work is providing the
+full untruncated Preview URL and the Safari physical-device viewport.
 
 ## Log
+
+### Evidence environment metadata
+
+- **Desktop browser**: Microsoft Edge 151.0.4129.93, Official Build,
+  64-bit.
+- **Physical smartphone**: iPhone XR, iOS 17.4.1, Safari. The exact
+  Safari application version was not separately provided.
+- **Preview deployment identifier**:
+  bc-93-capstone-28rk-8c1cc78fb... (truncated as provided; the full URL
+  is still required for reproducible evidence).
+- **Preview branch**: issue-43-manual-verification-evidence.
+- **Tested commit**:
+  e57a025fa2d36a27577260d8c94cf77aad9654dd.
+- **Observer**: kienhienh
+- **Date**: 2026-08-20
 
 ### Keyboard-only Hire journey — PASS
 
@@ -161,9 +176,12 @@ missing browser/device/Preview metadata noted in the evidence.
   smartphone verifies the complete representative journey and no
   unintended horizontal overflow."
 - **Device/Browser**: physical iPhone XR, Safari (iOS default browser).
-- **OS/browser version**: not provided.
+- **OS/browser version**: iOS 17.4.1, Safari. The exact Safari
+  application version was not separately provided.
 - **Viewport**: not recorded for this physical-device pass.
-- **Deployment URL/source commit**: not recorded for this pass.
+- **Deployment**: bc-93-capstone-28rk-8c1cc78fb... (truncated identifier),
+  branch issue-43-manual-verification-evidence, commit
+  e57a025fa2d36a27577260d8c94cf77aad9654dd.
 - **Observer**: kienhienh
 - **Date**: 2026-08-20
 - **Journey covered**: Home → browse/search Services → Service Detail →
@@ -224,9 +242,11 @@ missing browser/device/Preview metadata noted in the evidence.
 - **Check**: manual text-spacing override.
 - **Device/viewport**: mobile viewport, 375 x 667 CSS pixels. The
   physical device or emulation tool was not provided.
-- **Browser/version**: Microsoft Edge; exact version not provided.
-- **Deployment URL/source commit**: not provided; supplement before
-  treating the evidence-metadata criterion as complete.
+- **Browser/version**: Microsoft Edge 151.0.4129.93, Official Build,
+  64-bit.
+- **Deployment**: bc-93-capstone-28rk-8c1cc78fb... (truncated identifier),
+  branch issue-43-manual-verification-evidence, commit
+  e57a025fa2d36a27577260d8c94cf77aad9654dd.
 - **Observer**: kienhienh
 - **Date**: 2026-08-20
 - **Applied spacing**: line height 1.5; letter spacing 0.12em; word
@@ -238,10 +258,12 @@ missing browser/device/Preview metadata noted in the evidence.
 
 - **Check**: manual inspection of representative interactive controls
   against the 24 x 24 CSS pixel minimum target-size threshold.
-- **Browser/version**: Microsoft Edge; exact version not provided.
+- **Browser/version**: Microsoft Edge 151.0.4129.93, Official Build,
+  64-bit.
 - **Viewport**: not provided.
-- **Deployment URL/source commit**: not provided; supplement before
-  treating the evidence-metadata criterion as complete.
+- **Deployment**: bc-93-capstone-28rk-8c1cc78fb... (truncated identifier),
+  branch issue-43-manual-verification-evidence, commit
+  e57a025fa2d36a27577260d8c94cf77aad9654dd.
 - **Observer**: kienhienh
 - **Date**: 2026-08-20
 
@@ -265,8 +287,8 @@ missing browser/device/Preview metadata noted in the evidence.
 - **Check**: project-wide reduced-motion behavior was verified from the
   reviewed source rule in src/index.css and the implementation record
   in docs/implementation/issue-37-wcag-hardening.md.
-- **Source baseline**:
-  f85d07f2ddbc9a025ea3aaf70563ca0ae467a8ba.
+- **Source baseline / tested commit**:
+  e57a025fa2d36a27577260d8c94cf77aad9654dd.
 - **Observer**: kienhienh
 - **Date**: 2026-08-20
 - **Verified rule**:
