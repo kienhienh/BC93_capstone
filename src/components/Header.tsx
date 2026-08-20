@@ -131,10 +131,9 @@ export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
   const { session, logout } = useSession();
-  const [drawer, setDrawer] = useState<"categories" | "menu" | "search" | null>(null);
+  const [drawer, setDrawer] = useState<"categories" | "menu" | null>(null);
   const categoryOpener = useRef<HTMLButtonElement>(null);
   const menuOpener = useRef<HTMLButtonElement>(null);
-  const searchOpener = useRef<HTMLButtonElement>(null);
   const usesInitialHeader = ["/", "/login", "/register"].includes(location.pathname);
 
   const submitSearch = (event: FormEvent<HTMLFormElement>) => {
@@ -162,10 +161,6 @@ export default function Header() {
             <input key={location.search} id="header-search" name="query" type="search" placeholder="What service are you looking for today?" defaultValue={new URLSearchParams(location.search).get("search") ?? ""} />
             <button type="submit" aria-label="Search"><i className="bi bi-search" aria-hidden="true" /></button>
           </form>
-        ) : !usesInitialHeader ? (
-          <button ref={searchOpener} type="button" onClick={() => setDrawer("search")}>
-            Search services
-          </button>
         ) : null}
 
         {!usesInitialHeader && viewport === "tablet" ? (
@@ -225,6 +220,13 @@ export default function Header() {
           opener={menuOpener}
           onClose={() => setDrawer(null)}
         >
+          {!usesInitialHeader ? (
+            <form className="drawer-search" role="search" onSubmit={submitSearch}>
+              <label htmlFor="menu-search">What Service do you need?</label>
+              <input key={location.search} id="menu-search" name="query" type="search" defaultValue={new URLSearchParams(location.search).get("search") ?? ""} />
+              <button type="submit">Search</button>
+            </form>
+          ) : null}
           <nav aria-label="Mobile navigation">
             <CategoryLinks onSelect={() => setDrawer(null)} />
             <div className="drawer-account-links">
@@ -244,20 +246,6 @@ export default function Header() {
               )}
             </div>
           </nav>
-        </Drawer>
-      ) : null}
-      {drawer === "search" ? (
-        <Drawer
-          title="Search Services"
-          closeLabel="Close search"
-          opener={searchOpener}
-          onClose={() => setDrawer(null)}
-        >
-          <form className="drawer-search" role="search" onSubmit={submitSearch}>
-            <label htmlFor="drawer-search">What Service do you need?</label>
-            <input id="drawer-search" name="query" type="search" />
-            <button type="submit">Search</button>
-          </form>
         </Drawer>
       ) : null}
     </header>
