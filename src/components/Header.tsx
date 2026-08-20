@@ -234,7 +234,13 @@ export default function Header() {
                   <Link to="/register" onClick={() => setDrawer(null)}>Register</Link>
                 </>
               ) : (
-                <><Link to="/profile" onClick={() => setDrawer(null)}>Your Profile</Link><button type="button" onClick={signOut}>Logout</button></>
+                <>
+                  {session.user.role === "ADMIN" ? (
+                    <Link to="/admin" onClick={() => setDrawer(null)}>Admin</Link>
+                  ) : null}
+                  <Link to="/profile" onClick={() => setDrawer(null)}>Your Profile</Link>
+                  <button type="button" onClick={signOut}>Logout</button>
+                </>
               )}
             </div>
           </nav>

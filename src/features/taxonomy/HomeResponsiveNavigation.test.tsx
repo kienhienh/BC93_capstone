@@ -83,4 +83,26 @@ describe("Home responsive taxonomy navigation", () => {
     expect(screen.getByRole("dialog", { name: "Marketplace menu" })).toBeVisible();
     expect(screen.queryByRole("navigation", { name: "Service Categories" })).not.toBeInTheDocument();
   });
+
+  it("offers an Admin link in the phone menu drawer for admin accounts", async () => {
+    useViewport(375);
+    const user = userEvent.setup();
+    renderTestApplication({ initialPath: "/services", isAdmin: true });
+
+    await user.click(screen.getByRole("button", { name: "Open menu" }));
+
+    const drawer = screen.getByRole("dialog", { name: "Marketplace menu" });
+    expect(within(drawer).getByRole("link", { name: "Admin" })).toHaveAttribute("href", "/admin");
+  });
+
+  it("does not offer an Admin link in the phone menu drawer for regular accounts", async () => {
+    useViewport(375);
+    const user = userEvent.setup();
+    renderTestApplication({ initialPath: "/services", isAdmin: false });
+
+    await user.click(screen.getByRole("button", { name: "Open menu" }));
+
+    const drawer = screen.getByRole("dialog", { name: "Marketplace menu" });
+    expect(within(drawer).queryByRole("link", { name: "Admin" })).not.toBeInTheDocument();
+  });
 });
