@@ -95,7 +95,7 @@ export function ProfileView({ profile, session, acceptSession, hiredServices, he
 }
 
 function ProfileIdentity({ profile }: { profile: Profile }) {
-  return <div className="profile-identity">{profile.avatar ? <img src={profile.avatar} alt="" decoding="async" /> : <span aria-hidden="true">{profile.name.charAt(0).toUpperCase()}</span>}<div><h2>{profile.name}</h2><p>{profile.email}</p><p>{profile.role}</p></div></div>;
+  return <div className="profile-identity">{profile.avatar ? <img src={profile.avatar} alt="" decoding="async" /> : <span aria-hidden="true">{profile.name.charAt(0).toUpperCase()}</span>}<div className="profile-identity-copy"><h2>{profile.name}</h2><p className="profile-email">{profile.email}</p><p>{profile.role}</p></div></div>;
 }
 
 function HiredServicesPanel({ query }: { query: HiredServicesQuery }) {
