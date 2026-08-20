@@ -16,15 +16,15 @@ ready to close. Status against each acceptance criterion:
 |---|---|---|
 | 1 | Firefox + WebKit/Safari core journeys | **Partial** — Safari (physical iPhone XR) done; Firefox not done |
 | 2 | Keyboard-only run (navigation, search/filters, auth, Comment, Hire/Hired Services, Profile, Admin CRUD) | **Done** — see entries below |
-| 3 | NVDA + Chrome (landmarks, roles, forms/errors, announcements, route changes, drawers, tables, mutation feedback) | **Not done** — see entry below |
+| 3 | NVDA + Chrome (landmarks, roles, forms/errors, announcements, route changes, drawers, tables, mutation feedback) | **Waived** — excluded from the capstone-report scope by the project owner; no screen-reader or full WCAG-conformance claim is made |
 | 4 | Physical smartphone, full journey, no horizontal overflow | **Done** — iPhone XR / Safari, see below |
-| 5 | Contrast, 200%/400% zoom, 320px reflow, text spacing, reduced motion, visible focus, target size | **Partial** — 200%/400% zoom done; contrast done (FAIL); 320px reflow done (FAIL, 2 defects); text spacing, reduced motion, target size not done |
+| 5 | Contrast, 200%/400% zoom, 320px reflow, text spacing, reduced motion, visible focus, target size | **Partial** — zoom and text spacing passed; contrast and 320px defects were resolved; reduced motion and target size remain |
 | 6 | Evidence recorded with device/browser/AT/viewport/URL/observer/date/pass-fail | **Partial** — recorded for everything actually tested |
-| 7 | Release-blocking defects filed and resolved | 4 defects filed, none fixed yet: [#98](https://github.com/kienhienh/BC93_capstone/issues/98) (Skip-to-main-content overlaps logo), [#99](https://github.com/kienhienh/BC93_capstone/issues/99) (contrast failures), [#100](https://github.com/kienhienh/BC93_capstone/issues/100) (Profile long-email overflow), [#101](https://github.com/kienhienh/BC93_capstone/issues/101) (header double-button on phone) |
+| 7 | Release-blocking defects filed and resolved | **Done** — [#98](https://github.com/kienhienh/BC93_capstone/issues/98), [#99](https://github.com/kienhienh/BC93_capstone/issues/99), [#100](https://github.com/kienhienh/BC93_capstone/issues/100), and [#101](https://github.com/kienhienh/BC93_capstone/issues/101) were fixed, merged, and closed |
 
 **Issue #43 is not ready to close.** Remaining work: row 1's Firefox
-pass; row 3 (NVDA) in full; row 5's text-spacing/reduced-motion/
-target-size sub-checks; and fixing #98, #99, #100, #101.
+pass; row 5's reduced-motion and target-size checks; and completing the
+missing browser/device/Preview metadata noted in the evidence.
 
 ## Log
 
@@ -173,7 +173,8 @@ target-size sub-checks; and fixing #98, #99, #100, #101.
   (`#95979d` on white), and footer link sub-labels (`#b5b6ba` on
   white). Filed as [#99](https://github.com/kienhienh/BC93_capstone/issues/99)
   with estimated contrast ratios per element (all below the WCAG AA
-  4.5:1 / 3:1 thresholds). **Not fixed yet.**
+  4.5:1 / 3:1 thresholds). **Resolved by PR #103 and merged into
+  develop.**
 
 ### 320px reflow — FAIL (defect filed)
 
@@ -201,21 +202,31 @@ target-size sub-checks; and fixing #98, #99, #100, #101.
      both buttons wraps awkwardly; no page-level horizontal scrollbar
      appears (buttons wrap instead of overflowing), but it's a real,
      reproducible layout defect. Filed as [#101](https://github.com/kienhienh/BC93_capstone/issues/101).
-- Both defects are **not fixed yet**.
+- Both defects were resolved and merged: #100 by PR #104 and #101 by
+  PR #105.
 
-### NVDA + Chrome verification — NOT DONE
+### Text spacing at mobile viewport — PASS
 
-- **Check**: NVDA with Chrome verifying landmarks/headings, names/roles,
-  forms/errors, announcements, route changes, drawers/dialogs,
-  tables/cards, and mutation feedback, per the "NVDA with Chrome
-  verifies..." acceptance criterion.
+- **Check**: manual text-spacing override.
+- **Device/viewport**: mobile viewport, 375 x 667 CSS pixels. The
+  physical device or emulation tool was not provided.
+- **Browser/version**: not provided.
+- **Deployment URL/source commit**: not provided; supplement before
+  treating the evidence-metadata criterion as complete.
 - **Observer**: kienhienh
 - **Date**: 2026-08-20
-- **Status**: **Not performed.** NVDA was installed but the observer did
-  not have prior screen-reader experience, and the check was not
-  completed within this session's time. No landmarks/headings,
-  names/roles, forms/errors, announcements, route changes,
-  drawers/dialogs, tables/cards, or mutation-feedback verification has
-  been recorded against NVDA. **This criterion remains open** — issue
-  #43 cannot be closed until it (or an equivalent NVDA/Chrome pass) is
-  completed and recorded here.
+- **Applied spacing**: line height 1.5; letter spacing 0.12em; word
+  spacing 0.16em; paragraph spacing 2em.
+- **Result**: **PASS.** No visible text clipping, overlapping content,
+  broken controls, or visible horizontal overflow was observed.
+
+### NVDA + Chrome verification — WAIVED
+
+- **Decision**: the project owner excluded NVDA verification from the
+  final capstone-report scope.
+- **Observer/decision owner**: kienhienh
+- **Date**: 2026-08-20
+- **Status**: **WAIVED / not performed.** Automated axe checks and
+  keyboard-only verification remain recorded, but they do not replace
+  screen-reader testing. This project therefore makes no claim of full
+  screen-reader support or full WCAG conformance.
