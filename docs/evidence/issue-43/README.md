@@ -14,7 +14,7 @@ ready to close. Status against each acceptance criterion:
 
 | # | Acceptance criterion | Status |
 |---|---|---|
-| 1 | Firefox + WebKit/Safari core journeys | **Partial** — Safari (physical iPhone XR) done; Firefox not done |
+| 1 | Browser core journeys | **Done for the approved capstone scope** — Microsoft Edge (Chromium/Blink) on desktop and Safari (WebKit) on a physical iPhone XR passed; Firefox/Gecko was waived and complete cross-browser compatibility is not claimed |
 | 2 | Keyboard-only run (navigation, search/filters, auth, Comment, Hire/Hired Services, Profile, Admin CRUD) | **Done** — see entries below |
 | 3 | NVDA + Chrome (landmarks, roles, forms/errors, announcements, route changes, drawers, tables, mutation feedback) | **Waived** — excluded from the capstone-report scope by the project owner; no screen-reader or full WCAG-conformance claim is made |
 | 4 | Physical smartphone, full journey, no horizontal overflow | **Done** — iPhone XR / Safari, see below |
@@ -22,9 +22,9 @@ ready to close. Status against each acceptance criterion:
 | 6 | Evidence recorded with device/browser/AT/viewport/URL/observer/date/pass-fail | **Partial** — recorded for everything actually tested |
 | 7 | Release-blocking defects filed and resolved | **Done** — [#98](https://github.com/kienhienh/BC93_capstone/issues/98), [#99](https://github.com/kienhienh/BC93_capstone/issues/99), [#100](https://github.com/kienhienh/BC93_capstone/issues/100), and [#101](https://github.com/kienhienh/BC93_capstone/issues/101) were fixed, merged, and closed |
 
-**Issue #43 is not ready to close.** Remaining work: row 1's Firefox
-pass; row 5's reduced-motion and target-size checks; and completing the
-missing browser/device/Preview metadata noted in the evidence.
+**Issue #43 is not ready to close.** Remaining work: row 5's
+reduced-motion and target-size checks; and completing the missing
+browser/device/Preview metadata noted in the evidence.
 
 ## Log
 
@@ -143,13 +143,28 @@ missing browser/device/Preview metadata noted in the evidence.
   "Delete Category" confirmation itself was never submitted (Cancel/Esc
   only), so no category was deleted during this check.
 
+### Browser coverage scope decision — APPROVED
+
+- **Approved capstone scope**: Microsoft Edge (Chromium/Blink) on
+  desktop plus Safari (WebKit) on a physical iPhone XR.
+- **Firefox/Gecko**: **WAIVED / not performed** by project-owner
+  decision for the capstone report.
+- **Claim boundary**: the Edge and Safari results provide two-engine
+  coverage for the report, but the project does not claim complete
+  cross-browser compatibility or Firefox/Gecko compatibility.
+- **Observer/decision owner**: kienhienh
+- **Date**: 2026-08-20
+
 ### Safari (physical iPhone) core journeys + no horizontal overflow — PASS
 
 - **Check**: covers two acceptance criteria at once — "current...
   WebKit/Safari-compatible coverage" of core journeys, and "a physical
   smartphone verifies the complete representative journey and no
   unintended horizontal overflow."
-- **Device/Browser**: physical iPhone XR, Safari (iOS default browser)
+- **Device/Browser**: physical iPhone XR, Safari (iOS default browser).
+- **OS/browser version**: not provided.
+- **Viewport**: not recorded for this physical-device pass.
+- **Deployment URL/source commit**: not recorded for this pass.
 - **Observer**: kienhienh
 - **Date**: 2026-08-20
 - **Journey covered**: Home → browse/search Services → Service Detail →
@@ -210,7 +225,7 @@ missing browser/device/Preview metadata noted in the evidence.
 - **Check**: manual text-spacing override.
 - **Device/viewport**: mobile viewport, 375 x 667 CSS pixels. The
   physical device or emulation tool was not provided.
-- **Browser/version**: not provided.
+- **Browser/version**: Microsoft Edge; exact version not provided.
 - **Deployment URL/source commit**: not provided; supplement before
   treating the evidence-metadata criterion as complete.
 - **Observer**: kienhienh
