@@ -903,6 +903,12 @@ body {
   left: 1rem;
   top: 1rem;
   z-index: 2000;
+  border-radius: 0.4rem;
+  padding: 0.6rem 1rem;
+  background: #222325;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
   transform: translateY(-200%);
 }
 
