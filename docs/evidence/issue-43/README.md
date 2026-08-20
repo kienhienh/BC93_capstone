@@ -18,13 +18,12 @@ ready to close. Status against each acceptance criterion:
 | 2 | Keyboard-only run (navigation, search/filters, auth, Comment, Hire/Hired Services, Profile, Admin CRUD) | **Done** — see entries below |
 | 3 | NVDA + Chrome (landmarks, roles, forms/errors, announcements, route changes, drawers, tables, mutation feedback) | **Waived** — excluded from the capstone-report scope by the project owner; no screen-reader or full WCAG-conformance claim is made |
 | 4 | Physical smartphone, full journey, no horizontal overflow | **Done** — iPhone XR / Safari, see below |
-| 5 | Contrast, 200%/400% zoom, 320px reflow, text spacing, reduced motion, visible focus, target size | **Partial** — zoom, text spacing, visible focus, and target size passed; contrast and 320px defects were resolved; reduced motion remains |
+| 5 | Contrast, 200%/400% zoom, 320px reflow, text spacing, reduced motion, visible focus, target size | **Done for the approved capstone scope** — zoom, text spacing, reduced motion, visible focus, and target size passed; contrast and 320px defects were resolved |
 | 6 | Evidence recorded with device/browser/AT/viewport/URL/observer/date/pass-fail | **Partial** — recorded for everything actually tested |
 | 7 | Release-blocking defects filed and resolved | **Done** — [#98](https://github.com/kienhienh/BC93_capstone/issues/98), [#99](https://github.com/kienhienh/BC93_capstone/issues/99), [#100](https://github.com/kienhienh/BC93_capstone/issues/100), and [#101](https://github.com/kienhienh/BC93_capstone/issues/101) were fixed, merged, and closed |
 
-**Issue #43 is not ready to close.** Remaining work: row 5's
-reduced-motion check and completing the missing browser/device/Preview
-metadata noted in the evidence.
+**Issue #43 is not ready to close.** Remaining work is completing the
+missing browser/device/Preview metadata noted in the evidence.
 
 ## Log
 
@@ -260,6 +259,29 @@ metadata noted in the evidence.
   24 x 24 CSS pixel minimum. Text controls were wider than their
   recorded minimum heights; the smallest square targets, the footer
   social icons, measured exactly 24 x 24 CSS pixels.
+
+### Reduced motion — PASS (source verification)
+
+- **Check**: project-wide reduced-motion behavior was verified from the
+  reviewed source rule in src/index.css and the implementation record
+  in docs/implementation/issue-37-wcag-hardening.md.
+- **Source baseline**:
+  f85d07f2ddbc9a025ea3aaf70563ca0ae467a8ba.
+- **Observer**: kienhienh
+- **Date**: 2026-08-20
+- **Verified rule**:
+
+  - scroll behavior changes to auto;
+  - transition duration changes to 0.01ms;
+  - animation duration changes to 0.01ms;
+  - animation iteration count changes to one;
+  - the wildcard, before, and after selectors apply the behavior
+    project-wide when prefers-reduced-motion is reduce.
+
+- **Result**: **PASS for the approved capstone scope.** The global rule
+  covers the project transitions and the taxonomy loading-skeleton
+  animation. This entry records source/static verification; a separate
+  OS-level visual observation session was not provided.
 
 ### NVDA + Chrome verification — WAIVED
 
