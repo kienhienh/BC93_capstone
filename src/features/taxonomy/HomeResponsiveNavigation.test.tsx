@@ -71,16 +71,22 @@ describe("Home responsive taxonomy navigation", () => {
     expect(opener).toHaveFocus();
   });
 
-  it("uses compact Search and menu controls on phone", async () => {
-    useViewport(375);
+  it("keeps one menu control on phone and offers Search inside its drawer", async () => {
+    useViewport(320);
     const user = userEvent.setup();
-    renderTestApplication("/services");
+    const app = renderTestApplication("/services");
 
-    expect(screen.getByRole("button", { name: "Search services" })).toBeVisible();
+    expect(screen.queryByRole("button", { name: "Search services" })).not.toBeInTheDocument();
     const opener = screen.getByRole("button", { name: "Open menu" });
     await user.click(opener);
 
-    expect(screen.getByRole("dialog", { name: "Marketplace menu" })).toBeVisible();
+    const drawer = screen.getByRole("dialog", { name: "Marketplace menu" });
+    const searchbox = within(drawer).getByRole("searchbox", { name: "What Service do you need?" });
+    await user.type(searchbox, "responsive design");
+    await user.click(within(drawer).getByRole("button", { name: "Search" }));
+
+    expect(app.currentLocation()).toBe("/services?search=responsive%20design");
+    expect(screen.queryByRole("dialog", { name: "Marketplace menu" })).not.toBeInTheDocument();
     expect(screen.queryByRole("navigation", { name: "Service Categories" })).not.toBeInTheDocument();
   });
 
