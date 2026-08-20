@@ -14,17 +14,17 @@ ready to close. Status against each acceptance criterion:
 
 | # | Acceptance criterion | Status |
 |---|---|---|
-| 1 | Firefox + WebKit/Safari core journeys | **Not done** |
+| 1 | Firefox + WebKit/Safari core journeys | **Partial** — Safari (physical iPhone XR) done; Firefox not done |
 | 2 | Keyboard-only run (navigation, search/filters, auth, Comment, Hire/Hired Services, Profile, Admin CRUD) | **Done** — see entries below |
 | 3 | NVDA + Chrome (landmarks, roles, forms/errors, announcements, route changes, drawers, tables, mutation feedback) | **Not done** — see entry below |
-| 4 | Physical smartphone, full journey, no horizontal overflow | **Not done** |
-| 5 | Contrast, 200%/400% zoom, 320px reflow, text spacing, reduced motion, visible focus, target size | **Partial** — 200%/400% zoom done (see below); contrast, 320px reflow, text spacing, reduced motion, target size not done |
+| 4 | Physical smartphone, full journey, no horizontal overflow | **Done** — iPhone XR / Safari, see below |
+| 5 | Contrast, 200%/400% zoom, 320px reflow, text spacing, reduced motion, visible focus, target size | **Partial** — 200%/400% zoom done; contrast done (FAIL); 320px reflow done (FAIL, 2 defects); text spacing, reduced motion, target size not done |
 | 6 | Evidence recorded with device/browser/AT/viewport/URL/observer/date/pass-fail | **Partial** — recorded for everything actually tested |
-| 7 | Release-blocking defects filed and resolved | 1 defect found and filed: [#98](https://github.com/kienhienh/BC93_capstone/issues/98) (Skip-to-main-content link overlaps the header logo when focused) — **not yet fixed** |
+| 7 | Release-blocking defects filed and resolved | 4 defects filed, none fixed yet: [#98](https://github.com/kienhienh/BC93_capstone/issues/98) (Skip-to-main-content overlaps logo), [#99](https://github.com/kienhienh/BC93_capstone/issues/99) (contrast failures), [#100](https://github.com/kienhienh/BC93_capstone/issues/100) (Profile long-email overflow), [#101](https://github.com/kienhienh/BC93_capstone/issues/101) (header double-button on phone) |
 
-**Issue #43 is not ready to close.** Remaining work: rows 1, 3, 4 in
-full; row 5's contrast/320px/text-spacing/reduced-motion/target-size
-sub-checks; and fixing #98.
+**Issue #43 is not ready to close.** Remaining work: row 1's Firefox
+pass; row 3 (NVDA) in full; row 5's text-spacing/reduced-motion/
+target-size sub-checks; and fixing #98, #99, #100, #101.
 
 ## Log
 
@@ -142,6 +142,66 @@ sub-checks; and fixing #98.
   to a stale cached bundle in that browser tab, not a real defect. The
   "Delete Category" confirmation itself was never submitted (Cancel/Esc
   only), so no category was deleted during this check.
+
+### Safari (physical iPhone) core journeys + no horizontal overflow — PASS
+
+- **Check**: covers two acceptance criteria at once — "current...
+  WebKit/Safari-compatible coverage" of core journeys, and "a physical
+  smartphone verifies the complete representative journey and no
+  unintended horizontal overflow."
+- **Device/Browser**: physical iPhone XR, Safari (iOS default browser)
+- **Observer**: kienhienh
+- **Date**: 2026-08-20
+- **Journey covered**: Home → browse/search Services → Service Detail →
+  Comment → Hire → Hired Services → Profile.
+- **Result**: PASS. No layout breakage, overlapping content, or
+  horizontal overflow observed on any page in the journey.
+
+### Contrast — FAIL (defect filed)
+
+- **Check**: contrast, per the "Contrast... manually checked"
+  acceptance criterion.
+- **Tool**: Chrome DevTools Lighthouse, Accessibility category
+- **Browser**: Google Chrome (desktop)
+- **Observer**: kienhienh
+- **Date**: 2026-08-20
+- **Result**: Accessibility score 97/100. The "Background and
+  foreground colors do not have a sufficient contrast ratio" audit
+  failed, flagging: the Home hero "Search" button (white text on
+  `#1dbf73` green), the `.trusted-brands` brand-name text (`#b5b6ba` on
+  `#f5f5f5`), the footer copyright line and testimonial byline
+  (`#95979d` on white), and footer link sub-labels (`#b5b6ba` on
+  white). Filed as [#99](https://github.com/kienhienh/BC93_capstone/issues/99)
+  with estimated contrast ratios per element (all below the WCAG AA
+  4.5:1 / 3:1 thresholds). **Not fixed yet.**
+
+### 320px reflow — FAIL (defect filed)
+
+- **Check**: 320px reflow, per the "320 px reflow... manually checked"
+  acceptance criterion.
+- **Browser**: Chrome DevTools responsive mode, 320×568
+- **Observer**: kienhienh
+- **Date**: 2026-08-20
+- **Result**: Two distinct real defects found:
+  1. **Profile page horizontal overflow**: with a long email address, the
+     whole `.profile-card` overflows the viewport — Full name/Phone/
+     Birthday inputs are clipped and the email text is cut off. Root
+     cause identified: `.profile-identity` (`src/features/profile/profile.css:99-105`)
+     is a flex row; the wrapper `<div>` around name/email/role
+     (`src/features/profile/view.tsx:98`) has no `min-width: 0` and the
+     email `<p>` has no `overflow-wrap`, so the unbroken email string
+     forces the flex item — and the whole card — wider than the
+     viewport. Filed as [#100](https://github.com/kienhienh/BC93_capstone/issues/100).
+  2. **Header double-button on phone** (`/services`, `/profile`, and any
+     other non-Home/Login/Register route): both "Search services" and
+     "Open menu" render together at phone width, per
+     `src/components/Header.tsx:159-168` (the `!usesInitialHeader`
+     fallback branch doesn't exclude `viewport === "phone"`, so it
+     collides with the separate phone-only "Open menu" button). Text in
+     both buttons wraps awkwardly; no page-level horizontal scrollbar
+     appears (buttons wrap instead of overflowing), but it's a real,
+     reproducible layout defect. Filed as [#101](https://github.com/kienhienh/BC93_capstone/issues/101).
+- Both defects are **not fixed yet**.
 
 ### NVDA + Chrome verification — NOT DONE
 
