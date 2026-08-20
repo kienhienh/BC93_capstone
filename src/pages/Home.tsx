@@ -234,7 +234,15 @@ export default function Home() {
                 )
               }
             >
-              <span aria-hidden="true">‹</span>
+              <svg aria-hidden="true" width="12" height="20" viewBox="0 0 12 20" fill="none">
+                <path
+                  d="M10 2 2 10l8 8"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </button>
             <div className="service-preview-grid">
               {visiblePopularServices.map((service, index) => (
@@ -253,7 +261,15 @@ export default function Home() {
                 setPopularStart((current) => (current + 1) % preview.services.length)
               }
             >
-              <span aria-hidden="true">›</span>
+              <svg aria-hidden="true" width="12" height="20" viewBox="0 0 12 20" fill="none">
+                <path
+                  d="M2 2l8 8-8 8"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </button>
           </div>
         ) : null}
