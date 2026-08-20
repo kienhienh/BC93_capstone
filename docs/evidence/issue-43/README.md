@@ -19,11 +19,13 @@ ready to close. Status against each acceptance criterion:
 | 3 | NVDA + Chrome (landmarks, roles, forms/errors, announcements, route changes, drawers, tables, mutation feedback) | **Waived** — excluded from the capstone-report scope by the project owner; no screen-reader or full WCAG-conformance claim is made |
 | 4 | Physical smartphone, full journey, no horizontal overflow | **Done** — iPhone XR / Safari, see below |
 | 5 | Contrast, 200%/400% zoom, 320px reflow, text spacing, reduced motion, visible focus, target size | **Done for the approved capstone scope** — zoom, text spacing, reduced motion, visible focus, and target size passed; contrast and 320px defects were resolved |
-| 6 | Evidence recorded with device/browser/AT/viewport/URL/observer/date/pass-fail | **Partial** — browser/device versions, full Preview URL, branch, commit, observer, date, and recorded viewports are present; only the Safari physical-device viewport remains missing |
+| 6 | Evidence recorded with device/browser/AT/viewport/URL/observer/date/pass-fail | **Done for the approved capstone scope** — browser/device versions, physical and emulated viewports, full Preview URL, branch, commit, observer, date, results, and claim limitations are recorded |
 | 7 | Release-blocking defects filed and resolved | **Done** — [#98](https://github.com/kienhienh/BC93_capstone/issues/98), [#99](https://github.com/kienhienh/BC93_capstone/issues/99), [#100](https://github.com/kienhienh/BC93_capstone/issues/100), and [#101](https://github.com/kienhienh/BC93_capstone/issues/101) were fixed, merged, and closed |
 
-**Issue #43 is not ready to close.** Remaining work is providing the
-Safari physical-device viewport.
+**Issue #43 is ready to close under the approved capstone scope.** NVDA
+and Firefox/Gecko were explicitly waived, with the corresponding
+screen-reader, WCAG-conformance, and complete cross-browser claim
+limitations recorded below.
 
 ## Log
 
@@ -31,8 +33,9 @@ Safari physical-device viewport.
 
 - **Desktop browser**: Microsoft Edge 151.0.4129.93, Official Build,
   64-bit.
-- **Physical smartphone**: iPhone XR, iOS 17.4.1, Safari. The exact
-  Safari application version was not separately provided.
+- **Physical smartphone**: iPhone XR, iOS 17.4.1, Safari, portrait
+  viewport 414 x 896 CSS pixels. The exact Safari application version
+  was not separately provided.
 - **Deployment URL**:
   https://bc-93-capstone-28rk-8c1cc78fb-kienhienh-7980s-projects.vercel.app/
   (Preview deployment).
@@ -178,7 +181,7 @@ Safari physical-device viewport.
 - **Device/Browser**: physical iPhone XR, Safari (iOS default browser).
 - **OS/browser version**: iOS 17.4.1, Safari. The exact Safari
   application version was not separately provided.
-- **Viewport**: not recorded for this physical-device pass.
+- **Physical-device viewport**: 414 x 896 CSS pixels, portrait.
 - **Deployment URL**:
   https://bc-93-capstone-28rk-8c1cc78fb-kienhienh-7980s-projects.vercel.app/
   (Preview deployment), branch issue-43-manual-verification-evidence,
