@@ -76,15 +76,17 @@ secret). No `VITE_`-prefixed variable may hold a real user credential.
 One Git-connected Vercel project serves both environments from this
 repository:
 
-- **Preview** — every pull request and every non-`main` branch push
+- **Preview** — every pull request and every non-`develop` branch push
   builds a Preview deployment with its own URL, using the Preview-scoped
   environment variables above.
-- **Production** — pushes to `main` build Production, using the
+- **Production** — pushes to the configured `develop` Production branch
+  build Production, using the
   Production-scoped environment variables above.
 
-This is Vercel's default Git-integration behavior; #41 confirms it is
-configured exactly this way against the real account and records the
-resulting Preview/Production URLs.
+Issue #44 confirms the live Vercel Production environment tracks
+`develop`; Preview tracks all unassigned Git branches. The resulting
+Production URL and exact promoted commit are recorded in
+`docs/evidence/issue-44/README.md`.
 
 ## Handoff to human-owned tickets
 
