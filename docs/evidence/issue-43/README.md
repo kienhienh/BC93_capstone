@@ -18,13 +18,13 @@ ready to close. Status against each acceptance criterion:
 | 2 | Keyboard-only run (navigation, search/filters, auth, Comment, Hire/Hired Services, Profile, Admin CRUD) | **Done** — see entries below |
 | 3 | NVDA + Chrome (landmarks, roles, forms/errors, announcements, route changes, drawers, tables, mutation feedback) | **Waived** — excluded from the capstone-report scope by the project owner; no screen-reader or full WCAG-conformance claim is made |
 | 4 | Physical smartphone, full journey, no horizontal overflow | **Done** — iPhone XR / Safari, see below |
-| 5 | Contrast, 200%/400% zoom, 320px reflow, text spacing, reduced motion, visible focus, target size | **Partial** — zoom and text spacing passed; contrast and 320px defects were resolved; reduced motion and target size remain |
+| 5 | Contrast, 200%/400% zoom, 320px reflow, text spacing, reduced motion, visible focus, target size | **Partial** — zoom, text spacing, visible focus, and target size passed; contrast and 320px defects were resolved; reduced motion remains |
 | 6 | Evidence recorded with device/browser/AT/viewport/URL/observer/date/pass-fail | **Partial** — recorded for everything actually tested |
 | 7 | Release-blocking defects filed and resolved | **Done** — [#98](https://github.com/kienhienh/BC93_capstone/issues/98), [#99](https://github.com/kienhienh/BC93_capstone/issues/99), [#100](https://github.com/kienhienh/BC93_capstone/issues/100), and [#101](https://github.com/kienhienh/BC93_capstone/issues/101) were fixed, merged, and closed |
 
 **Issue #43 is not ready to close.** Remaining work: row 5's
-reduced-motion and target-size checks; and completing the missing
-browser/device/Preview metadata noted in the evidence.
+reduced-motion check and completing the missing browser/device/Preview
+metadata noted in the evidence.
 
 ## Log
 
@@ -234,6 +234,32 @@ browser/device/Preview metadata noted in the evidence.
   spacing 0.16em; paragraph spacing 2em.
 - **Result**: **PASS.** No visible text clipping, overlapping content,
   broken controls, or visible horizontal overflow was observed.
+
+### Target size — PASS
+
+- **Check**: manual inspection of representative interactive controls
+  against the 24 x 24 CSS pixel minimum target-size threshold.
+- **Browser/version**: Microsoft Edge; exact version not provided.
+- **Viewport**: not provided.
+- **Deployment URL/source commit**: not provided; supplement before
+  treating the evidence-metadata criterion as complete.
+- **Observer**: kienhienh
+- **Date**: 2026-08-20
+
+| Control | Recorded CSS size | Pixel equivalent | Result |
+|---|---:|---:|---|
+| Home Search button | 3.5rem high | 56px high | PASS |
+| Carousel Previous/Next | 2.75rem x 2.75rem | 44 x 44px | PASS |
+| Category tile link | 6.5rem minimum height | 104px high | PASS |
+| Header/drawer buttons | 2.75rem minimum height | 44px high | PASS |
+| Admin menu actions | 2.55rem minimum height | 41px high | PASS |
+| Footer settings button | 2rem minimum height | 32px high | PASS |
+| Footer social icons | 1.5rem x 1.5rem | 24 x 24px | PASS |
+
+- **Result**: **PASS.** Every measured target met or exceeded the
+  24 x 24 CSS pixel minimum. Text controls were wider than their
+  recorded minimum heights; the smallest square targets, the footer
+  social icons, measured exactly 24 x 24 CSS pixels.
 
 ### NVDA + Chrome verification — WAIVED
 
