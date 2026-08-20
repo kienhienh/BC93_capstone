@@ -19,11 +19,11 @@ ready to close. Status against each acceptance criterion:
 | 3 | NVDA + Chrome (landmarks, roles, forms/errors, announcements, route changes, drawers, tables, mutation feedback) | **Waived** — excluded from the capstone-report scope by the project owner; no screen-reader or full WCAG-conformance claim is made |
 | 4 | Physical smartphone, full journey, no horizontal overflow | **Done** — iPhone XR / Safari, see below |
 | 5 | Contrast, 200%/400% zoom, 320px reflow, text spacing, reduced motion, visible focus, target size | **Done for the approved capstone scope** — zoom, text spacing, reduced motion, visible focus, and target size passed; contrast and 320px defects were resolved |
-| 6 | Evidence recorded with device/browser/AT/viewport/URL/observer/date/pass-fail | **Partial** — Edge and iPhone versions, branch, commit, observer, date, and recorded viewports are present; the full untruncated Preview URL and Safari viewport remain missing |
+| 6 | Evidence recorded with device/browser/AT/viewport/URL/observer/date/pass-fail | **Partial** — browser/device versions, full Preview URL, branch, commit, observer, date, and recorded viewports are present; only the Safari physical-device viewport remains missing |
 | 7 | Release-blocking defects filed and resolved | **Done** — [#98](https://github.com/kienhienh/BC93_capstone/issues/98), [#99](https://github.com/kienhienh/BC93_capstone/issues/99), [#100](https://github.com/kienhienh/BC93_capstone/issues/100), and [#101](https://github.com/kienhienh/BC93_capstone/issues/101) were fixed, merged, and closed |
 
 **Issue #43 is not ready to close.** Remaining work is providing the
-full untruncated Preview URL and the Safari physical-device viewport.
+Safari physical-device viewport.
 
 ## Log
 
@@ -33,9 +33,9 @@ full untruncated Preview URL and the Safari physical-device viewport.
   64-bit.
 - **Physical smartphone**: iPhone XR, iOS 17.4.1, Safari. The exact
   Safari application version was not separately provided.
-- **Preview deployment identifier**:
-  bc-93-capstone-28rk-8c1cc78fb... (truncated as provided; the full URL
-  is still required for reproducible evidence).
+- **Deployment URL**:
+  https://bc-93-capstone-28rk-8c1cc78fb-kienhienh-7980s-projects.vercel.app/
+  (Preview deployment).
 - **Preview branch**: issue-43-manual-verification-evidence.
 - **Tested commit**:
   e57a025fa2d36a27577260d8c94cf77aad9654dd.
@@ -179,8 +179,10 @@ full untruncated Preview URL and the Safari physical-device viewport.
 - **OS/browser version**: iOS 17.4.1, Safari. The exact Safari
   application version was not separately provided.
 - **Viewport**: not recorded for this physical-device pass.
-- **Deployment**: bc-93-capstone-28rk-8c1cc78fb... (truncated identifier),
-  branch issue-43-manual-verification-evidence, commit
+- **Deployment URL**:
+  https://bc-93-capstone-28rk-8c1cc78fb-kienhienh-7980s-projects.vercel.app/
+  (Preview deployment), branch issue-43-manual-verification-evidence,
+  commit
   e57a025fa2d36a27577260d8c94cf77aad9654dd.
 - **Observer**: kienhienh
 - **Date**: 2026-08-20
@@ -244,8 +246,10 @@ full untruncated Preview URL and the Safari physical-device viewport.
   physical device or emulation tool was not provided.
 - **Browser/version**: Microsoft Edge 151.0.4129.93, Official Build,
   64-bit.
-- **Deployment**: bc-93-capstone-28rk-8c1cc78fb... (truncated identifier),
-  branch issue-43-manual-verification-evidence, commit
+- **Deployment URL**:
+  https://bc-93-capstone-28rk-8c1cc78fb-kienhienh-7980s-projects.vercel.app/
+  (Preview deployment), branch issue-43-manual-verification-evidence,
+  commit
   e57a025fa2d36a27577260d8c94cf77aad9654dd.
 - **Observer**: kienhienh
 - **Date**: 2026-08-20
@@ -261,8 +265,10 @@ full untruncated Preview URL and the Safari physical-device viewport.
 - **Browser/version**: Microsoft Edge 151.0.4129.93, Official Build,
   64-bit.
 - **Viewport**: not provided.
-- **Deployment**: bc-93-capstone-28rk-8c1cc78fb... (truncated identifier),
-  branch issue-43-manual-verification-evidence, commit
+- **Deployment URL**:
+  https://bc-93-capstone-28rk-8c1cc78fb-kienhienh-7980s-projects.vercel.app/
+  (Preview deployment), branch issue-43-manual-verification-evidence,
+  commit
   e57a025fa2d36a27577260d8c94cf77aad9654dd.
 - **Observer**: kienhienh
 - **Date**: 2026-08-20
